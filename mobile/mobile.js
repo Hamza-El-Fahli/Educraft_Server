@@ -1,5 +1,5 @@
 const express = require('express')
-const { getUsers , getCourses } = require('../DB/dbServer.js')
+const { getUsers , getCourses , isUser , getModules } = require('../DB/dbServer.js')
 
 mobileApp = express.Router()
 
@@ -14,6 +14,13 @@ mobileApp.get('/users', async(req,res)=>{
     res.json(users)
 })
 
+mobileApp.get('/isuser/:email/:password', async(req,res)=>{
+    const email = req.params.email
+    const password = req.params.password
+    const result = await isUser(email,password)
+    res.json(result)
+})
+
 
 mobileApp.get('/courses/:instructor_id?',async(req,res)=>{
     const inst_id = req.params.instructor_id
@@ -26,8 +33,13 @@ mobileApp.get('/courses/:instructor_id?',async(req,res)=>{
 })
 
 
-mobileApp.get('/Course/modules',(req,res)=>{
+mobileApp.get('/modules/:course_id',async (req,res)=>{
 
+    let courseId = req.params.course_id
+    if (courseId) 
+        courses = await getModules(courseId)
+
+    res.json(courses || null)
 })
 
 
