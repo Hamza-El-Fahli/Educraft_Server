@@ -65,7 +65,7 @@ const getChapters = async (moduleId = 1) => {
 
 const getTests = async (chapterId = 1) => {
 
-  const docRef = query(collection(db, 'tests'), where('chapter_id', '==', chapterId));
+  const docRef = query(collection(db, 'tests'));
   const querySnapshot = await getDocs(docRef);
   let tests = []
   querySnapshot.forEach((doc) => { tests.push(doc.data()) })

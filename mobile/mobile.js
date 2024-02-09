@@ -58,8 +58,7 @@ mobileApp.get('/chapters/:module_id',async (req,res)=>{
 mobileApp.get('/tests/:chapter_id',async (req,res)=>{
 
     let chapter_id = req.params.chapter_id
-
-    let tests = await getChapters(chapter_id)
+    let tests = await getTests(chapter_id)
 
     res.json(tests || null)
 })
