@@ -1,5 +1,5 @@
 const express = require('express')
-const { getUsers , getCourses , isUser , getModules } = require('../DB/dbServer.js')
+const { getUsers , getCourses , isUser , getModules , getChapters , getTests } = require('../DB/dbServer.js')
 
 mobileApp = express.Router()
 
@@ -44,8 +44,24 @@ mobileApp.get('/modules/:course_id',async (req,res)=>{
 
 
 
-mobileApp.get('/Course/modules/chapters',(req,res)=>{
-    res.send('Hiii to my db server')
+mobileApp.get('/chapters/:module_id',async (req,res)=>{
+
+    let moduleId = req.params.module_id
+
+    let chapters = await getChapters(moduleId)
+
+    res.json(chapters || null)
+})
+
+
+
+mobileApp.get('/tests/:chapter_id',async (req,res)=>{
+
+    let chapter_id = req.params.chapter_id
+
+    let tests = await getChapters(chapter_id)
+
+    res.json(tests || null)
 })
 
 

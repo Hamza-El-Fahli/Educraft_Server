@@ -52,6 +52,35 @@ const getModules = async (courseId) => {
   return modules.sort((a, b) => a.id - b.id);
 }
 
+const getChapters = async (moduleId = 1) => {
+
+  const docRef = query(collection(db, 'chapters'), where('module_id', '==', moduleId));
+  const querySnapshot = await getDocs(docRef);
+  let chapters = []
+  querySnapshot.forEach((doc) => { chapters.push(doc.data()) })
+  return chapters.sort((a, b) => a.id - b.id);
+}
+
+
+
+const getTests = async (chapterId = 1) => {
+
+  const docRef = query(collection(db, 'tests'), where('chapter_id', '==', chapterId));
+  const querySnapshot = await getDocs(docRef);
+  let tests = []
+  querySnapshot.forEach((doc) => { tests.push(doc.data()) })
+  return tests.sort((a, b) => a.test_id - b.test_id);
+}
+
+
+
+
+
+
+
+
+
+
 const isUser = async (email, password) => {
   try {
     const usersRef = collection(db, 'utilisateurs');
@@ -73,4 +102,11 @@ const isUser = async (email, password) => {
   }
 }
 
-module.exports = { getUsers, getCourses, isUser , getModules }
+module.exports = {
+  getUsers,
+  getCourses,
+  isUser,
+  getModules,
+  getChapters,
+  getTests
+}
