@@ -1,0 +1,73 @@
+[
+    {
+      "test_id": 1,
+      "chapter_id": 11,
+      "question": "Quel est le modèle de communication largement utilisé pour les réseaux informatiques?",
+      "options": ["Modèle OSI", "Modèle TCP/IP", "Modèle Internet", "Modèle Ethernet", "Modèle ARPANET", "Modèle UDP", "Modèle HTTP", "Modèle FTP", "Modèle SMTP", "Modèle SNMP", "Modèle ICMP", "Modèle DNS", "Modèle POP3", "Modèle IMAP", "Modèle VoIP", "Modèle SSL/TLS", "Modèle BGP", "Modèle SSH", "Modèle VLAN", "Modèle MPLS"],
+      "theCorrectAnswer": "Modèle OSI"
+    },
+    {
+      "test_id": 2,
+      "chapter_id": 11,
+      "question": "Quelle est la fonction principale de la couche physique dans le modèle OSI?",
+      "options": ["Encapsulation des données", "Contrôle de flux", "Conversion de signaux", "Accès au réseau", "Conversion de fréquences", "Transmission de paquets", "Modulation de données", "Décapsulation de données", "Transmission de trames", "Analyse de paquets", "Gestion de la congestion", "Routage des paquets", "Filtrage des données", "Redirection des paquets", "Analyse du trafic", "Authentification des utilisateurs", "Sécurisation des données", "Compression des données", "Chiffrement des données", "Déchiffrement des données"],
+      "theCorrectAnswer": "Conversion de signaux"
+    },
+    {
+      "test_id": 3,
+      "chapter_id": 11,
+      "question": "Quelle couche du modèle OSI est responsable du transfert de données de bout en bout?",
+      "options": ["Couche Transport", "Couche Application", "Couche Réseau", "Couche Liaison de données", "Couche Session", "Couche Physique", "Couche Présentation", "Couche Sous-réseau", "Couche Accès au réseau", "Couche Contrôle de flux", "Couche Fiabilité de la communication", "Couche Routage", "Couche Encapsulation", "Couche Détection d'erreurs", "Couche Multiplexage", "Couche Désencapsulation", "Couche Reroutage", "Couche Partitionnement", "Couche Cryptage", "Couche Authentification"],
+      "theCorrectAnswer": "Couche Transport"
+    },
+    {
+      "test_id": 4,
+      "chapter_id": 11,
+      "question": "Quel est le principal protocole de la couche réseau dans le modèle TCP/IP?",
+      "options": ["IP", "HTTP", "TCP", "DNS", "FTP", "SMTP", "UDP", "IMAP", "POP3", "ARP", "ICMP", "SNMP", "SSH", "Telnet", "NTP", "SMTPS", "SIP", "TLS", "SSL", "RTP"],
+      "theCorrectAnswer": "IP"
+    },
+    {
+      "test_id": 5,
+      "chapter_id": 11,
+      "question": "Quelle est la principale fonction de la couche Transport dans le modèle TCP/IP?",
+      "options": ["Assurer la fiabilité de la communication", "Gérer l'adressage logique", "Assurer la connectivité physique", "Convertir les données en signaux", "Contrôler l'accès au réseau", "Identifier les hôtes sur le réseau", "Résoudre les noms de domaine", "Filtrer les paquets de données", "Gérer la congestion du réseau", "Crypter les données transitant sur le réseau", "Authentifier les utilisateurs du réseau", "Fournir un service de messagerie électronique", "Assurer la transmission sécurisée des données", "Faciliter la communication entre les couches OSI", "Assurer la synchronisation des données", "Gérer les connexions entre les hôtes", "Vérifier l'intégrité des données", "Identifier les erreurs de transmission", "Faciliter le partage de fichiers sur le réseau", "Assurer la redondance des données"],
+      "theCorrectAnswer": "Assurer la fiabilité de la communication"
+    },
+        {
+          "test_id": 1,
+          "chapter_id": 1,
+          "question": "Quelle année marque le début de l'ARPANET, l'un des premiers réseaux informatiques?",
+          "options": ["1969", "1972", "1980", "1990", "1950", "1975", "1985", "2000", "1960", "1970", "1977", "1995", "1965", "1982", "2005", "1979", "1989", "1992", "1967", "1973"],
+          "theCorrectAnswer": "1969"
+        },
+        {
+          "test_id": 2,
+          "chapter_id": 1,
+          "question": "Dans quel pays a été développé le réseau ARPANET?",
+          "options": ["États-Unis", "Royaume-Uni", "France", "Allemagne", "Canada", "Japon", "Australie", "Chine", "Russie", "Inde", "Brésil", "Italie", "Espagne", "Corée du Sud", "Mexique", "Suède", "Pays-Bas", "Singapour", "Suisse", "Norvège"],
+          "theCorrectAnswer": "États-Unis"
+        },
+        {
+          "test_id": 3,
+          "chapter_id": 1,
+          "question": "Qui est souvent considéré comme le père de l'ARPANET?",
+          "options": ["J.C.R. Licklider", "Vinton Cerf", "Tim Berners-Lee", "Larry Roberts", "Paul Baran", "Leonard Kleinrock", "Bob Kahn", "Ray Tomlinson", "Steve Crocker", "John Postel", "Doug Engelbart", "David Clark", "Whitfield Diffie", "Martin Hellman", "Jon Postel", "Paul Mockapetris", "Steve Crocker", "Tim Berners Lee", "Robert Metcalfe", "Radia Perlman"],
+          "theCorrectAnswer": "Larry Roberts"
+        },
+        {
+          "test_id": 4,
+          "chapter_id": 1,
+          "question": "Quel était le principal objectif de la création d'ARPANET?",
+          "options": ["Faciliter la communication entre les chercheurs", "Faciliter les transactions financières", "Faciliter les échanges commerciaux", "Faciliter les réunions virtuelles", "Faciliter la diffusion d'informations gouvernementales", "Faciliter les transactions bancaires", "Faciliter l'échange de courriels", "Faciliter l'accès à l'information", "Faciliter les achats en ligne", "Faciliter les recherches universitaires", "Faciliter la planification de projets", "Faciliter la gestion des ressources humaines", "Faciliter la gestion des stocks", "Faciliter la gestion des entreprises", "Faciliter les opérations militaires", "Faciliter les opérations de secours", "Faciliter les opérations de vente", "Faciliter les opérations de marketing", "Faciliter les opérations de logistique", "Faciliter les opérations de production"],
+          "theCorrectAnswer": "Faciliter la communication entre les chercheurs"
+        },
+        {
+          "test_id": 5,
+          "chapter_id": 1,
+          "question": "Quelle institution a créé ARPANET?",
+          "options": ["Département de la Défense des États-Unis", "NASA", "IBM", "Microsoft", "Apple", "Google", "Facebook", "Amazon", "Intel", "HP", "Cisco", "Oracle", "DARPA", "NSF", "FBI", "CIA", "NSA", "NIST", "EPA", "DOE"],
+          "theCorrectAnswer": "Département de la Défense des États-Unis"
+        }
+  ]
+  

@@ -1,0 +1,42 @@
+[
+    {
+        "email": "hamza1@mail.com",
+        "password": "1234",
+        "name": "Hamza"
+    },
+    {
+        "email": "hamza@mail.com",
+        "password": "12534",
+        "name": "Hamza"
+    },
+    {
+        "email": "hamza@mail.com",
+        "password": "1234",
+        "name": "H55555"
+    },
+    {
+        "email": "0@mail.com",
+        "password": "0",
+        "name": "TestUser"
+    },
+    {
+        "email": "zaki@mail.com",
+        "password": "data",
+        "name": "Zakaria"
+    },
+    {
+        "email": "sss@mail.com",
+        "password": "sos",
+        "name": "ssss"
+    },
+    {
+        "email": "sss@mail.com",
+        "password": "sos",
+        "name": "sss"
+    },
+    {
+        "email": "Survive@this.test",
+        "password": "Help",
+        "name": "lastSurvivor"
+    }
+]

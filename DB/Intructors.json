@@ -1,0 +1,12 @@
+[
+    {
+        "instructor_id" : 1,
+        "instructor_name" : "Hamze",
+        "speciality" : "Networking"
+    },
+    {
+        "instructor_id" : 2,
+        "instructor_name" : "Mohammed",
+        "speciality" : "Coding"
+    }
+]
