@@ -1,5 +1,5 @@
-const { query, collection, where, getDocs } = require('firebase/firestore');
-const db = require('./firestore.js');
+const { query, collection, where, getDocs } = require("firebase/firestore");
+const db = require("./firestore.js");
 
 // const docRef = query(collection(db, 'utilisateurs'));
 
@@ -17,90 +17,97 @@ const db = require('./firestore.js');
 // })();
 
 const getUsers = async () => {
-  const docRef = query(collection(db, 'utilisateurs'));
+  const docRef = query(collection(db, "utilisateurs"));
   const querySnapshot = await getDocs(docRef);
-  let users = []
-  querySnapshot.forEach((doc) => { users.push({ id: doc.id, ...doc.data() }) })
-  return users
-}
-
+  let users = [];
+  querySnapshot.forEach((doc) => {
+    users.push({ id: doc.id, ...doc.data() });
+  });
+  return users;
+};
 
 const getIntructors = async () => {
-  const docRef = query(collection(db, 'instructor'));
+  const docRef = query(collection(db, "instructor"));
   const querySnapshot = await getDocs(docRef);
-  let instructors = []
-  querySnapshot.forEach((doc) => { instructors.push([doc.id, doc.data()]) })
-  return instructors
-}
-
-
+  let instructors = [];
+  querySnapshot.forEach((doc) => {
+    instructors.push([doc.id, doc.data()]);
+  });
+  return instructors;
+};
 
 const getCourses = async (instructor = null) => {
-  const docRef = instructor === null ? query(collection(db, 'courses')) : query(collection(db, 'courses'), where('instructor_id', '==', 1));
+  const docRef =
+    instructor === null
+      ? query(collection(db, "courses"))
+      : query(collection(db, "courses"), where("instructor_id", "==", 1));
   const querySnapshot = await getDocs(docRef);
-  let courses = []
-  querySnapshot.forEach((doc) => { courses.push(doc.data()) })
-  return courses
-}
+  let courses = [];
+  querySnapshot.forEach((doc) => {
+    courses.push(doc.data());
+  });
+  return courses;
+};
 
 const getModules = async (courseId) => {
-  // const docRef = query(collection(db, 'modules'));
-  const docRef = query(collection(db, 'modules'), where('course', '==', 1));
+  const docRef = query(
+    collection(db, "modules"),
+    where("course", "==", +courseId)
+  );
+
   const querySnapshot = await getDocs(docRef);
-  let modules = []
-  querySnapshot.forEach((doc) => { modules.push(doc.data()) })
+  let modules = [];
+  querySnapshot.forEach((doc) => {
+    modules.push(doc.data());
+  });
   return modules.sort((a, b) => a.id - b.id);
-}
+};
 
 const getChapters = async (moduleId = 1) => {
-
-  const docRef = query(collection(db, 'chapters'), where('module_id', '==', moduleId));
+  const docRef = query(
+    collection(db, "chapters"),
+    where("module_id", "==", moduleId)
+  );
   const querySnapshot = await getDocs(docRef);
-  let chapters = []
-  querySnapshot.forEach((doc) => { chapters.push(doc.data()) })
+  let chapters = [];
+  querySnapshot.forEach((doc) => {
+    chapters.push(doc.data());
+  });
   return chapters.sort((a, b) => a.id - b.id);
-}
-
-
+};
 
 const getTests = async (chapterId = 1) => {
-
-  const docRef = query(collection(db, 'tests'));
+  const docRef = query(collection(db, "tests"));
   const querySnapshot = await getDocs(docRef);
-  let tests = []
-  querySnapshot.forEach((doc) => { tests.push(doc.data()) })
+  let tests = [];
+  querySnapshot.forEach((doc) => {
+    tests.push(doc.data());
+  });
   return tests.sort((a, b) => a.test_id - b.test_id);
-}
-
-
-
-
-
-
-
-
-
+};
 
 const isUser = async (email, password) => {
   try {
-    const usersRef = collection(db, 'utilisateurs');
-    const querySnapshot = await getDocs(query(usersRef, where('email', '==', email)));
+    const usersRef = collection(db, "utilisateurs");
+    const querySnapshot = await getDocs(
+      query(usersRef, where("email", "==", email))
+    );
 
     if (querySnapshot.empty) {
       return { found: false };
     } else {
-      const userData = { id: querySnapshot.docs[0].id, ...querySnapshot.docs[0].data() };
-      if (userData.password === password)
-        return { ...userData, found: true };
-      else
-        return { found: false };
-
+      const userData = {
+        id: querySnapshot.docs[0].id,
+        ...querySnapshot.docs[0].data(),
+      };
+      if (userData.password === password) return { ...userData, found: true };
+      else return { found: false };
     }
   } catch (error) {
-    console.error('Error getting documents:', error);
+    console.error("Error getting documents:", error);
     throw error;
   }
-}
+};
 
 module.exports = {
   getUsers,
@@ -108,5 +115,5 @@ module.exports = {
   isUser,
   getModules,
   getChapters,
-  getTests
-}
+  getTests,
+};

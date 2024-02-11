@@ -37,9 +37,13 @@ mobileApp.get("/courses/:instructor_id?", async (req, res) => {
 
 mobileApp.get("/modules/:course_id", async (req, res) => {
   let courseId = req.params.course_id;
-  if (courseId) courses = await getModules(courseId);
-
-  res.json(courses || null);
+  var modules;
+  if (courseId) {
+    modules = await getModules(courseId);
+    if (modules) {
+      res.json(modules);
+    }
+  } else res.status(404).end();
 });
 
 mobileApp.get("/chapters/:module_id", async (req, res) => {
