@@ -66,10 +66,12 @@ const getModules = async (courseId) => {
 const getChapters = async (moduleId = 1) => {
   const docRef = query(
     collection(db, "chapters"),
-    where("module_id", "==", moduleId)
+    where("module_id", "==", +moduleId)
   );
   const querySnapshot = await getDocs(docRef);
   let chapters = [];
+  if (querySnapshot.empty) return  false;
+
   querySnapshot.forEach((doc) => {
     chapters.push(doc.data());
   });
@@ -108,6 +110,9 @@ const isUser = async (email, password) => {
     throw error;
   }
 };
+
+
+
 
 module.exports = {
   getUsers,
