@@ -10,9 +10,12 @@
   "author": "Hamza el fahli",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.17",
     "express": "^4.18.2",
     "firebase": "^10.8.0",
     "firebase-admin": "^12.0.0",
-    "nodemon": "^3.0.3"
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3"
   }
 }

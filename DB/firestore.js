@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
-const firebase = require('firebase/app');
-const { getFirestore } = require('firebase/firestore');
+const firebase = require("firebase/app");
+const { getFirestore } = require("firebase/firestore");
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -12,10 +12,10 @@ const firebaseConfig = {
   projectId: "educraft-c6756",
   storageBucket: "educraft-c6756.appspot.com",
   messagingSenderId: "127260483018",
-  appId: "1:127260483018:web:c578200fb92e67df718333"
+  appId: "1:127260483018:web:c578200fb92e67df718333",
 };
 
 // Initialize Firebase
 const app = firebase.initializeApp(firebaseConfig);
- const db = getFirestore(app)
- module.exports = db;
+const db = getFirestore(app);
+module.exports = db;
