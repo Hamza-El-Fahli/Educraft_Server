@@ -13,8 +13,6 @@ webApp.get("/", (req: Request, res: Response) => {
 });
 
 webApp.get("/isuser/:email/:password", async (req: Request, res: Response) => {
-
-
   const userEmail = req.params.email;
   const userPass = req.params.password;
 
@@ -63,12 +61,12 @@ webApp.get("/chapters/:module_id", async (req: Request, res: Response) => {
   else res.status(404).end();
 });
 
-webApp.get("/tests/:chapter_id", async (req: Request, res: Response) => {
-const chapterId = req.params.chapter_id
-if(chapterId in db.tests)
-  res.json(db.tests[chapterId])
-  else res.status(404).end();
-
+webApp.get("/tests/:chapter_id/:quiz_id", async (req: Request, res: Response) => {
+  const chapterId = req.params.chapter_id;
+  const thisQuizIsTheFirstQuiz = req.params.quiz_id
+  if (chapterId in db.tests) {
+    res.json(db.tests[chapterId].filter((item:any) => item.quiz == thisQuizIsTheFirstQuiz).sort(() => Math.random() - 0.5).slice(0, 4));
+  } else res.status(404).end();
 });
 webApp.get("*", async (req: Request, res: Response) => {
   res.status(404).end();
