@@ -78,15 +78,6 @@ const getChapters = async (moduleId = 1) => {
   return chapters.sort((a, b) => a.id - b.id);
 };
 
-const getTests = async (chapterId = 1) => {
-  const docRef = query(collection(db, "tests"));
-  const querySnapshot = await getDocs(docRef);
-  let tests = [];
-  querySnapshot.forEach((doc) => {
-    tests.push(doc.data());
-  });
-  return tests.sort((a, b) => a.test_id - b.test_id);
-};
 
 const isUser = async (email, password) => {
   try {
@@ -111,6 +102,17 @@ const isUser = async (email, password) => {
   }
 };
 
+
+
+const getTests = async (chapterId = 1) => {
+  const docRef = query(collection(db, "tests"));
+  const querySnapshot = await getDocs(docRef);
+  let tests = [];
+  querySnapshot.forEach((doc) => {
+    tests.push(doc.data());
+  });
+  return tests.sort((a, b) => a.test_id - b.test_id);
+};
 
 
 

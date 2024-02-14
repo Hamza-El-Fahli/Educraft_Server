@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-const port = 7676
+const port = process.env.PORT || 7676
 
 const mobileApp = require('./mobile/mobile.js')
 const webApp = require('./web/web.js')

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const port = 7676;
+const port = process.env.PORT || 7676;
 const mobileApp = require('./mobile/mobile.js');
 const webApp = require('./web/web.js');
 const app = (0, express_1.default)();
