@@ -29,3 +29,18 @@ export async function PATCH(
     status: 201,
   });
 }
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  const users = userData;
+  const userIndx = users.findIndex((user) => user.id == params.id);
+
+  const deleted = users.splice(userIndx, 1);
+
+  return Response.json(users, {
+    headers: { "Content-type": "text/json" },
+    status: 200,
+  });
+}
