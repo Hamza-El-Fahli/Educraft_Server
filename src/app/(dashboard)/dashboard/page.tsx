@@ -2,14 +2,14 @@ import Image from "next/image";
 
 export default function Dashboard() {
   return (
-    <div className="border grid grid-cols-12 grid-rows-12 h-screen text-white  gap-2 bg-primary">
-      <div className="border h-full w-full bg-secondary col-span-12 grid grid-cols-12 ">
+    <div className=" grid grid-cols-12 grid-rows-12 h-screen text-white  gap-2 bg-primary">
+      <div className=" h-full w-full bg-secondary col-span-12 grid grid-cols-12 ">
         <div className="col-span-2">User</div>
         <div className="col-span-9">Search</div>
         <div className="overflow-hidden">n</div>
       </div>
-      <nav className="border h-full w-full  col-span-2 row-span-8 ml-1 ">
-        <ul className="w-full p-5 flex flex-col bg-secondary">
+      <nav className=" h-full w-full  col-span-2 row-span-8 p-3">
+        <ul className="w-full p-5 flex flex-col bg-secondary rounded-md">
           <li className=" text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5">
             <svg
               width="18"
@@ -28,9 +28,12 @@ export default function Dashboard() {
           <li className=" text-center rounded-md py-3">Dashboard</li>
           <li className=" text-center rounded-md py-3">Dashboard</li>
           <li className="text-center rounded-md py-3  ">Dashboard</li>
+          <li className="text-center rounded-md py-3  ">Dashboard</li>
+          <li className="text-center rounded-md py-3  ">Dashboard</li>
+          <li className="text-center rounded-md py-3  ">Dashboard</li>
         </ul>
       </nav>
-      <main className="border h-full w-full col-span-10 row-span-11 grid grid-cols-5 grid-rows-2 gap-3 p-3">
+      <main className=" h-full w-full col-span-10 row-span-11 grid grid-cols-5 grid-rows-2 gap-3 p-3">
         <div className="col-span-2 h-full w-full bg-third col-start-5 row-start-1">
           ADD
         </div>
@@ -47,11 +50,11 @@ export default function Dashboard() {
           Recent added Courses
         </div>
       </main>
-      <nav className="border h-full w-full col-span-2 row-span-3 flex items-end justify-center ml-1">
-        <div className="bg-secondary w-full p-1 m-3 text-center">
+      <nav className=" h-full w-full col-span-2 row-span-3 flex items-end justify-center ml-1">
+        <footer className="bg-secondary w-full p-1 m-3 text-center rounded-md">
           <div className="uppercase font-bold">Educraft</div>
           <div className="text-gray-500 mt-3">Version : 1.0.0</div>
-        </div>
+        </footer>
       </nav>
     </div>
   );
