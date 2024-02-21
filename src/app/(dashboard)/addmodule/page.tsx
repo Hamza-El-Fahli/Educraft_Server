@@ -2,17 +2,17 @@
 
 import { useState } from "react";
 
-export default function AddCourse() {
-  interface Course {
-    id: number;
-    name: string;
-  }
-  const [Courses, setCourses] = useState<Course[]>([]);
-  const [inpuCourse, setinpuCourse] = useState("");
+interface _Module {
+  id: number;
+  name: string;
+}
+export default function AddModule() {
+  const [Modules, setCourses] = useState<_Module[]>([]);
+  const [inputModule, setinpuCourse] = useState("");
   const handleClick = (e: any) => {
     e.preventDefault();
-    const tmp = { id: Courses.length, name: inpuCourse };
-    setCourses([...Courses, tmp]);
+    const tmp = { id: Modules.length, name: inputModule };
+    setCourses([...Modules, tmp]);
     setinpuCourse("");
   };
   const handleChange = (e: any) => {
@@ -48,12 +48,20 @@ export default function AddCourse() {
       {/* Side nav */}
       {/* Main View */}
       <main className=" h-full w-full col-span-10 row-span-11 grid grid-rows-12 gap-3">
-        {/* Form to add course */}
+        {/* Form to add module */}
         <form className="flex flex-col w-1/2  gap-2  p-5 bg-secondary row-span-4">
-          <h1>Add New Course</h1>
-          <label htmlFor="">Course name :</label>
+          <h1>Add New Module</h1>
+
+          <label htmlFor="">Cours :</label>
+          <select>
+            <option value="1">CCNA 1</option>
+            <option value="2">CCNA 2</option>
+            <option value="3">CCNA 3</option>
+            <option value="4">CCNA 4</option>
+          </select>
+          <label htmlFor="">Module name :</label>
           <input
-            value={inpuCourse}
+            value={inputModule}
             onChange={handleChange}
             className="rounded-full text-gray-500 bg-inherit border-4 p-1 px-4 border-primary outline-none font-bold"
             type="text"
@@ -73,11 +81,11 @@ export default function AddCourse() {
           <table className="w-full">
             <tr>
               <th>ID</th>
-              <th>Course</th>
+              <th>Module</th>
               <th>Chapters</th>
               <th>Actions</th>
             </tr>
-            {Courses.map((course) => (
+            {Modules.map((course) => (
               <tr>
                 <td> {course.id} </td>
                 <td>{course.name}</td>
