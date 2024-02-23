@@ -3,6 +3,8 @@ import Users from "@/database/models/users";
 import { NextRequest, NextResponse } from "next/server";
 
 
+
+// Add user 
 export async function POST(request:Request){
     const {name , email , password } : {name:string,email:string,password:string} = await request.json()
     try {
@@ -14,6 +16,9 @@ export async function POST(request:Request){
     }
 }
 
+
+
+// get All users
 export async function GET(){
     await connectDB()
     const user = await  Users.find()
@@ -21,6 +26,7 @@ export async function GET(){
 }
 
 
+// Delete user 
 export async function DELETE(request:NextRequest){
     const id = request.nextUrl.searchParams.get('id')
     await connectDB()
