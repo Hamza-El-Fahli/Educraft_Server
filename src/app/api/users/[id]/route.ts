@@ -2,27 +2,17 @@ import connectDB from "@/database/lib/mongodb";
 import Users from "@/database/models/users";
 import { NextRequest, NextResponse } from "next/server";
 
-
-
-
-
-// Get user By Email and password
-export async function POST(request: NextRequest) {
-    try {
-      const data = await request.json();
-      const { email, password } = data;
-      
-      await connectDB();
-      const user = await Users.findOne({ email, password });
-  
-      if (user) {
-        return NextResponse.json(user);
-      } else {
-        return NextResponse.json({ error: "No user found" });
-      }
-    } catch (error:any) {
-      console.error("Error:", error.message);
-      return NextResponse.json({ error: "Invalid JSON input" });
-    }
-  }
-  
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+  const {
+    name,
+    email,
+    password,
+  }: { name: string; email: string; password: string } = await request.json();
+  await connectDB();
+  const res = await Users.findByIdAndUpdate(id, { name, email, password });
+  return NextResponse.json(res);
+}
