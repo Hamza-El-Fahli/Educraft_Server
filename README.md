@@ -1,6 +1,6 @@
-## API guide:
+# API guide:
 
-### Users API
+## Users API
 
 **PUT /api/users**
 * Add one user
@@ -19,6 +19,32 @@
 * Request body: `null`
 
 
-**PUT  /api/uses/[id]**
+**PUT  /api/users/[id]**
 * Update a user by id
 * Request body : {name , email , password }
+
+
+
+
+
+
+
+## Courses API
+
+**PUT /api/courses**
+* Add one course
+* Request body: `{course_name , description , instructor}`
+
+**GET /api/courses**
+* Select all courses
+* Request body: `null`
+
+
+**DELETE /api/courses/{id}**
+* Delete a course by id
+* Request body: `null`
+
+
+**POST  /api/courses/[id]**
+* Update a course by id
+* Request body : `{ new_course_name,new_description,new_instructor}`
