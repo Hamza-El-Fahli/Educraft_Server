@@ -21,7 +21,7 @@
 
 **PUT  /api/users/[id]**
 * Update a user by id
-* Request body : {name , email , password }
+* Request body : `{name , email , password }`
 
 
 
