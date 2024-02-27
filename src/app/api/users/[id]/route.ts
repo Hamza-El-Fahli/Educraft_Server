@@ -16,3 +16,16 @@ export async function PUT(
   const res = await Users.findByIdAndUpdate(id, { name, email, password });
   return NextResponse.json(res);
 }
+
+// Delete user 
+export async function DELETE(request:NextRequest,
+  { params }: { params: { id: string } }){
+  const {id} = params
+  await connectDB()
+  const res = await Users.findByIdAndDelete(id)
+  if(res != null){
+  return NextResponse.json({message : "User deleted"})}
+  else{
+      return NextResponse.json({message : "user Not found"})}
+  
+}

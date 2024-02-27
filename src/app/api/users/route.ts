@@ -54,14 +54,3 @@ export async function POST(request: NextRequest) {
 
 
 
-// Delete user 
-export async function DELETE(request:NextRequest){
-    const id = request.nextUrl.searchParams.get('id')
-    await connectDB()
-    const res = await Users.findByIdAndDelete(id)
-    if(res != null){
-    return NextResponse.json({message : "User deleted"})}
-    else{
-        return NextResponse.json({message : "user Not found"})}
-    
-}
