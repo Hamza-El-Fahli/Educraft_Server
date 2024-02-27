@@ -22,3 +22,16 @@ export async function PUT(request : Request) {
         return NextResponse.json({error:"No courses created" , contexst : error})
     }
 }
+
+
+export async function GET(request:NextRequest){
+    try {
+        await connectDB()
+        const res = await Courses.find()
+        return NextResponse.json(res)
+    } catch (error) {
+        return NextResponse.json({error:"No courses was found" , contexst : error},{status : 301})
+
+    }
+}
+
