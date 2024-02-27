@@ -4,7 +4,6 @@ import connectDB from "@/database/lib/mongodb";
 
 
 // POST update one course by id
-
 export async function POST(request:NextRequest,{params}:{params:{id:string}}){
     const {id} = params
     const { new_course_name,new_description,new_instructor} =await request.json()
@@ -18,6 +17,9 @@ export async function POST(request:NextRequest,{params}:{params:{id:string}}){
     }
 }
 
+
+
+// DELETE one course by id
 export async function DELETE(request:NextRequest,{params}:{params:{id : string}}){
     const {id} = params
     try {

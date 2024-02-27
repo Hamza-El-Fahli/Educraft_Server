@@ -1,14 +1,11 @@
 import connectDB from "@/database/lib/mongodb";
 import Courses from "@/database/models/courses"
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 
 
 
 // PUT      add one course
-// GET      select all courses
-
-
 export async function PUT(request : Request) {
     const {course_name, description, instructor} = await request.json()
     try {
@@ -21,8 +18,8 @@ export async function PUT(request : Request) {
     }
 }
 
-
-export async function GET(request:NextRequest){
+// GET      select all courses
+export async function GET(){
     try {
         await connectDB()
         const res = await Courses.find()
