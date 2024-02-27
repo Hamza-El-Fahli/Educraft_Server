@@ -7,8 +7,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 // PUT      add one course
 // GET      select all courses
-// POST     select one course 
-// DELETE   delete a course by id
 
 
 export async function PUT(request : Request) {
