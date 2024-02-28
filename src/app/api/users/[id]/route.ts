@@ -11,9 +11,10 @@ export async function PUT(
     name,
     email,
     password,
-  }: { name: string; email: string; password: string } = await request.json();
+    profile
+  }: { name: string; email: string; password: string , profile:string} = await request.json();
   await connectDB();
-  const res = await Users.findByIdAndUpdate(id, { name, email, password });
+  const res = await Users.findByIdAndUpdate(id, { name, email, password , profile });
   return NextResponse.json(res);
 }
 

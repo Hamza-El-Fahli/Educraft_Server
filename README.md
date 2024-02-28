@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# API guide:
 
-## Getting Started
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Users API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**PUT /api/users**
+* Add one user
+* Request body: `{name, email, password}`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**GET /api/users**
+* Select all users
+* Request body: `null`
 
-## Learn More
+**POST /api/users**
+* Select one user (check if email and password are correct)
+* Request body: `{email, password}`
 
-To learn more about Next.js, take a look at the following resources:
+**DELETE /api/users/{id}**
+* Delete a user by id
+* Request body: `null`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**PUT  /api/users/[id]**
+* Update a user by id
+* Request body : `{name , email , password }`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Courses API
+
+**POST /api/courses**
+* Add one course
+* Request body: `{course_name , description , instructor}`
+
+**GET /api/courses**
+* Select all courses
+* Request body: `null`
+
+
+**DELETE /api/courses/{id}**
+* Delete a course by id
+* Request body: `null`
+
+
+**PUT  /api/courses/[id]**
+* Update a course by id
+* Request body : `{ new_course_name,new_description,new_instructor}`
+
+
+
+
+
+
+## Modules API
+
+**POST /api/modules**
+* Add one module
+* Request body: `{ corse_id , title, description,  order}`
+
+**GET /api/modules**
+* Select all modules 
+* Request body: `null`
+
+**GET /api/modules?id=course_id**
+* Select all modules and filter by course_id 
+* Request body: `null`
+
+
+**DELETE /api/modules/{id}**
+* Delete a module by id
+* Request body: `null`
+
+
+**PUT  /api/modules/[id]**
+* Update a course by id
+* Request body : `{new_title , new_desciption , new_order} `
+
+
+
+
+
+## Chapters API
+
+**POST /api/chapters**
+* Add one chapter
+* Request body: `{ module_id , title, description}`
+
+**GET /api/chapters**
+* Select all chapters 
+* Request body: `null`
+
+**GET /api/chapters?id=course_id**
+* Select all chapters and filter by module_id
+* Request body: `null`
