@@ -7,9 +7,9 @@ interface ICourses extends Document {
 }
 
 const CoursesSchema: Schema = new Schema({
-    course_name: { type: String },
-    description: { type: String },
-    instructor: { type: String },
+    course_name: { type: String, required: true },
+    description: { type: String, required: true },
+    instructor: { type: String, required: true },
 }, {
     timestamps: true
 });
