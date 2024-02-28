@@ -14,3 +14,4 @@ const ChaptersScheme: Schema = new Schema({
 
 
 const Chapters = mongoose.models.Chapters as Model<IChapter> || mongoose.model<IChapter>('Chapters',ChaptersScheme)
+export default Chapters
