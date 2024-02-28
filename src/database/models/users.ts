@@ -11,7 +11,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     profile: Profile;
-}
+} 
 
 const UserSchema: Schema = new Schema({
     name: { type: String, required: true },
