@@ -18,14 +18,16 @@ export async function PUT(
 }
 
 // Delete user 
-export async function DELETE(request:NextRequest,
-  { params }: { params: { id: string } }){
-  const {id} = params
+export async function DELETE(request: NextRequest,
+  { params }: { params: { id: string } }) {
+  const { id } = params
   await connectDB()
   const res = await Users.findByIdAndDelete(id)
-  if(res != null){
-  return NextResponse.json({message : "User deleted"})}
-  else{
-      return NextResponse.json({message : "user Not found"})}
-  
+  if (res != null) {
+    return NextResponse.json({ message: "User deleted" })
+  }
+  else {
+    return NextResponse.json({ message: "user Not found" })
+  }
+
 }
