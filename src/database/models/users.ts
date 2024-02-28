@@ -15,11 +15,12 @@ interface IUser extends Document {
 
 const UserSchema: Schema = new Schema({
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profile: { type: String, enum: Object.values(Profile), default: Profile.User }
 }, {
     timestamps: true
 });
+
 const Users: Model<IUser> = mongoose.models.Users as Model<IUser> || mongoose.model<IUser>('Users', UserSchema);
 export default Users;
