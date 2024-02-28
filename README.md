@@ -31,7 +31,7 @@
 
 ## Courses API
 
-**PUT /api/courses**
+**POST /api/courses**
 * Add one course
 * Request body: `{course_name , description , instructor}`
 
@@ -45,6 +45,35 @@
 * Request body: `null`
 
 
-**POST  /api/courses/[id]**
+**PUT  /api/courses/[id]**
 * Update a course by id
 * Request body : `{ new_course_name,new_description,new_instructor}`
+
+
+
+
+
+
+## Modules API
+
+**POST /api/modules**
+* Add one module
+* Request body: `{ corse_id , title, description,  order}`
+
+**GET /api/modules**
+* Select all modules , or filter by course is 
+* Request body: `null`
+
+**GET /api/modules?id=course_id**
+* Select all modules and filter by course is 
+* Request body: `null`
+
+
+**DELETE /api/modules/{id}**
+* Delete a module by id
+* Request body: `null`
+
+
+**PUT  /api/modules/[id]**
+* Update a course by id
+* Request body : `{new_title , new_desciption , new_order} `

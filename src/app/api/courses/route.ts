@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 
 
 
-// PUT      add one course
-export async function PUT(request : Request) {
+// POST      add one course
+export async function POST(request : Request) {
     const {course_name, description, instructor} = await request.json()
     try {
         await connectDB()

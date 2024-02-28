@@ -2,7 +2,7 @@ import connectDB from "@/database/lib/mongodb";
 import _Modules from "@/database/models/modules";
 import { NextRequest, NextResponse } from "next/server";
 
-// DELETE delete module by its id
+// DELETE delete module by id
 export async function DELETE(request:NextRequest,{params}:{params:{id : string}}){
     const {id} = params
     try {
