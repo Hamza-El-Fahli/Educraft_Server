@@ -61,11 +61,11 @@
 * Request body: `{ corse_id , title, description,  order}`
 
 **GET /api/modules**
-* Select all modules , or filter by course is 
+* Select all modules 
 * Request body: `null`
 
 **GET /api/modules?id=course_id**
-* Select all modules and filter by course is 
+* Select all modules and filter by course_id 
 * Request body: `null`
 
 
@@ -77,3 +77,21 @@
 **PUT  /api/modules/[id]**
 * Update a course by id
 * Request body : `{new_title , new_desciption , new_order} `
+
+
+
+
+
+## Chapters API
+
+**POST /api/chapters**
+* Add one chapter
+* Request body: `{ module_id , title, description}`
+
+**GET /api/chapters**
+* Select all chapters 
+* Request body: `null`
+
+**GET /api/chapters?id=course_id**
+* Select all chapters and filter by module_id
+* Request body: `null`
