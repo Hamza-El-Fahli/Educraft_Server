@@ -10,8 +10,8 @@ export async function POST(request : Request) {
     const {course_name, description, instructor} = await request.json()
     try {
         await connectDB()
-    await Courses.create({course_name , description , instructor})
-    return NextResponse.json({message:"Course created successfuly"},{status : 201})
+    const res = await Courses.create({course_name , description , instructor})
+    return NextResponse.json({message:"Course created successfuly", id : res._id},{status : 201})
     } catch (error) {
         
         return NextResponse.json({error:"No courses created" , contexst : error})
