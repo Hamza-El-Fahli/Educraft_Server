@@ -75,7 +75,7 @@
 
 
 **PUT  /api/modules/[id]**
-* Update a course by id
+* Update a module by id
 * Request body : `{new_title , new_desciption , new_order} `
 
 
@@ -95,3 +95,12 @@
 **GET /api/chapters?id=course_id**
 * Select all chapters and filter by module_id
 * Request body: `null`
+
+**DELETE /api/chapters/{id}**
+* Delete a chapter by id
+* Request body: `null`
+
+
+**PUT  /api/chapters/[id]**
+* Update a chapter by id
+* Request body : `{new_title , new_module_id , new_description} `
