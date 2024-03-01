@@ -15,7 +15,13 @@ export async function PUT(
   }: { name: string; email: string; password: string , profile:string} = await request.json();
   await connectDB();
   const res = await Users.findByIdAndUpdate(id, { name, email, password , profile });
-  return NextResponse.json(res);
+
+  if (res != null) {
+    return NextResponse.json({ message: "User Updated successfully" })
+  }
+  else {
+    return NextResponse.json({ message: "no users updated" })
+  }
 }
 
 // Delete user 

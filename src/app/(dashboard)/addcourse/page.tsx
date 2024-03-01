@@ -71,27 +71,31 @@ export default function AddCourse() {
         {/* Table to show courses */}
         <div className="border p-5 bg-secondary row-span-8 overflow-scroll overflow-x-hidden">
           <table className="w-full">
-            <tr>
-              <th>ID</th>
-              <th>Course</th>
-              <th>Modules</th>
-              <th>Actions</th>
-            </tr>
-            {Courses.map((course) => (
+            <thead>
               <tr>
-                <td> {course.id} </td>
-                <td>{course.name}</td>
-                <td>0</td>
-                <td className="p-1 flex justify-around">
-                  <button className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold ">
-                    Modify Course
-                  </button>
-                  <button className="p-2 text-red-500 border border-red-500 rounded-full font-bold ">
-                    Delete Course
-                  </button>
-                </td>
+                <th>ID</th>
+                <th>Course</th>
+                <th>Modules</th>
+                <th>Actions</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {Courses.map((course) => (
+                <tr>
+                  <td> {course.id} </td>
+                  <td>{course.name}</td>
+                  <td>0</td>
+                  <td className="p-1 flex justify-around">
+                    <button className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold ">
+                      Modify Course
+                    </button>
+                    <button className="p-2 text-red-500 border border-red-500 rounded-full font-bold ">
+                      Delete Course
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
         {/* Table to show courses */}
