@@ -19,7 +19,7 @@ const config: Config = {
         third: "#28598B",
         firstBlue: "#2F80ED",
       },
-    },
+    },  
   },
   plugins: [],
 };

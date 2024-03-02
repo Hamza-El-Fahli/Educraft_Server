@@ -8,14 +8,12 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     try {
         const { chapter_id, question, correct_answer, options }:
-         { chapter_id: string, question: string, correct_answer: number, options: string[] } = await request.json()
+            { chapter_id: string, question: string, correct_answer: number, options: string[] } = await request.json()
         await connectDB()
         const res = await Quizes.create({ chapter_id, question, correct_answer, options })
-        console.log(res.id)
-        return NextResponse.json({message:'quiz created successfully' ,id : res.id})
-
+        return NextResponse.json({ message: 'Quiz Created successfully', id: res.id })
     } catch (error) {
-        return NextResponse.json({message:'No Quizes were created' ,context : error})
+        return NextResponse.json({ message: 'No Quizes were created', context: error })
 
     }
 
@@ -26,7 +24,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         await connectDB();
-        const chapter_id =  request.nextUrl.searchParams.get('chapter_id');
+        const chapter_id = request.nextUrl.searchParams.get('chapter_id');
         console.log(chapter_id)
         let filter: any = {};
         if (chapter_id) {

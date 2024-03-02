@@ -1,22 +1,54 @@
 "use client";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+interface User {
+  _id: string;
+  name: string;
+}
+
+export default function Login(): JSX.Element {
   const router = useRouter();
-  const handleClick = (e: any) => {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    router.push("/dashboard");
+    const target = e.target as typeof e.target & {
+      username: { value: string };
+      password: { value: string };
+    };
+
+    const name = target.username.value;
+    const password = target.password.value;
+
+    try {
+      const checkUserCall = await axios.post<User>(`http://localhost:3000/api/users`, { name, password });
+      const checkUser = checkUserCall.data;
+
+      if (checkUser.hasOwnProperty('_id')) {
+        window.alert(`user ${checkUser.name} has id of ${checkUser._id}`);
+        router.push("/dashboard");
+      } else {
+        document.getElementById("loginError")?.classList.remove('hidden');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      // Handle error, show error message, etc.
+    }
   };
+
+
   return (
-    <div className="bg-gray-200 flex justify-center items-center  h-screen">
-      <div className=" backdrop-filter  bg-white bg-opacity-30 shadow-md rounded-lg px-10 py-8 mb-4 flex flex-col w-96">
-        <h1 className="text-center text-2xl font-bold text-blue-500 mb-6">
+    <div className="bg-primary flex justify-center items-center  h-screen">
+      <form className=" backdrop-filter  bg-third bg-opacity-30 shadow-md rounded-lg px-10 py-8 mb-4 flex flex-col w-96"
+      onSubmit={handleSubmit}
+      >
+        <h1 className="text-center text-2xl font-bold text-firstBlue mb-6">
           Login
         </h1>
-        <div className="mb-4">
+        <div className="mb-4"> 
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-400 text-sm font-bold mb-2"
             htmlFor="username"
           >
             Username
@@ -24,13 +56,15 @@ export default function Login() {
           <input
             className="bg-opacity-20 backdrop-filter  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
+            name="username"
             type="text"
             placeholder="Username"
+            required
           />
         </div>
         <div className="mb-6">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-400 text-sm font-bold mb-2"
             htmlFor="password"
           >
             Password
@@ -38,24 +72,26 @@ export default function Login() {
           <input
             className="bg-opacity-20 backdrop-filter  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
+            name="password"
             type="password"
             placeholder="Password"
+            required
           />
         </div>
+        <div className="text-center text-red-300 hidden" id="loginError" style={{marginTop : "-24px"}}>Impossible de trouver votre compte</div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="button"
-          onClick={handleClick}
+          type="submit"
         >
           Sign In
         </button>
-        <p className="mt-4 text-center">
+        <p className="mt-4 text-center text-gray-500  cursor-default">
           Don't have an account?{" "}
-          <Link href="/signup" className="text-blue-500 hover:underline">
+          <Link href="/signup" className="text-third font-bold hover:underline cursor-pointer">
             Sign up
           </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

@@ -36,10 +36,14 @@ export async function GET(){
 export async function POST(request: NextRequest) {
     try {
       const data = await request.json();
-      const { email, password } = data;
+      const { email, password , name } = data;
       
       await connectDB();
-      const user = await Users.findOne({ email, password });
+      let user:any ;
+      if(name)
+         user = await Users.findOne({  password , name  });
+      else
+         user = await Users.findOne({ email, password   });
   
       if (user) {
         return NextResponse.json(user);
