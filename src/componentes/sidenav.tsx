@@ -44,7 +44,7 @@ export default function SideNav({ activeView } : {activeView:string}) {
   ];
 
   return (
-    <nav className=" h-full w-full  col-span-1 row-span-8 p-3">
+    <nav className=" h-full w-full  col-span-2 row-span-8 p-3">
       <ul className="w-full p-5 flex flex-col bg-secondary rounded-md">
         {/* ▼ List All Nav with acriveView as the crrent selected nac ▼ */}
         {navs.map((nav, index) =>

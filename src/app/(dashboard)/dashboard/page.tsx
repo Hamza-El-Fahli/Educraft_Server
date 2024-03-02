@@ -3,10 +3,10 @@ import SideNav from "@/componentes/sidenav";
 import HeaderNav from "@/componentes/HeaderNav";
 export default function Dashboard() {
   return (
-    <div className=" grid grid-cols-5 grid-rows-12 h-screen text-white  gap-2 bg-primary">
+    <div className=" grid grid-cols-10 grid-rows-12 h-screen text-white  gap-2 bg-primary">
       <HeaderNav activeView="dashboard" />
       <SideNav activeView="dashboard" />
-      <main className=" h-full w-full col-span-4 row-span-11 grid grid-cols-5 grid-rows-2 gap-3 p-3">
+      <main className=" h-full w-full col-span-8 row-span-11 grid grid-cols-5 grid-rows-2 gap-3 p-3">
         <div className="col-span-2 h-full w-full bg-third col-start-5 row-start-1">
           ADD
         </div>
