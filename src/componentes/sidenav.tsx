@@ -44,15 +44,15 @@ export default function SideNav({ activeView } : {activeView:string}) {
   ];
 
   return (
-    <nav className=" h-full w-full  col-span-2 row-span-8 p-3">
-      <ul className="w-full p-5 flex flex-col bg-secondary rounded-md">
+    <nav className="SideNav">
+      <ul >
         {/* ▼ List All Nav with acriveView as the crrent selected nac ▼ */}
         {navs.map((nav, index) =>
           nav.name == activeView ? (
             <li
               key={index}
               dangerouslySetInnerHTML={{ __html: nav.logo + nav.title }}
-              className=" cursor-pointer text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5"
+              className="cursor-pointer text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5"
             />
           ) : (
             <li key={index} className=" cursor-pointer text-center rounded-md py-3">{nav.title}</li>

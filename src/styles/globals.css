@@ -6,3 +6,41 @@ th,
 td {
   @apply px-5 border py-3;
 }
+.dashboardContainer {
+  @apply grid grid-cols-5  grid-rows-12 h-screen text-white  gap-2 bg-primary;
+}
+.dashboardCards {
+  @apply h-full w-full col-span-4 row-span-11 grid grid-cols-4  gap-3 p-3;
+  grid-template-rows: 40px auto;
+}
+.dashboardCards_add {
+  @apply col-span-4 bg-third h-10 w-32 ml-auto rounded-xl flex items-center justify-center gap-5  ;
+}
+.headerNav {
+  @apply mx-auto w-full h-12 col-span-5 bg-secondary  grid grid-cols-5 gap-4;
+}
+.headerNav_user {
+  @apply col-span-1 flex flex-row items-center justify-between gap-3 px-3;
+}
+.headerNav_user *:nth-child(2) {
+  flex: auto;
+}
+.headerNav_user *:nth-child(3) {
+  font-size: 10px
+}
+.headerNav_search {
+  @apply col-span-3;
+}
+.headerNav_notification {
+  @apply col-span-1 overflow-hidden;
+}
+
+.CRContainer {
+  @apply h-full w-full row-span-3 flex items-end justify-center ml-1;
+}
+.SideNav{
+  @apply  h-full w-full  row-span-8 p-3 
+}
+.SideNav ul {
+  @apply w-full p-5 flex gap-3 flex-col bg-secondary rounded-md
+}

@@ -1,10 +1,23 @@
+import Image from 'next/image';
+
+
 export default function HeaderNav({ activeView } : {activeView:string}) {
     
     return (
-        <nav className="mx-auto h-full bg-secondary col-span-10 grid grid-cols-5 gap-4">
-  <div className="col-span-1">User</div>
-  <div className="col-span-3">Search</div>
-  <div className="col-span-1 overflow-hidden">n</div>
+        <nav className="headerNav">
+  <div className="headerNav_user" >
+    <Image
+        src="/niggerman.svg"
+        alt="My image description"
+        width={35} // Optional: Set width
+        height={35} // Optional: Set height
+    
+        />
+      <span >Mr 3azwa</span>
+      <span  >▼</span>
+      </div>
+  <div className="headerNav_search">Search</div>
+  <div className="headerNav_notification">n</div>
 </nav>
     );
   }
