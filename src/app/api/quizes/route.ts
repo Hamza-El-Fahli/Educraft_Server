@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
          { chapter_id: string, question: string, correct_answer: number, options: string[] } = await request.json()
         await connectDB()
         const res = await Quizes.create({ chapter_id, question, correct_answer, options })
+        console.log(res.id)
         return NextResponse.json({message:'quiz created successfully' ,id : res.id})
 
     } catch (error) {
