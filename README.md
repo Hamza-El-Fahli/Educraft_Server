@@ -5,7 +5,7 @@
 **PUT /api/users**
 
 - Add one user
-- Request body: `{name, email, password}`
+- Request body: ` {name , email , password , annee , filiere }`
 
 **GET /api/users**
 

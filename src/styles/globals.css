@@ -48,6 +48,9 @@ td {
 .theader{
   @apply sticky top-0 bg-primary ;
 }
+tr{
+  @apply border border-x
+}
 
 ::-webkit-scrollbar {
   width: 5px;

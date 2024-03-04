@@ -5,14 +5,17 @@ import HeaderNav from "@/componentes/HeaderNav";
 import SideNav from "@/componentes/sidenav";
 import Modal from "@/componentes/userModal";
 import { useState } from "react";
-interface Course {
+interface User {
   id: number;
   name: string;
-  class : string;
+  filiere : string;
   annee:number;
   profile:string;
   email : string;
 }
+ 
+
+
 export default function AddUsers() {
     const [isOpen, setIsOpen] = useState(false);
 
@@ -23,13 +26,38 @@ export default function AddUsers() {
     const closeModal = () => {
         setIsOpen(false);
     };
-  const [Users, setUsers] = useState<Course[]>([{id:4,name:'hamza',class:'TSSRI',annee:2,profile:'prof' , email:"hamzaelfahli4@gmail.com"}]);
+  const [Users, setUsers] = useState<User[]>([{id:4,name:'hamza',filiere:'TSSRI',annee:2,profile:'prof' , email:"hamzaelfahli4@gmail.com"}]);
   const handleClick = (e: any) => {
     const frm = e.target
     e.preventDefault();
-    const tmp = { id: Users.length, name: frm.userName.value , class:frm.class.value , annee:frm.annee.value,profile:frm.profile.value,email:frm.email.value};
+    const tmp = { id: Users.length, name: frm.userName.value , filiere:frm.filiere.value , annee:frm.annee.value,profile:frm.profile.value,email:frm.email.value};
     setUsers([...Users, tmp]);
+    closeModal()
   };
+
+async function modifyUser(e:any){
+    const tds = e.target.parentNode.parentNode.querySelectorAll('td')
+   await openModal()
+   
+    const form:any =document.querySelector('form')
+       const inputs = form?.querySelectorAll('input')
+    for (let td = 1 ; td<=inputs.length ; td++) {
+        inputs[td-1].type = 'text';
+        inputs[td-1].value = tds[td].innerText;
+    // tds[td].innerText = '';
+    // tds[td].appendChild(input);
+}
+form.addEventListener('submit',(e:any)=>{
+    e.preventDefault()
+    for (let td = 1 ; td<=inputs.length ; td++) {
+        tds[td].innerText = inputs[td-1].value;
+    }
+    closeModal()
+})
+}
+
+
+
   return (
     <div className="dashboardContainer">
 
@@ -38,11 +66,11 @@ export default function AddUsers() {
                 <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
                 <p className="mb-4 text-blue-400">Fill the form</p>
                 <form onSubmit={(e)=>handleClick(e)} className="flex flex-col gap-3 w-80 ">
-                    <input className="text-primary h-12 border p-3" type="text" placeholder="userName" name="userName" />
-                    <input className="text-primary h-12 border p-3" type="text" placeholder="Class" name="class" />
-                    <input className="text-primary h-12 border p-3" type="number" name="annee" placeholder="Annee" />
-                    <input className="text-primary h-12 border p-3" type="text" name="profile" placeholder="Profile" />
-                    <input className="text-primary h-12 border p-3" type="text" name="email" placeholder="Email" />
+                    <input required className="text-primary h-12 border p-3" type="text" placeholder="userName" name="userName" />
+                    <input required className="text-primary h-12 border p-3" type="text" placeholder="filiere" name="filiere" />
+                    <input required className="text-primary h-12 border p-3" type="number" name="annee" placeholder="Annee" />
+                    <input required className="text-primary h-12 border p-3" type="text" name="profile" placeholder="Profile" />
+                    <input required className="text-primary h-12 border p-3" type="text" name="email" placeholder="Email" />
                     <button type="submit" className="text-primary h-12 border p-3">Save</button>
                 </form>
             </Modal>
@@ -83,13 +111,13 @@ export default function AddUsers() {
         {/* Form to add course */}
 
         {/* Table to show courses */}
-        <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-hidden relative">
+        <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
           <table className="w-full ">
             <thead className="theader" >
               <tr>
                 <th>ID</th>
                 <th>UserName</th>
-                <th>Class</th>
+                <th>filiere</th>
                 <th>Annee</th>
                 <th>Profile</th>
                 <th>Email</th>
@@ -101,12 +129,12 @@ export default function AddUsers() {
                 <tr>
                   <td> {user.id} </td>
                   <td>{user.name}</td>
-                  <td>{user.class}</td>
+                  <td>{user.filiere}</td>
                   <td>{user.annee}</td>
                   <td>{user.profile}</td>
                   <td>{user.email}</td>
                   <td className="p-1 flex justify-around">
-                    <button className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold ">
+                    <button onClick={e=>modifyUser(e)} className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold ">
                       Modify Course
                     </button>
                     <button className="p-2 text-red-500 border border-red-500 rounded-full font-bold ">

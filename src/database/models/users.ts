@@ -11,13 +11,17 @@ interface IUser extends Document {
     email: string;
     password: string;
     profile: Profile;
+    annee: Profile;
+    filiere: Profile;
 } 
 
 const UserSchema: Schema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    profile: { type: String, enum: Object.values(Profile), default: Profile.User }
+    profile: { type: String, enum: Object.values(Profile), default: Profile.User },
+    annee: { type: Number, required: false },
+    filiere: { type: String, required: false },
 }, {
     timestamps: true
 });
