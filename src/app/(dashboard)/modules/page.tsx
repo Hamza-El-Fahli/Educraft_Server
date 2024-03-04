@@ -6,7 +6,7 @@ import SideNav from "@/componentes/sidenav";
 import Modal from "@/componentes/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-const URL_Server = `http://localhost:3000/api/users`;
+const URL_Server = `http://localhost:3000/api/modules`;
 interface User {
   _id: number;
   name: string;
@@ -17,7 +17,7 @@ interface User {
   password: string;
 }
 
-export default function Users() {
+export default function Modules() {
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   var AddTrueORmodifyFalse = true 
