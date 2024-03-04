@@ -42,7 +42,7 @@ export default function Courses() {
   
   
   const handleSubmit = (e: any) => {
-    if(AddTrueORmodifyFalse) return
+    if(!AddTrueORmodifyFalse) return
     const frm = e.target;
     e.preventDefault();
     const tmp = {
@@ -50,6 +50,7 @@ export default function Courses() {
       description: frm.description.value,
       instructor: frm.instructor.value
     };
+    console.log(tmp)
     axios.post(`${URL_Server}`, tmp).then(
       (res) => {
         setCourses([...Courses,{_id : res.data._id, ...tmp}]);
@@ -74,9 +75,10 @@ export default function Courses() {
       // tds[td].innerText = '';
       // tds[td].appendChild(input);
     }
+
     form.addEventListener("submit", (e: any) => {
+
       e.preventDefault();
-      console.log(tds)
       axios.put(`${URL_Server}/${tds[0].textContent.trim()}`, {
         course_name: inputs[0].value,
         description: inputs[1].value,
@@ -115,7 +117,7 @@ export default function Courses() {
         <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
         <form
-          onSubmit={(e) => handleSubmit(e)}
+          onSubmit={(e) => {e.preventDefault();handleSubmit(e)}}
           className="flex flex-col gap-3 w-80 "
         >
           <input

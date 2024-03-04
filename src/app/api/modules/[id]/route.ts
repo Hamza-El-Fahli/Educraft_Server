@@ -19,9 +19,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     try {
         await connectDB()
         const { id } = params
-        const { new_title, new_desciption, new_order } = await request.json()
+        const { title, description, order } = await request.json()
 
-        await _Modules.findByIdAndUpdate(id, { title: new_title, description: new_desciption, order: new_order })
+        await _Modules.findByIdAndUpdate(id, { title, description, order })
         return NextResponse.json({ message: "Module updated successfuly" })
 
 
