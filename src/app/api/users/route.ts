@@ -14,8 +14,8 @@ export async function PUT(request:Request){
     const {name , email , password , annee , filiere } : {name:string,email:string,password:string,annee:number,filiere:string} = await request.json()
     try {
         await connectDB()
-        await Users.create( {name , email , password , annee , filiere })
-        return NextResponse.json({message : 'user created'},{status : 201})
+        const res = await Users.create( {name , email , password , annee , filiere })
+        return NextResponse.json({message : 'user created',_id:res._id},{status : 201})
     } catch (error) {
         console.log(`Error at user creating : ${error}`)
     }
