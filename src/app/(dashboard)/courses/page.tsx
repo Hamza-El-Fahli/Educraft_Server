@@ -166,9 +166,9 @@ export default function Courses() {
         </form>
       </Modal>
       {/*  */}
-      <HeaderNav activeView="users management" />
+      <HeaderNav activeView="courses management" />
       {/* Side nav */}
-      <SideNav activeView="users management" />
+      <SideNav activeView="courses management" />
       {/* Side nav */}
       {/* Main View */}
       {/* Form to add course */}
