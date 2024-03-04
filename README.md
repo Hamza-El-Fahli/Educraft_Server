@@ -5,7 +5,7 @@
 **PUT /api/users**
 
 - Add one user
-- Request body: ` {name , email , password , annee , filiere }`
+- Request body: `{name , email , password , annee , filiere , profile }`
 
 **GET /api/users**
 
@@ -25,7 +25,7 @@
 **PUT /api/users/[id]**
 
 - Update a user by id
-- Request body : `{name , email , password }`
+- Request body : `{name , email , password , annee , filiere , profile }`
 
 ## Courses API
 

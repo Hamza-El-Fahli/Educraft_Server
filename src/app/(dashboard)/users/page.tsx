@@ -20,7 +20,9 @@ interface User {
 export default function AddUsers() {
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
-
+  var AddTrueORmodifyFalse = true 
+  // temporary fixing a bug
+  // when modify the requent send to AddUser first then modify
   const openModal = () => {
     setIsOpen(true);
   };
@@ -40,7 +42,10 @@ export default function AddUsers() {
       }
     );
   }, []);
+  
+  
   const handleSubmit = (e: any) => {
+    if(AddTrueORmodifyFalse) return
     const frm = e.target;
     e.preventDefault();
     const tmp = {
@@ -64,6 +69,7 @@ export default function AddUsers() {
   };
 
   async function modifyUser(e: any) {
+    AddTrueORmodifyFalse = false
     const tds = e.target.parentNode.parentNode.querySelectorAll("td");
     await openModal();
 
@@ -81,11 +87,26 @@ export default function AddUsers() {
     }
     form.addEventListener("submit", (e: any) => {
       e.preventDefault();
-      for (let td = 1; td <= inputs.length; td++) {
-        tds[td].innerText = inputs[td - 1].value;
-      }
-      closeModal();
+      console.log(tds)
+      axios.put(`${URL_Server}/users/${tds[0].textContent.trim()}`, {
+        name: inputs[0].value,
+        filiere: inputs[1].value,
+        annee: inputs[2].value,
+        profile: inputs[3].value,
+        email: inputs[4].value,
+        password: inputs[5].value
+    }).then((res) => {
+        for (let td = 0; td < inputs.length; td++) {
+            tds[td + 1].innerText = inputs[td].value;
+        }
+        closeModal();
+    }).catch((error) => {
+        alert('Error updating user');
+        closeModal();
     });
+    
+    });
+    AddTrueORmodifyFalse = true
   }
 
   async function removeUser(e: any) {
@@ -153,7 +174,8 @@ export default function AddUsers() {
             name="password"
             placeholder="password"
           />
-          <button type="submit" className="text-primary h-12 border p-3">
+          <button         
+ type="submit" className="text-primary h-12 border p-3">
             Save
           </button>
         </form>
@@ -164,26 +186,8 @@ export default function AddUsers() {
       <SideNav activeView="users management" />
       {/* Side nav */}
       {/* Main View */}
-      {/* <main className=" h-full w-full col-span-10 row-span-11 grid grid-rows-12 gap-3"> */}
       {/* Form to add course */}
-      {/* <form className="flex flex-col w-1/2  gap-2  p-5 bg-secondary row-span-4">
-    <h1>Add New Course</h1>
-    <label htmlFor="">Course name :</label>
-    <input
-      value={inpuCourse}
-      onChange={handleChange}
-      className="rounded-full text-gray-500 bg-inherit border-4 p-1 px-4 border-primary outline-none font-bold"
-      type="text"
-    />
-    <button
-      onClick={(e: any) => {
-        handleClick(e);
-      }}
-      className="p-2 text-third border border-third rounded-full font-bold "
-    >
-      Add course
-    </button>
-  </form> */}
+     
       <div onClick={(e) => openModal()} className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
@@ -198,7 +202,52 @@ export default function AddUsers() {
       {/* Form to add course */}
 
       {/* Table to show courses */}
-      <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
+      
+         { Loading ? ( <>
+          <div id="loading">
+      <div id="load">
+        <div>G</div>
+        <div>N</div>
+        <div>I</div>
+        <div>D</div>
+        <div>A</div>
+        <div>O</div>
+        <div>L</div>
+      </div>
+    </div>
+    <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
+    <table className="w-full ">
+      <thead className="theader">
+        <tr>
+          <th>ID</th>
+          <th>UserName</th>
+          <th>filiere</th>
+          <th>Annee</th>
+          <th>Profile</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr className="hidden">
+
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        </tr>
+            </tbody>
+        </table>
+        </div>
+
+        </>
+  ) : (
+    <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
         <table className="w-full ">
           <thead className="theader">
             <tr>
@@ -213,20 +262,7 @@ export default function AddUsers() {
             </tr>
           </thead>
           <tbody>
-         { Loading ? (
-    <div id="loading">
-      <div id="load">
-        <div>G</div>
-        <div>N</div>
-        <div>I</div>
-        <div>D</div>
-        <div>A</div>
-        <div>O</div>
-        <div>L</div>
-      </div>
-    </div>
-  ) : (
-            Users.map((user) => (
+               { Users.map((user) => (
               <tr>
                 <td>{user._id}</td>
                 <td>{user.name}</td>
@@ -250,13 +286,12 @@ export default function AddUsers() {
                   </button>
                 </td>
               </tr>
-            ))
-            )}
+        ))}
             </tbody>
         </table>
       </div>
+            )}
       {/* Table to show courses */}
-      {/* </main> */}
       {/* Main View */}
       {/* Footer View */}
       <Copyright />
