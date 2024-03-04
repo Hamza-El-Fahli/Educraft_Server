@@ -35,7 +35,7 @@ export default function AddUsers() {
     closeModal()
   };
 
-async function modifyUser(e:any){
+  async function modifyUser(e:any){
     const tds = e.target.parentNode.parentNode.querySelectorAll('td')
    await openModal()
    
@@ -54,6 +54,13 @@ form.addEventListener('submit',(e:any)=>{
     }
     closeModal()
 })
+}
+
+
+async function removeUser(e:any){
+   const id = (e.target.parentNode.parentNode.firstChild.textContent)
+    const newState = Users.filter(user=>user.id != id)
+    setUsers(newState)
 }
 
 
@@ -137,7 +144,7 @@ form.addEventListener('submit',(e:any)=>{
                     <button onClick={e=>modifyUser(e)} className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold ">
                       Modify Course
                     </button>
-                    <button className="p-2 text-red-500 border border-red-500 rounded-full font-bold ">
+                    <button onClick={e=>removeUser(e)} className="p-2 text-red-500 border border-red-500 rounded-full font-bold ">
                       Delete Course
                     </button>
                   </td>
