@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/navigation";
 
 export default function SideNav({ activeView } : {activeView:string}) {
@@ -61,11 +63,11 @@ link : "/dashboard",
             <li
               key={index}
               dangerouslySetInnerHTML={{ __html: nav.logo + nav.title }}
-              className="cursor-pointer text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5"
+              className="Sidenav_selected"
             />
           ) : (
             <li             onClick={()=>{router.push(nav.link)}}
-            key={index} className=" cursor-pointer text-center rounded-md py-3">{nav.title}</li>
+            key={index} className="Sidenav_unselected">{nav.title}</li>
           )
         )}
                 {/* ▲ List All Nav with acriveView as the crrent selected nac ▲ */}
