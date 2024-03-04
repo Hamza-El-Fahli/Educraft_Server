@@ -1,5 +1,8 @@
 "use client";
 
+import Copyright from "@/componentes/CopyRight";
+import HeaderNav from "@/componentes/HeaderNav";
+import SideNav from "@/componentes/sidenav";
 import { useState } from "react";
 
 interface Course {
@@ -19,37 +22,15 @@ export default function AddCourse() {
     setinpuCourse(e.target.value);
   };
   return (
-    <div className=" grid grid-cols-12 grid-rows-12 h-screen text-white  gap-2 bg-primary">
-      <div className=" h-full w-full bg-secondary col-span-12 grid grid-cols-12 ">
-        <div className="col-span-2">User</div>
-        <div className="col-span-9">Search</div>
-        <div className="overflow-hidden">n</div>
-      </div>
+    <div className="dashboardContainer">
+      <HeaderNav activeView="addUsers" />
       {/* Side nav */}
-      <nav className=" h-full w-full  col-span-2 row-span-8 p-3">
-        <ul className="w-full p-5 flex flex-col bg-secondary rounded-md">
-          <li className=" text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5">
-            <svg
-              width="18"
-              height="20"
-              viewBox="0 0 18 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 2H11.82C11.4 0.84 10.3 0 9 0C7.7 0 6.6 0.84 6.18 2H2C0.9 2 0 2.9 0 4V18C0 19.1 0.9 20 2 20H16C17.1 20 18 19.1 18 18V4C18 2.9 17.1 2 16 2ZM9 2C9.55 2 10 2.45 10 3C10 3.55 9.55 4 9 4C8.45 4 8 3.55 8 3C8 2.45 8.45 2 9 2ZM11 16H4V14H11V16ZM14 12H4V10H14V12ZM14 8H4V6H14V8Z"
-                fill="#2F80ED"
-              />
-            </svg>
-            Add course
-          </li>
-        </ul>
-      </nav>
+      <SideNav activeView="addUsers" />
       {/* Side nav */}
       {/* Main View */}
-      <main className=" h-full w-full col-span-10 row-span-11 grid grid-rows-12 gap-3">
+      {/* <main className=" h-full w-full col-span-10 row-span-11 grid grid-rows-12 gap-3"> */}
         {/* Form to add course */}
-        <form className="flex flex-col w-1/2  gap-2  p-5 bg-secondary row-span-4">
+        {/* <form className="flex flex-col w-1/2  gap-2  p-5 bg-secondary row-span-4">
           <h1>Add New Course</h1>
           <label htmlFor="">Course name :</label>
           <input
@@ -66,10 +47,19 @@ export default function AddCourse() {
           >
             Add course
           </button>
-        </form>
+        </form> */}
+         <div className="dashboardCards_add">
+        <svg width="15" height="15" viewBox="0 0 15 15">
+    <path d="M7.5 0L7.5 15M0 7.5L15 7.5" fill="none" stroke="#fff" stroke-width="2" />
+</svg>
+
+
+           Add Users
+        </div>
         {/* Form to add course */}
+
         {/* Table to show courses */}
-        <div className="border p-5 bg-secondary row-span-8 overflow-scroll overflow-x-hidden">
+        <div className="col-span-4 row-span-10 border m-5">
           <table className="w-full">
             <thead>
               <tr>
@@ -99,15 +89,10 @@ export default function AddCourse() {
           </table>
         </div>
         {/* Table to show courses */}
-      </main>
+      {/* </main> */}
       {/* Main View */}
       {/* Footer View */}
-      <footer className=" h-full w-full col-span-2 row-span-3 flex items-end justify-center ml-1">
-        <div className="bg-secondary w-full p-1 m-3 text-center rounded-md">
-          <div className="uppercase font-bold">Educraft</div>
-          <div className="text-gray-500 mt-3">Version : 1.0.0</div>
-        </div>
-      </footer>
+      <Copyright />
       {/* Footer View */}
     </div>
   );

@@ -14,7 +14,7 @@ td {
   grid-template-rows: 40px auto;
 }
 .dashboardCards_add {
-  @apply col-span-4 bg-third h-10 w-32 ml-auto rounded-xl flex items-center justify-center gap-5  ;
+  @apply col-span-4  mr-5 cursor-pointer bg-third h-10 w-32 ml-auto rounded-xl flex items-center justify-center gap-5  ;
 }
 .headerNav {
   @apply mx-auto w-full h-12 col-span-5 bg-secondary  grid grid-cols-5 gap-4;
@@ -43,4 +43,34 @@ td {
 }
 .SideNav ul {
   @apply w-full p-5 flex gap-3 flex-col bg-secondary rounded-md
+}
+
+.theader{
+  @apply sticky top-0 bg-primary ;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background: gray; /* Optional: Use a background color for the track */
+}
+
+/* Style the track */
+::-webkit-scrollbar-track {
+  background: rgb(33 35 59 / var(--tw-bg-opacity)); /* Optional: Use a background color for the track */
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background: blue; /* Color of the thumb */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.modal{
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75
+}
+.modal_1{
+  @apply bg-white p-8 rounded shadow-lg
+}
+.modal_btn{
+  @apply mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
 }
