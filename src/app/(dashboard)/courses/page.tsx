@@ -2,6 +2,7 @@
 
 import Copyright from "@/componentes/CopyRight";
 import HeaderNav from "@/componentes/HeaderNav";
+import ShowData from "@/componentes/ShowData";
 import SideNav from "@/componentes/sidenav";
 import Modal from "@/componentes/userModal";
 import axios from "axios";
@@ -192,7 +193,11 @@ export default function Courses() {
       {/* Form to add course */}
 
       {/* Table to show courses */}
-        <DisplayTable Loading={Loading} Courses={Courses} modifyCourse={modifyCourse} removeCourse={removeCourse} />
+        <ShowData 
+        Cols={['ID','Course','Description','Instructor','Action']}
+        Subject={'Course'}
+
+        Loading={Loading} Data={Courses} Modify={modifyCourse} Remove={removeCourse} />
       
       {/* Table to show courses */}
       {/* Main View */}

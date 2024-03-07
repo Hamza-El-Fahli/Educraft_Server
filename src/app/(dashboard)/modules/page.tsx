@@ -3,6 +3,7 @@
 
 import Copyright from "@/componentes/CopyRight";
 import HeaderNav from "@/componentes/HeaderNav";
+import ShowData from "@/componentes/ShowData";
 import SideNav from "@/componentes/sidenav";
 import Modal from "@/componentes/userModal";
 import axios from "axios";
@@ -212,86 +213,12 @@ export default function Users() {
         Add Users
       </div>
       {/* Loading spinner or table of modules */}
-      {Loading ? (
-        <>
-          <div id="loading">
-            <div id="load">
-              <div>G</div>
-              <div>N</div>
-              <div>I</div>
-              <div>D</div>
-              <div>A</div>
-              <div>O</div>
-              <div>L</div>
-            </div>
-          </div>
-          <div className=" col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
-            <table className="w-full ">
-              <thead className="theader">
-                <tr className="hidden">
-                  <th>ID</th>
-                  <th>Course ID</th>
-                  <th>Title</th>
-                  <th>Dascriptio</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="hidden">
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : (
-        <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
-          <table className="w-full ">
-            <thead className="theader">
-              <tr>
-                <th>ID</th>
-                <th>Course ID</th>
-                <th>Title</th>
-                <th>Dascription</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {/* Mapping over modules to display them in the table */}
-              {_Modules.map((module:any,index) => (
-                <tr key={index} id={`tr-${index}`}>
-                  <td>{module._id}</td>
-                  <td>{module.course_id.course_name}</td>
-                  <td>{module.title}</td>
-                  <td>{module.description}</td>
-                  {/* Buttons to modify or delete the module */}
-                  <td className="p-1 flex justify-around items-center" style={{ height: '100%' }}>
-                    <button
-                      onClick={(e) => { setAddORMod(false); modifyModule(index+'') }}
-                      className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
-                    >
-                      Modify Course
-                    </button>
-                    <button
-                      onClick={(e) => removeModule(e)}
-                      className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
-                    >
-                      Delete Course
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+            <ShowData Loading={Loading} Data={_Modules} Cols={['ID','Course','Title','Description','Action']} 
+            setAddORUpdate={setAddORMod}
+            Modify={modifyModule}
+            Remove={removeModule}
+            Subject={'Module'}
+            />  
       {/* Footer */}
       <Copyright />
     </div>
