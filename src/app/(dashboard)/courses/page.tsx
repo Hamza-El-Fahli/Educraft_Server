@@ -17,7 +17,6 @@ interface Course {
 export default function Courses() {
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
-  var AddTrueORmodifyFalse = true;
   const [AddORMod, setAddORMod] = useState(true);
   // temporary fixing a bug
   // when modify the requent send to AddUser first then modify
@@ -41,7 +40,7 @@ export default function Courses() {
     );
   }, []);
 
-  const handleSubmit = (e: any) => {
+  const AddCourse = (e: any) => {
     const frm = document.querySelector("form");
     e.preventDefault();
     const tmp = {
@@ -63,9 +62,11 @@ export default function Courses() {
   };
 
   async function modifyCourse(e: any) {
-    const tds = e.target.parentNode.parentNode.querySelectorAll("td");
+    setAddORMod(false);
+
     await openModal();
     const form: any = document.querySelector("form");
+    const tds = e.target.parentNode.parentNode.querySelectorAll("td");
     const inputs = form?.querySelectorAll("input");
     for (let td = 1; td <= inputs.length; td++) {
       inputs[td - 1].value = tds[td].innerText;
@@ -146,9 +147,8 @@ export default function Courses() {
 
           {AddORMod ? (
             <button
-              type="submit"
               onClick={(e) => {
-                handleSubmit(e);
+                AddCourse(e);
               }}
               className="text-primary h-12 border p-3"
             >
@@ -156,7 +156,6 @@ export default function Courses() {
             </button>
           ) : (
             <button
-              type="submit"
               id="send"
               className="text-primary h-12 border p-3"
             >
@@ -193,85 +192,8 @@ export default function Courses() {
       {/* Form to add course */}
 
       {/* Table to show courses */}
-
-      {Loading ? (
-        <>
-          <div id="loading">
-            <div id="load">
-              <div>G</div>
-              <div>N</div>
-              <div>I</div>
-              <div>D</div>
-              <div>A</div>
-              <div>O</div>
-              <div>L</div>
-            </div>
-          </div>
-          <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
-            <table className="w-full ">
-              <thead className="theader">
-                <tr>
-                  <th>ID</th>
-                  <th>Course Name</th>
-                  <th>Description</th>
-                  <th>Instructor ID</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="hidden">
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </>
-      ) : (
-        <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
-          <table className="w-full ">
-            <thead className="theader">
-              <tr>
-                <th>ID</th>
-                <th>Course Name</th>
-                <th>Description</th>
-                <th>Instructor ID</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Courses.map((user) => (
-                <tr>
-                  <td>{user._id}</td>
-                  <td>{user.course_name}</td>
-                  <td>{user.description}</td>
-                  <td>{user.instructor}</td>
-                  <td className="p-1 flex justify-around">
-                    <button
-                      onClick={(e) => {
-                        setAddORMod(false);
-                        modifyCourse(e);
-                      }}
-                      className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
-                    >
-                      Modify Course
-                    </button>
-                    <button
-                      onClick={(e) => removeCourse(e)}
-                      className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
-                    >
-                      Delete Course
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
+        <DisplayTable Loading={Loading} Courses={Courses} modifyCourse={modifyCourse} removeCourse={removeCourse} />
+      
       {/* Table to show courses */}
       {/* Main View */}
       {/* Footer View */}
@@ -280,3 +202,91 @@ export default function Courses() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+function DisplayTable({Loading,Courses,modifyCourse,removeCourse}:{Loading : boolean,Courses:any,modifyCourse:any,removeCourse:any}){
+  return Loading ? (
+  <>
+    <div id="loading">
+      <div id="load">
+        <div>G</div>
+        <div>N</div>
+        <div>I</div>
+        <div>D</div>
+        <div>A</div>
+        <div>O</div>
+        <div>L</div>
+      </div>
+    </div>
+    <div className="col-span-4 row-span-10 m-5 overflow-y-scroll overflow-x-scroll relative">
+      <table className="w-full ">
+        <thead className="theader">
+          <tr>
+            <th>ID</th>
+            <th>Course Name</th>
+            <th>Description</th>
+            <th>Instructor ID</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="hidden">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </>
+) : (
+  <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
+    <table className="w-full ">
+      <thead className="theader">
+        <tr>
+          <th>ID</th>
+          <th>Course Name</th>
+          <th>Description</th>
+          <th>Instructor ID</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {Courses.map((user:any) => (
+          <tr>
+            <td>{user._id}</td>
+            <td>{user.course_name}</td>
+            <td>{user.description}</td>
+            <td>{user.instructor}</td>
+            <td className="p-1 flex justify-around">
+              <button
+                onClick={(e) => {
+                  modifyCourse(e);
+                }}
+                className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
+              >
+                Modify Course
+              </button>
+              <button
+                onClick={(e) => removeCourse(e)}
+                className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
+              >
+                Delete Course
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+)}

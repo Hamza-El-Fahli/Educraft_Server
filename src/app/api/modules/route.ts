@@ -8,8 +8,8 @@ export async function POST(request: NextRequest) {
     try {
         await connectDB()
         const { course_id, title, description, order } = await request.json()
-        await _Modules.create({ course_id, title, description, order })
-        return NextResponse.json({ message: "Module created successfuly" }, { status: 201 })
+       const res =  await _Modules.create({ course_id, title, description, order })
+        return NextResponse.json({ message: "Module created successfuly" , _id : res._id }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ error: "No Modules created", contexst: error })
     }
