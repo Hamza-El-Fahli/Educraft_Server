@@ -8,7 +8,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 const URL_Server = `http://localhost:3000/api/users`;
 interface User {
-  _id: number;
+  _id: string;
   name: string;
   filiere: string;
   annee: number;
@@ -264,7 +264,7 @@ export default function Users() {
           <tbody>
                { Users.map((user) => (
               <tr>
-                <td>{user._id}</td>
+                <td>{user._id.slice(-5)}</td>
                 <td>{user.name}</td>
                 <td>{user.filiere}</td>
                 <td>{user.annee}</td>

@@ -19,21 +19,51 @@ export async function POST(request: NextRequest) {
 
 // GET      select modules with specific course_id
 // note : if no course_id, select all
+
+
+// export async function GET(request: NextRequest) {
+//     try {
+//         await connectDB();
+//         const course_id =  request.nextUrl.searchParams.get('course_id');
+//         console.log(course_id)
+//         let filter: any = {};
+//         if (course_id) {
+//             filter["course_id"] = course_id;
+//         }
+//         const res = await _Modules.find(filter);
+//         if (res.length === 0 && course_id) {
+//             return NextResponse.json({ error: "Course_id not found" }, { status: 404 });
+//         }
+//         return NextResponse.json(res);
+//     } catch (error) {
+//         return NextResponse.json({ error: "No Modules were found", context: error }, { status: 404 });
+//     }
+// }
+
 export async function GET(request: NextRequest) {
     try {
         await connectDB();
-        const course_id =  request.nextUrl.searchParams.get('course_id');
-        console.log(course_id)
+        const courseId = request.nextUrl.searchParams.get('course_id');
+        console.log(courseId);
+
         let filter: any = {};
-        if (course_id) {
-            filter["course_id"] = course_id;
+        if (courseId) {
+            filter["course_id"] = courseId;
         }
-        const res = await _Modules.find(filter);
-        if (res.length === 0 && course_id) {
-            return NextResponse.json({ error: "Course_id not found" }, { status: 404 });
+
+        const modules = await _Modules.find(filter).populate({
+            path: 'course_id',
+            model: 'Courses',
+            select: 'course_name'
+        });
+
+        if (modules.length === 0 && courseId) {
+            return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
-        return NextResponse.json(res);
+
+        return NextResponse.json(modules.sort((a,b)=>a.order - b.order));
     } catch (error) {
-        return NextResponse.json({ error: "No Modules were found", context: error }, { status: 404 });
+        console.error(error);
+        return NextResponse.json({ error: "An error occurred while fetching modules", context: error }, { status: 500 });
     }
 }
