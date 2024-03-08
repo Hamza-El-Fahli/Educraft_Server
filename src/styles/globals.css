@@ -37,7 +37,7 @@ td {
 }
 
 .CRContainer {
-  @apply h-full w-full row-span-3 flex items-end justify-center ml-1;
+  @apply h-full w-full col-start-1 row-start-10 row-span-3 flex items-end justify-center ml-1;
 }
 .SideNav{
   @apply  h-full w-full  row-span-8 p-3 

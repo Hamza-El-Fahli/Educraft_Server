@@ -1,3 +1,6 @@
+import Copyright from "@/components/CopyRight";
+import HeaderNav from "@/components/HeaderNav";
+import SideNav from "@/components/sidenav";
 import "@/styles/globals.css";
 
 export const metadata = {
@@ -8,11 +11,22 @@ export const metadata = {
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode; 
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="dashboardContainer overflow-y-scroll overflow-x-hidden">
+        <HeaderNav activeView="users management" />
+        <SideNav activeView="users management" />
+
+        {children}
+
+
+        <Copyright />
+
+        </div>
+        </body>
     </html>
   );
 }

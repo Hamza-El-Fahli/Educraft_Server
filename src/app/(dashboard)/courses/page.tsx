@@ -123,11 +123,7 @@ export default function Courses() {
   }
 
   return (
-    <div className="dashboardContainer">
-      {/* Header */}
-      <HeaderNav activeView="courses management" />
-      {/* Side nav */}
-      <SideNav activeView="courses management" />
+    <div className="col-span-4">
       {/* Main View */}
       {/* Form to add course */}
       <Modal isOpen={isOpen} onClose={closeModal}>
@@ -200,8 +196,6 @@ export default function Courses() {
         Modify={modifyCourse}
         Remove={removeCourse}
       />
-      {/* Footer */}
-      <Copyright />
     </div>
   );
 }

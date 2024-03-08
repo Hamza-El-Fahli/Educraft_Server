@@ -5,18 +5,10 @@ import Charts from "@/components/Charts";
 
 export default function Dashboard() {
   return (
-    <div className="dashboardContainer">
-      {/* Header navigation component */}
-      <HeaderNav activeView="dashboard" />
-      
-      {/* Side navigation component */}
-      <SideNav activeView="dashboard" />
-      
+    <div className="col-span-4">
       {/* Charts component */}
       <Charts />
       
-      {/* Copyright component */}
-      <Copyright />
     </div>
   );
 }

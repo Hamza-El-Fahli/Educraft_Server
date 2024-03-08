@@ -1,6 +1,8 @@
 export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,Modify,Remove}:any){
-    return Loading ? (
-        <>
+    return (
+                <div className=" border m-5   relative">
+          {Loading ? (
+            <>
           <div id="loading">
             <div id="load">
               <div>G</div>
@@ -12,7 +14,7 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               <div>L</div>
             </div>
           </div>
-          <div className=" col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
+          <div className=" col-span-4 row-span-12 border m-5  relative">
             <table className="w-full ">
               <thead className="theader">
                 <tr className="hidden">
@@ -27,9 +29,9 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               </tbody>
             </table>
           </div>
-        </>
+          </>
+
       ) : (
-        <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
           <table className="w-full ">
             <thead className="theader">
               <tr>
@@ -65,6 +67,8 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               ))}
             </tbody>
           </table>
-        </div>
+      )}
+      </div>
+      
       )
 }

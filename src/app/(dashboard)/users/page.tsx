@@ -131,8 +131,8 @@ export default function Users() {
 
   // JSX return
   return (
-    <div className="dashboardContainer">
-      {/* Modal for adding or modifying users */}
+    <div className="col-span-4 h-full">
+      {/* Modal for adding or modifying users */} 
       <Modal isOpen={isOpen} onClose={closeModal}>
         <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
@@ -188,9 +188,7 @@ export default function Users() {
         </form>
       </Modal>
       {/* Header navigation */}
-      <HeaderNav activeView="users management" />
       {/* Side navigation */}
-      <SideNav activeView="users management" />
       {/* Main View */}
       {/* Button to open the modal for adding users */}
       <div onClick={(e) => openModal()} className="dashboardCards_add">
@@ -215,7 +213,6 @@ export default function Users() {
      
       {/* Main View */}
       {/* Footer View */}
-      <Copyright />
       {/* Footer View */}
     </div>
   );
