@@ -1,9 +1,9 @@
 // Importing necessary components and libraries
 "use client";
 
-import Copyright from "@/componentes/CopyRight";
-import HeaderNav from "@/componentes/HeaderNav";
-import SideNav from "@/componentes/sidenav";
+import Copyright from "@/components/CopyRight";
+import HeaderNav from "@/components/HeaderNav";
+import SideNav from "@/components/sidenav";
 import Modal from "@/componentes/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";

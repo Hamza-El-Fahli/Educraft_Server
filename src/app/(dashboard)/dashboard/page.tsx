@@ -1,8 +1,8 @@
 import Image from "next/image";
-import SideNav from "@/componentes/sidenav";
-import HeaderNav from "@/componentes/HeaderNav";
-import Copyright from "@/componentes/CopyRight";
-import Charts from "@/componentes/Charts";
+import SideNav from "@/components/sidenav";
+import HeaderNav from "@/components/HeaderNav";
+import Copyright from "@/components/CopyRight";
+import Charts from "@/components/Charts";
 export default function Dashboard() {
   return (
     <div className="dashboardContainer">

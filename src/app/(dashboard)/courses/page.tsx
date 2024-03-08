@@ -1,9 +1,9 @@
 "use client";
 
-import Copyright from "@/componentes/CopyRight";
-import HeaderNav from "@/componentes/HeaderNav";
-import ShowData from "@/componentes/ShowData";
-import SideNav from "@/componentes/sidenav";
+import Copyright from "@/components/CopyRight";
+import HeaderNav from "@/components/HeaderNav";
+import ShowData from "@/components/ShowData";
+import SideNav from "@/components/sidenav";
 import Modal from "@/componentes/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
