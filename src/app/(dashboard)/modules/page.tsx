@@ -5,7 +5,7 @@ import Copyright from "@/components/CopyRight";
 import HeaderNav from "@/components/HeaderNav";
 import ShowData from "@/components/ShowData";
 import SideNav from "@/components/sidenav";
-import Modal from "@/componentes/userModal";
+import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -213,7 +213,7 @@ export default function Users() {
         Add Users
       </div>
       {/* Loading spinner or table of modules */}
-            <ShowData Loading={Loading} Data={_Modules} Cols={['ID','Course','Title','Description','Action']} 
+      <ShowData Loading={Loading} Data={_Modules} Cols={['ID','Course','Title','Description','Action']} 
             setAddORUpdate={setAddORMod}
             Modify={modifyModule}
             Remove={removeModule}

@@ -43,8 +43,9 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
                   {Object.keys(oneData).map((key:any,index)=>{
                     if(index >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 
-                    return <td>{typeof oneData[key] != 'object' ?  oneData[key] : oneData[key][Object.keys(oneData[key])[1]]}</td>
+                    return <td>{typeof oneData[key] != 'object' ? ( key == 'password' ? '******':  oneData[key] ): oneData[key][Object.keys(oneData[key])[1]]}</td>
                   })}
+                  
                   {/* Buttons to modify or delete the module */}
                   <td className="p-1 flex justify-around items-center" style={{ height: '100%' }}>
                     <button

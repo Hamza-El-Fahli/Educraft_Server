@@ -1,12 +1,14 @@
+// Importing necessary components and modules
 "use client";
-
 import Copyright from "@/components/CopyRight";
 import HeaderNav from "@/components/HeaderNav";
 import ShowData from "@/components/ShowData";
 import SideNav from "@/components/sidenav";
-import Modal from "@/componentes/userModal";
+import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
+
+// URL for the server
 const URL_Server = `http://localhost:3000/api/courses`;
 interface Course {
   _id: number;
@@ -16,19 +18,23 @@ interface Course {
 }
 
 export default function Courses() {
+  // State variables
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   const [AddORMod, setAddORMod] = useState(true);
-  // temporary fixing a bug
-  // when modify the requent send to AddUser first then modify
+  const [Courses, setCourses] = useState<Course[]>([]);
+
+  // Function to open modal
   const openModal = () => {
     setIsOpen(true);
   };
 
+  // Function to close modal
   const closeModal = () => {
     setIsOpen(false);
   };
-  const [Courses, setCourses] = useState<Course[]>([]);
+
+  // Effect to fetch courses from the server
   useEffect(() => {
     axios.get(`${URL_Server}`).then(
       (res) => {
@@ -41,6 +47,7 @@ export default function Courses() {
     );
   }, []);
 
+  // Function to add a course
   const AddCourse = (e: any) => {
     const frm = document.querySelector("form");
     e.preventDefault();
@@ -53,7 +60,6 @@ export default function Courses() {
     axios.post(`${URL_Server}`, tmp).then(
       (res) => {
         setCourses([...Courses, { _id: res.data._id, ...tmp }]);
-
         closeModal();
       },
       (rej) => {
@@ -62,9 +68,10 @@ export default function Courses() {
     );
   };
 
+  // Function to modify a course
   async function modifyCourse(e: any) {
+    // Setting the mode to modify
     setAddORMod(false);
-
     await openModal();
     const form: any = document.querySelector("form");
     const tds = e.target.parentNode.parentNode.querySelectorAll("td");
@@ -95,6 +102,7 @@ export default function Courses() {
     });
   }
 
+  // Function to remove a course
   async function removeCourse(e: any) {
     const tds = e.target.parentNode.parentNode.children;
     const id = tds[0].textContent;
@@ -116,7 +124,12 @@ export default function Courses() {
 
   return (
     <div className="dashboardContainer">
-      {/*  */}
+      {/* Header */}
+      <HeaderNav activeView="courses management" />
+      {/* Side nav */}
+      <SideNav activeView="courses management" />
+      {/* Main View */}
+      {/* Form to add course */}
       <Modal isOpen={isOpen} onClose={closeModal}>
         <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
@@ -145,7 +158,6 @@ export default function Courses() {
             name="instructor"
             placeholder="instructor"
           />
-
           {AddORMod ? (
             <button
               onClick={(e) => {
@@ -156,23 +168,12 @@ export default function Courses() {
               Save
             </button>
           ) : (
-            <button
-              id="send"
-              className="text-primary h-12 border p-3"
-            >
+            <button id="send" className="text-primary h-12 border p-3">
               Save
             </button>
           )}
         </form>
       </Modal>
-      {/*  */}
-      <HeaderNav activeView="courses management" />
-      {/* Side nav */}
-      <SideNav activeView="courses management" />
-      {/* Side nav */}
-      {/* Main View */}
-      {/* Form to add course */}
-
       <div
         onClick={(e) => {
           setAddORMod(true);
@@ -190,108 +191,17 @@ export default function Courses() {
         </svg>
         Add Course
       </div>
-      {/* Form to add course */}
-
       {/* Table to show courses */}
-        <ShowData 
+      <ShowData
         Cols={['ID','Course','Description','Instructor','Action']}
         Subject={'Course'}
-
-        Loading={Loading} Data={Courses} Modify={modifyCourse} Remove={removeCourse} />
-      
-      {/* Table to show courses */}
-      {/* Main View */}
-      {/* Footer View */}
+        Loading={Loading}
+        Data={Courses}
+        Modify={modifyCourse}
+        Remove={removeCourse}
+      />
+      {/* Footer */}
       <Copyright />
-      {/* Footer View */}
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-function DisplayTable({Loading,Courses,modifyCourse,removeCourse}:{Loading : boolean,Courses:any,modifyCourse:any,removeCourse:any}){
-  return Loading ? (
-  <>
-    <div id="loading">
-      <div id="load">
-        <div>G</div>
-        <div>N</div>
-        <div>I</div>
-        <div>D</div>
-        <div>A</div>
-        <div>O</div>
-        <div>L</div>
-      </div>
-    </div>
-    <div className="col-span-4 row-span-10 m-5 overflow-y-scroll overflow-x-scroll relative">
-      <table className="w-full ">
-        <thead className="theader">
-          <tr>
-            <th>ID</th>
-            <th>Course Name</th>
-            <th>Description</th>
-            <th>Instructor ID</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="hidden">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </>
-) : (
-  <div className="col-span-4 row-span-10 border m-5 overflow-y-scroll overflow-x-scroll relative">
-    <table className="w-full ">
-      <thead className="theader">
-        <tr>
-          <th>ID</th>
-          <th>Course Name</th>
-          <th>Description</th>
-          <th>Instructor ID</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {Courses.map((user:any) => (
-          <tr>
-            <td>{user._id}</td>
-            <td>{user.course_name}</td>
-            <td>{user.description}</td>
-            <td>{user.instructor}</td>
-            <td className="p-1 flex justify-around">
-              <button
-                onClick={(e) => {
-                  modifyCourse(e);
-                }}
-                className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
-              >
-                Modify Course
-              </button>
-              <button
-                onClick={(e) => removeCourse(e)}
-                className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
-              >
-                Delete Course
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-)}
