@@ -28,3 +28,13 @@ export interface IUser {
   }
   
 
+  
+interface IChapter  {
+  _id: number;
+  module_id: string;
+  title: string;
+  description: string;
+}
+
+  
+

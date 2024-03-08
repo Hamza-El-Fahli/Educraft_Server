@@ -52,13 +52,13 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
                   {/* Buttons to modify or delete the module */}
                   <td className="p-1 flex justify-around items-center" style={{ height: '100%' }}>
                     <button
-                      onClick={(e) => { setAddORUpdate(false); Modify(index+'') }}
+                      onClick={(e) => { setAddORUpdate(false); Modify(index) }}
                       className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
                     >
                       Modify {Subject}
                     </button>
                     <button
-                      onClick={(e) => Remove(e)}
+                      onClick={(e) => Remove(index)}
                       className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
                     >
                       Delete {Subject}
