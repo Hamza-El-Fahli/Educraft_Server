@@ -20,7 +20,6 @@ export default function Chapters() {
 
 const [ChapterForm, setChapterForm] = useState(
   {
-    courses:[],
     modules:[],
     title:'',
     description:'',
@@ -28,7 +27,7 @@ const [ChapterForm, setChapterForm] = useState(
     selectedModule:''
   }
 )
-
+const [Courses, setCourses] = useState([])
 
 
 
@@ -61,8 +60,9 @@ const [ChapterForm, setChapterForm] = useState(
 
   useEffect(() => {
     axios.get(`${API_Server_Courses}`).then(
-      (res) => {
-        setChapterForm({...ChapterForm,courses:res.data,selectedCourse:res.data[0]._id})
+      (res:any) => {
+        setChapterForm({...ChapterForm,selectedCourse:res.data[0]._id})
+        setCourses(res.data)
         console.log(res.data)
 
       },
@@ -88,10 +88,11 @@ const [ChapterForm, setChapterForm] = useState(
     // 
   // Function to add a module
   const AddChapter = (e: any) => {
+    console.log(ChapterForm.modules[0]._id)
     e.preventDefault();
     const tmp = {
       // course_id: ChapterForm.selectedCourse,
-      module_id: ChapterForm.selectedModule,
+      module_id: ChapterForm.selectedModule || ChapterForm.modules[0]._id,
       title: ChapterForm.title,
       description: ChapterForm.description,
     };
@@ -122,17 +123,23 @@ const [ChapterForm, setChapterForm] = useState(
     
     }
     setChapterForm({...ChapterForm,title:tmp.title,description:tmp.description,selectedModule:tmp.module_id , selectedCourse:course_id})
-    console.log(tmp)
     openModal()
-return
-    form.addEventListener("submit",async (e: any) => {
+    document.querySelector('form')?.addEventListener("submit",async (e: any) => {
       e.preventDefault();
+      console.log({
+        title : ChapterForm.title,
+        description : ChapterForm.description,
+        module_id : ChapterForm.selectedModule,
+      
+      })
       await axios.put(`${API_Server_Chapters}/${Chapters[pointer]._id}`,  {
-      module_id: ChapterForm.selectedModule,
-      title: ChapterForm.title,
-      description: ChapterForm.description,
-    }).then(async (res) => {
+        title : ChapterForm.title,
+        description : ChapterForm.description,
+        module_id : ChapterForm.selectedModule,
+      
+      }).then(async (res) => {
         console.log(res)
+        const tds : any = document.getElementById(`tr-${pointer}`)?.children
         tds[1].textContent = Chapters[pointer].course_name;
         tds[2].textContent = ChapterForm.title;
         tds[3].textContent = ChapterForm.description;
@@ -172,19 +179,20 @@ return
         >
         {/* Select dropdown for courses */}
         <select id="course" className="border h-12 text-primary p-3" onChange={(e:any)=>setChapterForm({...ChapterForm,selectedCourse : e.target.value})}
-        // value={ChapterForm.selectedCourse}
+        value={ChapterForm.selectedCourse}
        >
-          {ChapterForm.courses.map((course : any,index:number) => {
+          {Courses.map((course : any,index:number) => {
             return (
             <option key={course._id} value={course._id} >
-              {course.course_name+ '     sfgd'}
+              {course.course_name}
             </option>
           )})}
+          
         </select>
           {/* Select dropdown for modules */}
           <select id="modules" value={ChapterForm.selectedModule} className="border h-12 text-primary p-3" onChange={(e:any)=>{setChapterForm({...ChapterForm,selectedModule : e.target.value}); console.log(e.target.value)}}>
             {ChapterForm.modules.map((module : any) => {
-              if(module.course_id._id == ChapterForm.selectedCourse)
+              if(module.course_id._id == ChapterForm.selectedCourse || !ChapterForm.selectedCourse)
               return (
               <option key={module._id} value={module._id}>
                 {module.title}
@@ -214,14 +222,14 @@ return
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={(e: any) => { (AddORMod) ? AddChapter(e) : modifyModule() }}
+            onClick={(e: any) => { (AddORMod) ? AddChapter(e) : modifyModule(0) }}
           >
             Save
           </button>
         </form>
       </Modal>
       {/* Button to open the modal for adding users */}
-      <div onClick={(e) => { openModal(); setAddORMod(true) }} className="dashboardCards_add">
+      <div onClick={(e) => { openModal(); setAddORMod(true) ; setChapterForm({...ChapterForm,title:'',description:'',selectedCourse:'',selectedModule:''})}} className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
             d="M7.5 0L7.5 15M0 7.5L15 7.5"
