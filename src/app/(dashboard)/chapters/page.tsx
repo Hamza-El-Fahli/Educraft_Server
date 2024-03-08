@@ -72,11 +72,9 @@ const [ChapterForm, setChapterForm] = useState(
       );
     }, []);
     
-    // 
+
        useEffect(()=>{
-        const courseId : any = document.querySelector<HTMLInputElement>("#course")?.value
-        if(courseId == null) return
-             axios.get(`${API_Server_Modules}?course_id=${ChapterForm.selectedCourse}`).then(
+             axios.get(`${API_Server_Modules}`).then(
               (res) => {
                 setChapterForm({...ChapterForm,modules:res.data})
                 setLoading(false);
@@ -86,7 +84,7 @@ const [ChapterForm, setChapterForm] = useState(
               }
             );
     
-       },[ChapterForm.selectedCourse])
+       },[])
     // 
   // Function to add a module
   const AddChapter = (e: any) => {
@@ -111,19 +109,21 @@ const [ChapterForm, setChapterForm] = useState(
 
   // Function to modify a module
   async function modifyModule(pointer :any) {
-    const tds : any = await document.getElementById(`tr-${pointer}`)?.querySelectorAll("td");
-    if(!tds) return
-    await openModal();
-    const form: any = document.querySelector("form");
-    if (form) {
-      setChapterForm({...ChapterForm,title:tds[2].textContent , description:tds[3].textContent})
+    let course_id = '';
+     ChapterForm.modules.forEach((module:any) => {
+      if(module._id == Chapters[pointer].module_id ) course_id = module.course_id._id
+     });
+    const tmp = {
+      title : Chapters[pointer].title,
+      description : Chapters[pointer].description,
+      module_id : Chapters[pointer].module_id,
+      course_id,
+      _id: Chapters[pointer]._id
+    
     }
-    console.log(Chapters[pointer ])
-    console.log({
-      module_id: Chapters[pointer].module_id,
-      title: Chapters[pointer].title,
-      description: Chapters[pointer].description,
-    })
+    setChapterForm({...ChapterForm,title:tmp.title,description:tmp.description,selectedModule:tmp.module_id , selectedCourse:course_id})
+    console.log(tmp)
+    openModal()
 return
     form.addEventListener("submit",async (e: any) => {
       e.preventDefault();
@@ -172,17 +172,19 @@ return
         >
         {/* Select dropdown for courses */}
         <select id="course" className="border h-12 text-primary p-3" onChange={(e:any)=>setChapterForm({...ChapterForm,selectedCourse : e.target.value})}
-        value={ChapterForm.selectedCourse}
+        // value={ChapterForm.selectedCourse}
        >
-          {ChapterForm.courses.map((course : any,index:number) => (
-            <option key={course._id} value={course._id} selected={index == 0}>
-              {course.course_name}
+          {ChapterForm.courses.map((course : any,index:number) => {
+            return (
+            <option key={course._id} value={course._id} >
+              {course.course_name+ '     sfgd'}
             </option>
-          ))}
+          )})}
         </select>
           {/* Select dropdown for modules */}
           <select id="modules" value={ChapterForm.selectedModule} className="border h-12 text-primary p-3" onChange={(e:any)=>{setChapterForm({...ChapterForm,selectedModule : e.target.value}); console.log(e.target.value)}}>
             {ChapterForm.modules.map((module : any) => {
+              if(module.course_id._id == ChapterForm.selectedCourse)
               return (
               <option key={module._id} value={module._id}>
                 {module.title}
