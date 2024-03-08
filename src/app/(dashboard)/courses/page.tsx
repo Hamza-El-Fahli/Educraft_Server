@@ -1,28 +1,20 @@
 // Importing necessary components and modules
 "use client";
-import Copyright from "@/components/CopyRight";
-import HeaderNav from "@/components/HeaderNav";
 import ShowData from "@/components/ShowData";
-import SideNav from "@/components/sidenav";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ICourse } from "@/app/types/types";
+import { API_Server_Courses } from "@/configuration/API";
 
-// URL for the server
-const URL_Server = `http://localhost:3000/api/courses`;
-interface Course {
-  _id: number;
-  course_name: string;
-  description: string;
-  instructor: number;
-}
+
 
 export default function Courses() {
   // State variables
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   const [AddORMod, setAddORMod] = useState(true);
-  const [Courses, setCourses] = useState<Course[]>([]);
+  const [Courses, setCourses] = useState<ICourse[]>([]);
 
   // Function to open modal
   const openModal = () => {
@@ -36,7 +28,7 @@ export default function Courses() {
 
   // Effect to fetch courses from the server
   useEffect(() => {
-    axios.get(`${URL_Server}`).then(
+    axios.get(`${API_Server_Courses}`).then(
       (res) => {
         setCourses(res.data);
         setLoading(false);
@@ -57,7 +49,7 @@ export default function Courses() {
       instructor: frm?.instructor.value,
     };
     console.log(tmp);
-    axios.post(`${URL_Server}`, tmp).then(
+    axios.post(`${API_Server_Courses}`, tmp).then(
       (res) => {
         setCourses([...Courses, { _id: res.data._id, ...tmp }]);
         closeModal();
@@ -84,7 +76,7 @@ export default function Courses() {
       console.log(tds[0].textContent.trim());
       e.preventDefault();
       axios
-        .put(`${URL_Server}/${tds[0].textContent.trim()}`, {
+        .put(`${API_Server_Courses}/${tds[0].textContent.trim()}`, {
           course_name: inputs[0].value,
           description: inputs[1].value,
           instructor: inputs[2].value,
@@ -111,7 +103,7 @@ export default function Courses() {
     );
     const newState = Courses.filter((user) => user._id != id);
     if (decision)
-      axios.delete(`${URL_Server}/${id}`).then(
+      axios.delete(`${API_Server_Courses}/${id}`).then(
         (res) => {
           setCourses(newState);
           alert(res.data.message);

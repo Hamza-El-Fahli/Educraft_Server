@@ -1,36 +1,14 @@
 // Importing necessary components and libraries
 "use client";
-
-import Copyright from "@/components/CopyRight";
-import HeaderNav from "@/components/HeaderNav";
 import ShowData from "@/components/ShowData";
-import SideNav from "@/components/sidenav";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {  ICourse_IModule } from "@/app/types/types";
+import { IModule } from "@/app/types/types";
+import { API_Server_Courses } from "@/configuration/API";
+import { API_Server_Modules } from "@/configuration/API";
 
-// API URLs
-const URL_Server = `http://localhost:3000/api/modules`;
-const URL_Server_courses = `http://localhost:3000/api/courses`;
-
-// Interface for module object
-interface IModule {
-  _id: number;
-  course_id: string;
-  title: string;
-  description: number;
-}
-
-// Interface for course object
-interface Course {
-  _id: number;
-  course_name: {
-    _id : string;
-    course_name : string;
-  };
-  description: string;
-  instructor: number;
-}
 
 // Component function
 export default function Users() {
@@ -54,11 +32,11 @@ export default function Users() {
 
   // State variables for modules and courses
   const [_Modules, setModules] = useState<IModule[]>([]);
-  const [Courses, setCourses] = useState<Course[]>([]);
+  const [Courses, setCourses] = useState<ICourse_IModule[]>([]);
 
   // Fetching modules and courses from API
   useEffect(() => {
-    axios.get(`${URL_Server}`).then(
+    axios.get(`${API_Server_Modules}`).then(
       (res) => {
         setModules(res.data);
         setLoading(false);
@@ -70,7 +48,7 @@ export default function Users() {
   }, []);
 
   useEffect(() => {
-    axios.get(`${URL_Server_courses}`).then(
+    axios.get(`${API_Server_Courses}`).then(
       (res) => {
         setCourses(res.data);
         setLoading(false);
@@ -91,7 +69,7 @@ export default function Users() {
       description: frm.description.value,
       order: _Modules.length
     };
-    axios.post(`${URL_Server}`, tmp).then(
+    axios.post(`${API_Server_Modules}`, tmp).then(
       (res) => {
         setModules([..._Modules, { _id: res.data._id, ...tmp }]);
         closeModal();
@@ -120,7 +98,7 @@ export default function Users() {
     }
     form.addEventListener("submit",async (e: any) => {
       e.preventDefault();
-      await axios.put(`${URL_Server}/${tds[0].textContent.trim()}`, {
+      await axios.put(`${API_Server_Modules}/${tds[0].textContent.trim()}`, {
         course_id: form.querySelector("#course").value,
         title: form.title.value,
         description: form.description.value,
@@ -144,7 +122,7 @@ export default function Users() {
     const decision = window.confirm(`Are you sure to delete user ${tds[1].textContent}`)
     const newState = _Modules.filter((model) => model._id != id);
     if (decision)
-      axios.delete(`${URL_Server}/${id}`).then((res) => {
+      axios.delete(`${API_Server_Modules}/${id}`).then((res) => {
         setModules(newState);
         alert(res.data.message)
       }, () => {

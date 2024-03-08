@@ -1,25 +1,14 @@
 // Importing necessary components and libraries
 "use client";
 
-import Copyright from "@/components/CopyRight";
-import HeaderNav from "@/components/HeaderNav";
 import ShowData from "@/components/ShowData";
-import SideNav from "@/components/sidenav";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-const URL_Server = `http://localhost:3000/api/users`;
+import { IUser } from "@/app/types/types";
+import { API_Server_Users } from "@/configuration/API";
 
-// Interface for user object
-interface User {
-  _id: string;
-  name: string;
-  filiere: string;
-  annee: number;
-  profile: string;
-  email: string;
-  password: string;
-}
+
 
 // Component function
 export default function Users() {
@@ -38,10 +27,10 @@ export default function Users() {
   };
 
   // State variable for users
-  const [Users, setUsers] = useState<User[]>([]);
+  const [Users, setUsers] = useState<IUser[]>([]);
   useEffect(() => {
     // Fetching users from API
-    axios.get(`${URL_Server}`).then(
+    axios.get(`${API_Server_Users}`).then(
       (res) => {
         setUsers(res.data);
         setLoading(false);
@@ -65,7 +54,7 @@ export default function Users() {
       email: frm.email.value,
       password: frm.password.value,
     };
-    axios.put(`${URL_Server}`, tmp).then(
+    axios.put(`${API_Server_Users}`, tmp).then(
       (res) => {
         setUsers([...Users, { _id: res.data._id, ...tmp }]);
         closeModal();
@@ -93,7 +82,7 @@ export default function Users() {
     }
     form.addEventListener("submit", (e: any) => {
       e.preventDefault();
-      axios.put(`${URL_Server}/${tds[0].textContent.trim()}`, {
+      axios.put(`${API_Server_Users}/${tds[0].textContent.trim()}`, {
         name: inputs[0].value,
         filiere: inputs[1].value,
         annee: inputs[2].value,
@@ -120,7 +109,7 @@ export default function Users() {
     const decision = window.confirm(`Are you sure to delete user ${tds[1].textContent}`);
     const newState = Users.filter((user) => user._id != id);
     if (decision) {
-      axios.delete(`${URL_Server}/${id}`).then((res) => {
+      axios.delete(`${API_Server_Users}/${id}`).then((res) => {
         setUsers(newState);
         alert(res.data.message);
       }, () => {

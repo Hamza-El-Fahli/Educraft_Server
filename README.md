@@ -43,7 +43,7 @@
 
 - Delete a course by id
 - Request body: `null`
-
+ 
 **PUT /api/courses/[id]**
 
 - Update a course by id
@@ -74,7 +74,7 @@
 **PUT /api/modules/[id]**
 
 - Update a module by id
-- Request body : `{new_title , new_desciption , new_order} `
+- Request body : `{course_id, title, description, order }`
 
 ## Chapters API
 
