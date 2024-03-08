@@ -45,7 +45,8 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
                   {Object.keys(oneData).map((key:any,index)=>{
                     if(index >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 
-                    return <td>{typeof oneData[key] != 'object' ? ( key == 'password' ? '******':  oneData[key] ): oneData[key][Object.keys(oneData[key])[1]]}</td>
+                    if(key == '_id') return <td>{oneData[key].slice(-5)}</td>
+                    if(key != '_id') return <td>{typeof oneData[key] != 'object' ? ( key == 'password' ? '******':  oneData[key] ): oneData[key][Object.keys(oneData[key])[1]]}</td>
                   })}
                   
                   {/* Buttons to modify or delete the module */}
