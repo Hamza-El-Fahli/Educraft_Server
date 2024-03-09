@@ -7,13 +7,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { IUser } from "@/app/types/types";
 import { API_Server_Users } from "@/configuration/API";
+import UsersFormComponent from "@/components/UsersFormComponent";
 
 
 
 // Component function
 export default function Users() {
   const [isOpen, setIsOpen] = useState(false);
-  const [Loading, setLoading] = useState(true);
+  const [loading, setloading] = useState(true);
   const [AddORMod, setAddORMod] = useState(true)
   const [Users, setUsers] = useState<IUser[]>([]);
 const [selectedRegister, setselectedRegister] = useState<any>(null)
@@ -55,7 +56,7 @@ const [UserForm, setUserForm] = useState( {
     axios.get(`${API_Server_Users}`).then(
       (res) => {
         setUsers(res.data);
-        setLoading(false);
+        setloading(false);
       },
       (rej) => {
         alert(rej);
@@ -78,11 +79,11 @@ const [UserForm, setUserForm] = useState( {
       (res) => {
         setUsers([...Users, { _id: res.data._id, ...tmp }]);
         closeModal();
-      },
-      (rej) => {
-        alert("Rejected");
       }
-    );
+    ).catch((error)=>{
+        alert("Rejected");
+        console.log(error)
+    })
   };
 
   async function OpenAndSet(index?:number){
@@ -129,72 +130,7 @@ const [UserForm, setUserForm] = useState( {
       <Modal isOpen={isOpen} onClose={closeModal}>
         <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
-        <form
-  onSubmit={(e) => e.preventDefault()}
-  className="flex flex-col gap-3 w-80 "
->
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="text"
-    placeholder="userName"
-    name="userName"
-    value={UserForm?.name}
-    onChange={(e) => setUserForm({ ...UserForm, name: e.target.value })}
-  />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="text"
-    name="email"
-    placeholder="Email"
-    value={UserForm?.email}
-    onChange={(e) => setUserForm({ ...UserForm, email: e.target.value })}
-  />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="password"
-    name="password"
-    placeholder="password"
-    value={UserForm?.password}
-    onChange={(e) => setUserForm({ ...UserForm, password: e.target.value })}
-  />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="text"
-    name="profile"
-    placeholder="Profile"
-    value={UserForm?.profile}
-    onChange={(e) => setUserForm({ ...UserForm, profile: e.target.value })}
-  />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="number"
-    name="annee"
-    placeholder="Annee"
-    value={UserForm?.annee}
-    onChange={(e) => setUserForm({ ...UserForm, annee: parseInt(e.target.value) })}
-  />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="text"
-    placeholder="filiere"
-    name="filiere"
-    value={UserForm?.filiere}
-    onChange={(e) => setUserForm({ ...UserForm, filiere: e.target.value })}
-  />
-  <button 
-              onClick={(e: any) => { (AddORMod) ? AddUser(e) : modifyUser() }}
-
-  className="text-primary h-12 border p-3">
-    Save
-  </button>
-</form>
-
+       <UsersFormComponent UserForm={UserForm}setUserForm={setUserForm}AddORMod={AddORMod}AddUser={AddUser}modifyUser={modifyUser} />
       </Modal>
       {/* Header navigation */}
       {/* Side navigation */}
@@ -219,9 +155,9 @@ const [UserForm, setUserForm] = useState( {
         </svg>
         Add Users
       </div>
-      {/* Loading spinner or table of users */}
+      {/* loading spinner or table of users */}
 
-      <ShowData Loading={Loading} Data={Users} Cols={["ID",  "UserName",  "Email",  "Password",  "Profile",  "Annee",  "filiere",  "Action"]} 
+      <ShowData loading={loading} Data={Users} Cols={["ID",  "UserName",  "Email",  "Password",  "Profile",  "Annee",  "filiere",  "Action"]} 
             setAddORUpdate={setAddORMod}
             Modify={OpenAndSet}
             Remove={removeUser}
