@@ -14,11 +14,34 @@ import { API_Server_Users } from "@/configuration/API";
 export default function Users() {
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
-  var AddTrueORmodifyFalse = true; // temporary fixing a bug
   const [AddORMod, setAddORMod] = useState(true)
+  const [Users, setUsers] = useState<IUser[]>([]);
+const [selectedRegister, setselectedRegister] = useState<any>(null)
+const [UserForm, setUserForm] = useState( {
+  name: '',
+  filiere: '',
+  annee: 0,
+  profile: '',
+  email: '',
+  password: '',
+})
+
+
   // Function to open modal
   const openModal = () => {
-    setIsOpen(true);
+    if(selectedRegister == -1) {setUserForm( {
+      name: '',
+      filiere: '',
+      annee: -1,
+      profile: '',
+      email: '',
+      password: '',
+    })
+  setIsOpen(true)
+  }
+    if(selectedRegister != null){
+    setUserForm(Users[selectedRegister])
+    setIsOpen(true);}
   };
 
   // Function to close modal
@@ -27,7 +50,6 @@ export default function Users() {
   };
 
   // State variable for users
-  const [Users, setUsers] = useState<IUser[]>([]);
   useEffect(() => {
     // Fetching users from API
     axios.get(`${API_Server_Users}`).then(
@@ -41,19 +63,17 @@ export default function Users() {
     );
   }, []);
 
+  useEffect(() => {
+    if (selectedRegister !== null) {
+      openModal();
+    }
+  }, [selectedRegister]);
+
   // Function to handle form submission for adding or modifying a user
-  const handleSubmit = (e: any) => {
-    if (AddTrueORmodifyFalse) return;
-    const frm = e.target;
+  const AddUser = (e: any) => {
+    
     e.preventDefault();
-    const tmp = {
-      name: frm.userName.value,
-      filiere: frm.filiere.value,
-      annee: frm.annee.value,
-      profile: frm.profile.value,
-      email: frm.email.value,
-      password: frm.password.value,
-    };
+    const tmp = UserForm
     axios.put(`${API_Server_Users}`, tmp).then(
       (res) => {
         setUsers([...Users, { _id: res.data._id, ...tmp }]);
@@ -65,48 +85,32 @@ export default function Users() {
     );
   };
 
-  // Function to modify a user
-  async function modifyUser(pointer: any) {
-    AddTrueORmodifyFalse = false;
-    const tds : any = await document.getElementById(`tr-${pointer}`)?.querySelectorAll("td");
-    await openModal();
+  async function OpenAndSet(index?:number){
+    if( index == undefined)    setselectedRegister(-1)
+    else  if(index == selectedRegister) openModal()
+  else   setselectedRegister(index)
+  
+  console.log(index)
+  }
 
-    const form: any = document.querySelector("form");
-    const inputs = form?.querySelectorAll("input");
-    for (let td = 1; td <= inputs.length; td++) {
-      inputs[td - 1].value = tds[td].innerText;
-      if (inputs[td - 1].type == "password")
-        inputs[td - 1].value = Users.filter(
-          (user) => user._id == tds[0].textContent.trim()
-        )[0].password;
-    }
-    form.addEventListener("submit", (e: any) => {
-      e.preventDefault();
-      axios.put(`${API_Server_Users}/${tds[0].textContent.trim()}`, {
-        name: inputs[0].value,
-        filiere: inputs[1].value,
-        annee: inputs[2].value,
-        profile: inputs[3].value,
-        email: inputs[4].value,
-        password: inputs[5].value
-      }).then((res) => {
-        for (let td = 0; td < inputs.length; td++) {
-          tds[td + 1].innerText = inputs[td].value;
-        }
-        closeModal();
-      }).catch((error) => {
+  // Function to modify a user
+  async function modifyUser(pointer?: any) {
+   
+      axios.put(`${API_Server_Users}/${Users[selectedRegister]._id}`, UserForm)
+      .then((res) => {
+        Users[selectedRegister] = {...Users[selectedRegister],...UserForm}
+        closeModal()})
+      .catch((error) => {
         alert('Error updating user');
-        closeModal();
-      });
-    });
-    AddTrueORmodifyFalse = true;
+        closeModal(); })
+    
   }
 
   // Function to remove a user
-  async function removeUser(e: any) {
-    const tds = e.target.parentNode.parentNode.children;
-    const id = tds[0].textContent;
-    const decision = window.confirm(`Are you sure to delete user ${tds[1].textContent}`);
+  async function removeUser(pointer: any) {
+    const tds = Users[pointer];
+    const id = tds._id;
+    const decision = window.confirm(`Are you sure to delete user ${tds.name}`);
     const newState = Users.filter((user) => user._id != id);
     if (decision) {
       axios.delete(`${API_Server_Users}/${id}`).then((res) => {
@@ -126,61 +130,85 @@ export default function Users() {
         <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
         <form
-          onSubmit={(e) => handleSubmit(e)}
-          className="flex flex-col gap-3 w-80 "
-        >
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="text"
-            placeholder="userName"
-            name="userName"
-          />
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="text"
-            name="email"
-            placeholder="Email"
-          />
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="password"
-            name="password"
-            placeholder="password"
-          />
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="text"
-            name="profile"
-            placeholder="Profile"
-          />
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="number"
-            name="annee"
-            placeholder="Annee"
-          />
-          <input
-            required
-            className="text-primary h-12 border p-3"
-            type="text"
-            placeholder="filiere"
-            name="filiere"
-          />
-          <button type="submit" className="text-primary h-12 border p-3">
-            Save
-          </button>
-        </form>
+  onSubmit={(e) => e.preventDefault()}
+  className="flex flex-col gap-3 w-80 "
+>
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="text"
+    placeholder="userName"
+    name="userName"
+    value={UserForm?.name}
+    onChange={(e) => setUserForm({ ...UserForm, name: e.target.value })}
+  />
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="text"
+    name="email"
+    placeholder="Email"
+    value={UserForm?.email}
+    onChange={(e) => setUserForm({ ...UserForm, email: e.target.value })}
+  />
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="password"
+    name="password"
+    placeholder="password"
+    value={UserForm?.password}
+    onChange={(e) => setUserForm({ ...UserForm, password: e.target.value })}
+  />
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="text"
+    name="profile"
+    placeholder="Profile"
+    value={UserForm?.profile}
+    onChange={(e) => setUserForm({ ...UserForm, profile: e.target.value })}
+  />
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="number"
+    name="annee"
+    placeholder="Annee"
+    value={UserForm?.annee}
+    onChange={(e) => setUserForm({ ...UserForm, annee: parseInt(e.target.value) })}
+  />
+  <input
+    required
+    className="text-primary h-12 border p-3"
+    type="text"
+    placeholder="filiere"
+    name="filiere"
+    value={UserForm?.filiere}
+    onChange={(e) => setUserForm({ ...UserForm, filiere: e.target.value })}
+  />
+  <button 
+              onClick={(e: any) => { (AddORMod) ? AddUser(e) : modifyUser() }}
+
+  className="text-primary h-12 border p-3">
+    Save
+  </button>
+</form>
+
       </Modal>
       {/* Header navigation */}
       {/* Side navigation */}
       {/* Main View */}
       {/* Button to open the modal for adding users */}
-      <div onClick={(e) => openModal()} className="dashboardCards_add">
+      <div onClick={(e) => { OpenAndSet(-1); setAddORMod(true) ; setUserForm( {
+      name: '',
+      filiere: '',
+      annee: 0,
+      profile: '',
+      email: '',
+      password: '',
+    })}}
+     className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
             d="M7.5 0L7.5 15M0 7.5L15 7.5"
@@ -195,7 +223,7 @@ export default function Users() {
 
       <ShowData Loading={Loading} Data={Users} Cols={["ID",  "UserName",  "Email",  "Password",  "Profile",  "Annee",  "filiere",  "Action"]} 
             setAddORUpdate={setAddORMod}
-            Modify={modifyUser}
+            Modify={OpenAndSet}
             Remove={removeUser}
             Subject={'User'}
             />  
