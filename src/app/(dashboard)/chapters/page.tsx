@@ -18,7 +18,13 @@ export default function Chapters() {
   const [AddORMod, setAddORMod] = useState(true);
 
 
-const [ChapterForm, setChapterForm] = useState(
+const [ChapterForm, setChapterForm] = useState<{
+  modules: {_id:number,title:string}[];
+  title: string;
+  description: string;
+  selectedCourse: string;
+  selectedModule: string;
+}>(
   {
     modules:[],
     title:'',
@@ -111,7 +117,7 @@ const [ChapterForm, setChapterForm] = useState(
     e.preventDefault();
     const tmp = {
       // course_id: ChapterForm.selectedCourse,
-      module_id: ChapterForm.selectedModule || ChapterForm.modules[0]._id,
+      module_id: ChapterForm.selectedModule || ChapterForm.modules[0]?._id,
       title: ChapterForm.title,
       description: ChapterForm.description,
     };
