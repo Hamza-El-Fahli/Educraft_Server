@@ -86,7 +86,10 @@ const [UserForm, setUserForm] = useState( {
     })
   };
 
-  async function OpenAndSet(index?:number){
+  async function OpenAndSet(index:any){
+    if(index == null) {
+       OpenAndSet(-1); setAddORMod(true) ; setUserForm( {name: '',filiere: '',annee: 0,profile: '', email: '', password: ''})
+    }
     if( index == undefined)    setselectedRegister(-1)
     else  if(index == selectedRegister) openModal()
   else   setselectedRegister(index)
@@ -132,18 +135,8 @@ const [UserForm, setUserForm] = useState( {
         <p className="mb-4 text-blue-400">Fill the form</p>
        <UsersFormComponent UserForm={UserForm}setUserForm={setUserForm}AddORMod={AddORMod}AddUser={AddUser}modifyUser={modifyUser} />
       </Modal>
-      {/* Header navigation */}
-      {/* Side navigation */}
-      {/* Main View */}
-      {/* Button to open the modal for adding users */}
-      <div onClick={(e) => { OpenAndSet(-1); setAddORMod(true) ; setUserForm( {
-      name: '',
-      filiere: '',
-      annee: 0,
-      profile: '',
-      email: '',
-      password: '',
-    })}}
+
+      <div onClick={(e) => OpenAndSet(null)}
      className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
