@@ -18,7 +18,7 @@ export default function ShowQuizes({Data}:{Data : number[]}){
         return (
           <div
             key={index}
-            className={`border border-2 rounded-md ${isExpanded ? "h-60" : "h-10"} duration-500 p-0 m-2 overflow-hidden bg-secondary`}
+            className={`border-2 rounded-md ${isExpanded ? "h-60" : "h-10"} duration-500 p-0 m-2 overflow-hidden bg-secondary`}
           >
             <div className="h-10 p-0 m-0 flex items-center px-5 bg-blue-950"             
             onClick={() => handleClick(index)}
