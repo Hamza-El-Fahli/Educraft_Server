@@ -26,13 +26,31 @@ const [ChapterForm, setChapterForm] = useState(
     selectedCourse:'',
     selectedModule:''
   }
-)
-const [Courses, setCourses] = useState([])
-
-
+  )
+  const [Courses, setCourses] = useState([])
+  const [SelectedRegister, setSelectedRegister] = useState<any>(null)
+  const [Chapters, setChapters] = useState<any>([]);
+  
 
   // Function to open modal
   const openModal = () => {
+    if(SelectedRegister == -1)     
+      setChapterForm({...ChapterForm,title:'',description:'',selectedModule:'', selectedCourse:''})
+    else if(SelectedRegister != null )
+    {let course_id = '';
+    ChapterForm.modules.forEach((module:any) => {
+      if(module._id == Chapters[SelectedRegister].module_id ) course_id = module.course_id._id
+    });
+    const tmp = {
+      title : Chapters[SelectedRegister].title,
+      description : Chapters[SelectedRegister].description,
+      module_id : Chapters[SelectedRegister].module_id,
+      course_id,
+      _id: Chapters[SelectedRegister]._id
+      
+    }
+    setChapterForm({...ChapterForm,title:tmp.title,description:tmp.description,selectedModule:tmp.module_id , selectedCourse:course_id})
+    }
     setIsOpen(true);
   };
   
@@ -41,8 +59,6 @@ const [Courses, setCourses] = useState([])
     setIsOpen(false);
   };
   
-  // State variables for modules and courses
-  const [Chapters, setChapters] = useState<any>([]);
 
   // Fetching modules and courses from API
   useEffect(() => {
@@ -50,7 +66,6 @@ const [Courses, setCourses] = useState([])
       (res) => {
         setChapters(res.data);
         setLoading(false);
-        console.log(res.data)
       },
       (rej) => {
         alert(rej);
@@ -63,7 +78,6 @@ const [Courses, setCourses] = useState([])
       (res:any) => {
         setChapterForm({...ChapterForm,selectedCourse:res.data[0]._id})
         setCourses(res.data)
-        console.log(res.data)
 
       },
       (rej) => {
@@ -86,9 +100,14 @@ const [Courses, setCourses] = useState([])
     
        },[])
     // 
+    useEffect(() => {
+      if (SelectedRegister !== null) {
+        openModal();
+      }
+    }, [SelectedRegister]);
+  
   // Function to add a module
   const AddChapter = (e: any) => {
-    console.log(ChapterForm.modules[0]._id)
     e.preventDefault();
     const tmp = {
       // course_id: ChapterForm.selectedCourse,
@@ -103,52 +122,37 @@ const [Courses, setCourses] = useState([])
       },
       (rej) => {
         alert("Rejected");
-        console.log(rej);
       }
     );
   };
+// open model and set data
+async function OpenAndSet(index?:number){
+  if( index == undefined)    setSelectedRegister(-1)
+  else  if(index == SelectedRegister) openModal()
+else   setSelectedRegister(index)
 
+console.log(index)
+}
   // Function to modify a module
-  async function modifyModule(pointer :any) {
-    let course_id = '';
-     ChapterForm.modules.forEach((module:any) => {
-      if(module._id == Chapters[pointer].module_id ) course_id = module.course_id._id
-     });
-    const tmp = {
-      title : Chapters[pointer].title,
-      description : Chapters[pointer].description,
-      module_id : Chapters[pointer].module_id,
-      course_id,
-      _id: Chapters[pointer]._id
-    
-    }
-    setChapterForm({...ChapterForm,title:tmp.title,description:tmp.description,selectedModule:tmp.module_id , selectedCourse:course_id})
-    openModal()
-    document.querySelector('form')?.addEventListener("submit",async (e: any) => {
-      e.preventDefault();
-      console.log({
+  async function modifyModule() {
+      await axios.put(`${API_Server_Chapters}/${Chapters[SelectedRegister]._id}`,  {
         title : ChapterForm.title,
         description : ChapterForm.description,
         module_id : ChapterForm.selectedModule,
-      
-      })
-      await axios.put(`${API_Server_Chapters}/${Chapters[pointer]._id}`,  {
-        title : ChapterForm.title,
-        description : ChapterForm.description,
-        module_id : ChapterForm.selectedModule,
-      
+
       }).then(async (res) => {
-        console.log(res)
-        const tds : any = document.getElementById(`tr-${pointer}`)?.children
-        tds[1].textContent = Chapters[pointer].course_name;
-        tds[2].textContent = ChapterForm.title;
-        tds[3].textContent = ChapterForm.description;
+
+        const tds : any = document.querySelectorAll(`[id=tr-${SelectedRegister}] td`)
+        console.log()
+        Chapters[SelectedRegister].module_name = ChapterForm.modules.filter((module:any)=>module._id == ChapterForm.selectedModule )[0].title
+        Chapters[SelectedRegister].module_id = ChapterForm.selectedModule
+        Chapters[SelectedRegister].title = ChapterForm.title
+        Chapters[SelectedRegister].description = ChapterForm.description
         closeModal();
       }).catch((error) => {
         alert('Error updating user');
         closeModal();
       });
-    });
   }
 
   // Function to remove a module
@@ -190,7 +194,7 @@ const [Courses, setCourses] = useState([])
           
         </select>
           {/* Select dropdown for modules */}
-          <select id="modules" value={ChapterForm.selectedModule} className="border h-12 text-primary p-3" onChange={(e:any)=>{setChapterForm({...ChapterForm,selectedModule : e.target.value}); console.log(e.target.value)}}>
+          <select id="modules" value={ChapterForm.selectedModule} className="border h-12 text-primary p-3" onChange={(e:any)=>{setChapterForm({...ChapterForm,selectedModule : e.target.value})}}>
             {ChapterForm.modules.map((module : any) => {
               if(module.course_id._id == ChapterForm.selectedCourse || !ChapterForm.selectedCourse)
               return (
@@ -222,7 +226,7 @@ const [Courses, setCourses] = useState([])
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={(e: any) => { (AddORMod) ? AddChapter(e) : modifyModule(0) }}
+            onClick={(e: any) => { (AddORMod) ? AddChapter(e) : modifyModule() }}
           >
             Save
           </button>
@@ -241,9 +245,9 @@ const [Courses, setCourses] = useState([])
         Add Chapter
       </div>
       {/* Loading spinner or table of modules */}
-      <ShowData Loading={Loading} Data={Chapters} Cols={['ID','Chapter','Title','Description','Action']} 
+      <ShowData Loading={Loading} Data={Chapters.map(({ module_id, ...rest }:any) => rest)} Cols={['ID','Module name','Chapter Title','Description','Action']} 
             setAddORUpdate={setAddORMod}
-            Modify={modifyModule}
+            Modify={OpenAndSet}
             Remove={removeModule}
             Subject={'Module'}
             />  

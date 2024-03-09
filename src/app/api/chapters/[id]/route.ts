@@ -13,8 +13,8 @@ export async function PUT(request:NextRequest, {params}:{params:{id : string}}){
     try {
         await connectDB()
         const {title , module_id , description} = await request.json()
-        await Chapters.findByIdAndUpdate(id ,{title ,module_id ,description} )
-        return NextResponse.json({message:"Chapter updated successfuly"})
+        const res = await Chapters.findByIdAndUpdate(id ,{title ,module_id ,description} )
+        return NextResponse.json({message:"Chapter updated successfuly" , newChapter:res})
     } catch (error) {
         return NextResponse.json({message:"No Chapters were updated", context:error})
     }
