@@ -1,4 +1,5 @@
 import _Modules from "@/database/models/modules";
+import Courses from "@/database/models/courses";
 import connectDB from "@/database/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -51,17 +52,33 @@ export async function GET(request: NextRequest) {
             filter["course_id"] = courseId;
         }
 
-        const modules = await _Modules.find(filter).populate({
-            path: 'course_id',
-            model: 'Courses',
-            select: 'course_name'
+        const modules = await _Modules.find(filter)
+        const courses = await Courses.find({})
+        const courseMap : any  = {}
+        courses.forEach(course => {
+            courseMap[course._id] = course.course_name;
         });
 
-        if (modules.length === 0 && courseId) {
+        const res = modules.map(module=>{
+            return {
+                _id: module._id,
+                course_id : module.course_id,
+                course_name : courseMap[module.course_id],
+                module_name: module.title,
+                order: module.order,
+                description: module.description
+            };
+        })
+
+
+
+
+
+        if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
 
-        return NextResponse.json(modules.sort((a,b)=>a.order - b.order));
+        return NextResponse.json(res.sort((a,b)=>a.order - b.order));
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "An error occurred while fetching modules", context: error }, { status: 500 });

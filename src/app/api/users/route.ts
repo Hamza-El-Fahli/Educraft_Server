@@ -34,10 +34,13 @@ export async function GET(){
 
 // Get One user By Email and password
 export async function POST(request: NextRequest) {
-    try {
-      const data = await request.json();
-      const { email, password , name } = data;
-      
+  try {
+    const data = await request.json();
+    const { email, password , name } = data;
+    console.log('test',email,' ',password)
+      if(password == "" )      return NextResponse.json({ error: "Invalid JSON input" },{status : 404});
+      if(email == '' && name =='')       return NextResponse.json({ error: "Invalid JSON input" },{status : 404});
+
       await connectDB();
       let user:any ;
       if(name)
@@ -48,11 +51,11 @@ export async function POST(request: NextRequest) {
       if (user) {
         return NextResponse.json(user);
       } else {
-        return NextResponse.json({ error: "No user found" });
+        return NextResponse.json({ error: "No user found" },{status : 404});
       }
     } catch (error:any) {
       console.error("Error:", error.message);
-      return NextResponse.json({ error: "Invalid JSON input" });
+      return NextResponse.json({ error: "Invalid JSON input" },{status : 404});
     }
   }
 
