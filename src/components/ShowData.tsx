@@ -1,6 +1,8 @@
 export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,Modify,Remove}:any){
     return (
-                <div className=" border m-5   relative">
+                <div className={`border m-5   relative`}
+                style={{minHeight : Loading ? '60vh' : 'auto'}}
+                >
           {Loading ? (
             <>
           <div id="loading">
@@ -14,7 +16,7 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               <div>L</div>
             </div>
           </div>
-          <div className=" col-span-4 row-span-12 border m-5  relative">
+          <div className=" col-span-4 row-span-12  m-5  relative">
             <table className="w-full ">
               <thead className="theader">
                 <tr className="hidden">
