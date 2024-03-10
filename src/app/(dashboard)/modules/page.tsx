@@ -147,7 +147,7 @@ setIsOpen(true)
     <div className="col-span-4 row-span-11 ">
       {/* Modal for adding or modifying users */}
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Module</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
         <form
           onSubmit={(e) => e.preventDefault()}
