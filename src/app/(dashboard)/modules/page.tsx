@@ -29,7 +29,14 @@ const [moduleForm, setmoduleForm] = useState({
 
   // Function to open modal
   const openModal = () => {
-    setIsOpen(true);
+if(SelectedRegister == -1 )
+    setmoduleForm({...moduleForm , title:'',description:'',selectedCourse_id:Courses[0]._id,selectedCourse_name:Courses[0].course_name})
+else if(SelectedRegister != null) {
+  setmoduleForm({ title:_Modules[SelectedRegister].module_name || '',description:_Modules[SelectedRegister].description,selectedCourse_id:_Modules[SelectedRegister].course_id,selectedCourse_name:_Modules[SelectedRegister].course_name})
+
+}
+
+setIsOpen(true)
   };
 
   // Function to close modal
@@ -178,14 +185,14 @@ const [moduleForm, setmoduleForm] = useState({
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={(e: any) => { (AddORMod) ? AddModule() : modifyModule(-1) }}
+            onClick={(e: any) => { SelectedRegister < 0 ? AddModule() : modifyModule(-1) }}
           >
             Save
           </button>
         </form>
       </Modal>
       {/* Button to open the modal for adding users */}
-      <div onClick={(e) => { openModal(); setAddORMod(true) }} className="dashboardCards_add">
+      <div onClick={(e) => { OpenAndSet(-1) }} className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
             d="M7.5 0L7.5 15M0 7.5L15 7.5"
