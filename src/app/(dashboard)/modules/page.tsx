@@ -16,6 +16,13 @@ export default function Users() {
   const [isOpen, setIsOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   const [AddORMod, setAddORMod] = useState(true);
+const [SelectedRegister, setSelectedRegister] = useState<any>(null)
+const [moduleForm, setmoduleForm] = useState({
+  title:''
+  ,description : '',
+  selectedCourse_id : '',
+  selectedCourse_name : '',
+})
 
   // Temporary fixing a bug
   var AddTrueORmodifyFalse = true;
@@ -58,19 +65,32 @@ export default function Users() {
       }
     );
   }, []);
+ 
+  useEffect(() => {
+    if (SelectedRegister !== null) {
+      openModal();
+    }
+  }, [SelectedRegister]);
 
+  async function OpenAndSet(index?:number){
+    if( index == undefined)    setSelectedRegister(-1)
+    else  if(index == SelectedRegister) openModal()
+  else   setSelectedRegister(index)
+  
+  console.log(index)
+  }
   // Function to add a module
-  const AddModule = (e: any) => {
+  const AddModule = () => {
     const frm: any = document.querySelector('form');
-    e.preventDefault();
-    const tmp = {
+    const tmp : {course_id:string,course_name:string,title:string,description:string,order:number} = {
       course_id: frm.querySelector("#course").value,
+      course_name: Courses.find((course)=> course._id == frm.querySelector("#course").value)?.course_name || 'seriously',
       title: frm.title.value,
       description: frm.description.value,
       order: _Modules.length
     };
     axios.post(`${API_Server_Modules}`, tmp).then(
-      (res) => {
+      (res:{data:{_id:string}}) => {
         setModules([..._Modules, { _id: res.data._id, ...tmp }]);
         closeModal();
       },
@@ -82,45 +102,31 @@ export default function Users() {
   };
 
   // Function to modify a module
-  async function modifyModule(pointer ?:string) {
-    const tds : any = await document.getElementById(`tr-${pointer}`)?.querySelectorAll("td");
-    if(!tds) return
-    await openModal();
-    const form: any = document.querySelector("form");
-    if (form) {
-      form.title.value = tds[2].textContent;
-      form.description.value =tds[3].textContent ;
-
-      const selectElement : any = document.querySelector("select");
-      if (selectElement) {
-        selectElement.value =( Courses.find(course=>course.course_name = tds[1].textContent)?._id || 0);
-      } 
-    }
-    form.addEventListener("submit",async (e: any) => {
-      e.preventDefault();
-      await axios.put(`${API_Server_Modules}/${tds[0].textContent.trim()}`, {
-        course_id: form.querySelector("#course").value,
-        title: form.title.value,
-        description: form.description.value,
+  async function modifyModule(pointer:number) {
+    
+      await axios.put(`${API_Server_Modules}/${_Modules[pointer]._id}`, {
+        course_id: moduleForm.selectedCourse_id,
+        title: moduleForm.title,
+        description: moduleForm.description,
       }).then(async (res) => {
         console.log(res)
-        tds[1].textContent =await Courses.find(course=>course._id == form.querySelector("#course").value)?.course_name;
-        tds[2].textContent =await form.title.value;
-        tds[3].textContent = await form.description.value;
+        _Modules[pointer].course_name = moduleForm.selectedCourse_name
+        _Modules[pointer].title = moduleForm.title
+        _Modules[pointer].description = moduleForm.description
         closeModal();
       }).catch((error) => {
         alert('Error updating user');
         closeModal();
       });
-    });
-  }
-
+    }
+  
   // Function to remove a module
   async function removeModule(e: any) {
-    const tds = e.target.parentNode.parentNode.children
-    const id = tds[0].textContent;
-    const decision = window.confirm(`Are you sure to delete user ${tds[1].textContent}`)
-    const newState = _Modules.filter((model) => model._id != id);
+    const tds = _Modules[e]
+    const id = tds._id;
+    console.log(_Modules[e])
+    const decision = window.confirm(`Are you sure to delete Module ${tds.module_name} ?`)
+    const newState = _Modules.filter((model:any) => model._id != id);
     if (decision)
       axios.delete(`${API_Server_Modules}/${id}`).then((res) => {
         setModules(newState);
@@ -142,7 +148,7 @@ export default function Users() {
           className="flex flex-col gap-3 w-80 "
         >
           {/* Select dropdown for courses */}
-          <select id="course" className="border h-12 text-primary p-3">
+          <select id="course" value={moduleForm.selectedCourse_id} onChange={e=>setmoduleForm({...moduleForm, selectedCourse_id : e.target.value , selectedCourse_name : Courses.find((course)=>course._id === e.target.value)?.course_name || ''})} className="border h-12 text-primary p-3">
             {Courses.map((course : any) => (
               <option key={course._id} value={course._id}>
                 {course.course_name}
@@ -156,6 +162,8 @@ export default function Users() {
             type="text"
             placeholder="Title"
             name="title"
+            value={moduleForm.title}
+            onChange={(e)=>setmoduleForm({...moduleForm , title:e.target.value})}
           />
           {/* Input field for description */}
           <input
@@ -164,11 +172,13 @@ export default function Users() {
             type="text"
             placeholder="Description"
             name="description"
+            value={moduleForm.description}
+            onChange={(e)=>setmoduleForm({...moduleForm,  description:e.target.value})}
           />
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={(e: any) => { (AddORMod) ? AddModule(e) : modifyModule() }}
+            onClick={(e: any) => { (AddORMod) ? AddModule() : modifyModule(-1) }}
           >
             Save
           </button>
@@ -187,9 +197,9 @@ export default function Users() {
         Add Users
       </div>
       {/* Loading spinner or table of modules */}
-      <ShowData Loading={Loading} Data={_Modules} Cols={['ID','Course','Title','Description','Action']} 
+      <ShowData Loading={Loading} Data={_Modules.map(({course_id , _id , course_name , module_name , description}:any)=>({_id,course_name,module_name,description}))} Cols={['ID','Course','Module Title','Description','Action']} 
             setAddORUpdate={setAddORMod}
-            Modify={modifyModule}
+            Modify={OpenAndSet}
             Remove={removeModule}
             Subject={'Module'}
             />  

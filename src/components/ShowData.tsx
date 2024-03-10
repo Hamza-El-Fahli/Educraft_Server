@@ -38,15 +38,15 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               {Cols.map((col:any,index:any)=> <td key={col}>{col}</td>)}
               </tr>
             </thead>
-            <tbody>
+            <tbody  >
               {/* Mapping over modules to display them in the table */}
               {Data.map((oneData:any,index:number) => (
-                <tr key={index} id={`tr-${index}`}>
+                <tr  key={index} id={`tr-${index}`}>
                   {Object.keys(oneData).map((key:any,index)=>{
                     if(index >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 
                     if(key == '_id') return <td>{oneData[key].slice(-5)}</td>
-                    if(key != '_id') return <td>{typeof oneData[key] != 'object' ? ( key == 'password' ? '******':  oneData[key] ): oneData[key][Object.keys(oneData[key])[1]]}</td>
+                    if(key != '_id') return <td>{ key == 'password' ? '******':  oneData[key] }</td>
                   })}
                   
                   {/* Buttons to modify or delete the module */}

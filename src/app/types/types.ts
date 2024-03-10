@@ -8,23 +8,23 @@ export interface IUser {
     password: string;
   }
   export interface ICourse {
-    _id: number;
+    _id: string;
     course_name: string;
     description: string;
     instructor: number;
   }
 
   export interface ICourse_IModule extends Omit<ICourse,'course_name'> {
-    course_name: {
-      _id : string;
-      course_name : string;
-    };
+    course_name: string
   }
   export interface IModule {
-    _id: number;
+    _id: string;
     course_id: string;
-    title: string;
-    description: number;
+    course_name : string;
+    title : string;
+    module_name ? : string;
+    description: string;
+    order:number
   }
   
 
