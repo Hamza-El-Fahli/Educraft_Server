@@ -69,6 +69,18 @@ tr{
   border-radius: 4px; /* Rounded corners */
 }
 
+.hideScroll::-webkit-scrollbar-thumb {
+  background: gray; /* Color of the thumb */
+  border-radius: 20px; /* Rounded corners */
+}
+.hideScroll::-webkit-scrollbar-track {
+  background: transparent; /* Optional: Use a background color for the track */
+}
+.hideScroll::-webkit-scrollbar {
+  width: 3px;
+  background: transparent; /* Optional: Use a background color for the track */
+}
+
 .modal{
   @apply fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75
 }
