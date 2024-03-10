@@ -18,21 +18,19 @@ export default function Users() {
   const [AddORMod, setAddORMod] = useState(true);
 const [SelectedRegister, setSelectedRegister] = useState<any>(null)
 const [moduleForm, setmoduleForm] = useState({
-  title:''
+  module_name:''
   ,description : '',
   selectedCourse_id : '',
   selectedCourse_name : '',
 })
 
-  // Temporary fixing a bug
-  var AddTrueORmodifyFalse = true;
 
   // Function to open modal
   const openModal = () => {
 if(SelectedRegister == -1 )
-    setmoduleForm({...moduleForm , title:'',description:'',selectedCourse_id:Courses[0]._id,selectedCourse_name:Courses[0].course_name})
+    setmoduleForm({...moduleForm , module_name:'',description:'',selectedCourse_id:Courses[0]._id,selectedCourse_name:Courses[0].course_name})
 else if(SelectedRegister != null) {
-  setmoduleForm({ title:_Modules[SelectedRegister].module_name || '',description:_Modules[SelectedRegister].description,selectedCourse_id:_Modules[SelectedRegister].course_id,selectedCourse_name:_Modules[SelectedRegister].course_name})
+  setmoduleForm({ module_name:_Modules[SelectedRegister].module_name || '',description:_Modules[SelectedRegister].description,selectedCourse_id:_Modules[SelectedRegister].course_id,selectedCourse_name:_Modules[SelectedRegister].course_name})
 
 }
 
@@ -88,16 +86,17 @@ setIsOpen(true)
   }
   // Function to add a module
   const AddModule = () => {
-    const frm: any = document.querySelector('form');
-    const tmp : {course_id:string,course_name:string,title:string,description:string,order:number} = {
-      course_id: frm.querySelector("#course").value,
-      course_name: Courses.find((course)=> course._id == frm.querySelector("#course").value)?.course_name || 'seriously',
-      title: frm.title.value,
-      description: frm.description.value,
+    const tmp : {course_id:string,course_name:string,module_name:string,description:string,order:number} = {
+      course_id: moduleForm.selectedCourse_id,
+      course_name: moduleForm.selectedCourse_name || 'seriously',
+      module_name: moduleForm.module_name,
+      description: moduleForm.description,
       order: _Modules.length
     };
     axios.post(`${API_Server_Modules}`, tmp).then(
       (res:{data:{_id:string}}) => {
+        console.log(_Modules)
+        console.log( { _id: res.data._id, ...tmp })
         setModules([..._Modules, { _id: res.data._id, ...tmp }]);
         closeModal();
       },
@@ -109,17 +108,17 @@ setIsOpen(true)
   };
 
   // Function to modify a module
-  async function modifyModule(pointer:number) {
+  async function modifyModule() {
     
-      await axios.put(`${API_Server_Modules}/${_Modules[pointer]._id}`, {
+      await axios.put(`${API_Server_Modules}/${_Modules[SelectedRegister]._id}`, {
         course_id: moduleForm.selectedCourse_id,
-        title: moduleForm.title,
+        module_name: moduleForm.module_name,
         description: moduleForm.description,
       }).then(async (res) => {
         console.log(res)
-        _Modules[pointer].course_name = moduleForm.selectedCourse_name
-        _Modules[pointer].title = moduleForm.title
-        _Modules[pointer].description = moduleForm.description
+        _Modules[SelectedRegister].course_name = moduleForm.selectedCourse_name
+        _Modules[SelectedRegister].module_name = moduleForm.module_name
+        _Modules[SelectedRegister].description = moduleForm.description
         closeModal();
       }).catch((error) => {
         alert('Error updating user');
@@ -162,15 +161,15 @@ setIsOpen(true)
               </option>
             ))}
           </select>
-          {/* Input field for title */}
+          {/* Input field for module_name */}
           <input
             required
             className="text-primary h-12 border p-3"
             type="text"
-            placeholder="Title"
-            name="title"
-            value={moduleForm.title}
-            onChange={(e)=>setmoduleForm({...moduleForm , title:e.target.value})}
+            placeholder="module_name"
+            name="module_name"
+            value={moduleForm.module_name}
+            onChange={(e)=>setmoduleForm({...moduleForm , module_name:e.target.value})}
           />
           {/* Input field for description */}
           <input
@@ -185,7 +184,7 @@ setIsOpen(true)
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={(e: any) => { SelectedRegister < 0 ? AddModule() : modifyModule(-1) }}
+            onClick={(e: any) => { SelectedRegister < 0 ? AddModule() : modifyModule() }}
           >
             Save
           </button>

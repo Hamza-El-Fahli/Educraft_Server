@@ -21,8 +21,7 @@ export interface IUser {
     _id: string;
     course_id: string;
     course_name : string;
-    title : string;
-    module_name ? : string;
+    module_name : string;
     description: string;
     order:number
   }
