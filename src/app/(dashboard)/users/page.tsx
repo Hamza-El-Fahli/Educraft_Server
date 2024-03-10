@@ -5,7 +5,7 @@ import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IUser } from "@/app/types/types";
+import { IUser } from "@/types/types";
 import { API_Server_Users } from "@/configuration/API";
 import UsersFormComponent from "@/components/UsersFormComponent";
 

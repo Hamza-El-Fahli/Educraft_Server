@@ -4,7 +4,7 @@ import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ICourse } from "@/app/types/types";
+import { ICourse } from "@/types/types";
 import { API_Server_Courses } from "@/configuration/API";
 
 
