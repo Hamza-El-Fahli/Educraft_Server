@@ -10,7 +10,9 @@ export async function POST(request: NextRequest) {
         await connectDB()
         const { module_id, title, description } = await request.json()
         const res = await Chapters.create({ module_id, title, description })
-        return NextResponse.json({ message: "Chapter created successfuly" , _id : res._id }, { status: 201 })
+        const modules = await _Modules.findById(module_id );
+
+        return NextResponse.json({ message: "Chapter created successfuly" , _id : res._id , module_name : modules?.title }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ error: "No Chapters created", contexst: error })
     }

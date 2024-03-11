@@ -123,8 +123,9 @@ const [ChapterForm, setChapterForm] = useState<{
       description: ChapterForm.description,
     };
     axios.post(`${API_Server_Chapters}`, tmp).then(
-      (res) => {
-        setChapters([...Chapters, { _id: res.data._id, ...tmp }]);
+      (res : {data:{_id : string , module_name:string}}) => {
+        console.log( res.data)
+        setChapters([...Chapters, { _id: res.data._id , module_name : res.data.module_name, ...tmp }]);
         closeModal();
       },
       (rej) => {
