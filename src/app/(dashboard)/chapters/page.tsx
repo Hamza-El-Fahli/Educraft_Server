@@ -40,8 +40,9 @@ const [ChapterForm, setChapterForm] = useState<{
 
   // Function to open modal
   const openModal = () => {
-    if(SelectedRegister == -1)     
-      setChapterForm({...ChapterForm,title:'',description:'',selectedModule:'', selectedCourse:''})
+    if(SelectedRegister == -1)     {
+      setChapterForm({...ChapterForm,title:'',description:'',selectedModule:'', selectedCourse:Courses[0]?._id})
+    }
     else if(SelectedRegister != null )
     {let course_id = '';
     ChapterForm.modules.forEach((module:any) => {
@@ -84,7 +85,7 @@ const [ChapterForm, setChapterForm] = useState<{
       (res:any) => {
         setChapterForm({...ChapterForm,selectedCourse:res.data[0]._id})
         setCourses(res.data)
-
+          
       },
       (rej) => {
         alert(rej);
@@ -202,10 +203,11 @@ console.log(index)
           {/* Select dropdown for modules */}
           <select id="modules" value={ChapterForm.selectedModule} className="border h-12 text-primary p-3" onChange={(e:any)=>{setChapterForm({...ChapterForm,selectedModule : e.target.value})}}>
             {ChapterForm.modules.map((module : any) => {
-              if(module.course_id._id == ChapterForm.selectedCourse || !ChapterForm.selectedCourse)
+              console.log(ChapterForm.selectedCourse)
+if(module.course_id == ChapterForm.selectedCourse || !ChapterForm.selectedCourse)
               return (
               <option key={module._id} value={module._id}>
-                {module.title}
+                {module.module_name} 
               </option>
             )})}
           </select>
@@ -239,7 +241,7 @@ console.log(index)
         </form>
       </Modal>
       {/* Button to open the modal for adding users */}
-      <div onClick={(e) => { openModal(); setAddORMod(true) ; setChapterForm({...ChapterForm,title:'',description:'',selectedCourse:'',selectedModule:''})}} className="dashboardCards_add">
+      <div onClick={(e) => { openModal(); setAddORMod(true) ; OpenAndSet(-1)}} className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
             d="M7.5 0L7.5 15M0 7.5L15 7.5"
