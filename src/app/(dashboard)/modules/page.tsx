@@ -113,9 +113,10 @@ setIsOpen(true)
       await axios.put(`${API_Server_Modules}/${_Modules[SelectedRegister]._id}`, {
         course_id: moduleForm.selectedCourse_id,
         module_name: moduleForm.module_name,
+        title: moduleForm.module_name,
         description: moduleForm.description,
       }).then(async (res) => {
-        console.log(res)
+        console.log(moduleForm)
         _Modules[SelectedRegister].course_name = moduleForm.selectedCourse_name
         _Modules[SelectedRegister].module_name = moduleForm.module_name
         _Modules[SelectedRegister].description = moduleForm.description
