@@ -33,7 +33,7 @@ const [ChapterForm, setChapterForm] = useState<{
     selectedModule:''
   }
   )
-  const [Courses, setCourses] = useState([])
+  const [Courses, setCourses] = useState<any>([])
   const [SelectedRegister, setSelectedRegister] = useState<any>(null)
   const [Chapters, setChapters] = useState<any>([]);
   
@@ -260,7 +260,7 @@ if(module.course_id == ChapterForm.selectedCourse || !ChapterForm.selectedCourse
             setAddORUpdate={setAddORMod}
             Modify={OpenAndSet}
             Remove={removeModule}
-            Subject={'Module'}
+            Subject={'Chapter'}
             />  
     </div>
   )
