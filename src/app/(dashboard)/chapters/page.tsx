@@ -19,7 +19,7 @@ export default function Chapters() {
 
 
 const [ChapterForm, setChapterForm] = useState<{
-  modules: {_id:number,title:string}[];
+  modules: {_id:number,module_name:string,course_id:string,course_name:string,order:number,description:string}[];
   title: string;
   description: string;
   selectedCourse: string;
@@ -40,14 +40,16 @@ const [ChapterForm, setChapterForm] = useState<{
 
   // Function to open modal
   const openModal = () => {
+    
     if(SelectedRegister == -1)     {
       setChapterForm({...ChapterForm,title:'',description:'',selectedModule:'', selectedCourse:Courses[0]?._id})
     }
     else if(SelectedRegister != null )
-    {let course_id = '';
-    ChapterForm.modules.forEach((module:any) => {
-      if(module._id == Chapters[SelectedRegister].module_id ) course_id = module.course_id._id
-    });
+    {
+    const course_id = ChapterForm.modules.find((module)=> module._id == Chapters[SelectedRegister].module_id)?.course_id || ''
+    // ChapterForm.modules.forEach((module:any) => {
+    //   if(module._id == Chapters[SelectedRegister].module_id ) course_id = module.course_id._id
+    // });
     const tmp = {
       title : Chapters[SelectedRegister].title,
       description : Chapters[SelectedRegister].description,
@@ -152,7 +154,7 @@ console.log(index)
 
         const tds : any = document.querySelectorAll(`[id=tr-${SelectedRegister}] td`)
         console.log()
-        Chapters[SelectedRegister].module_name = ChapterForm.modules.filter((module:any)=>module._id == ChapterForm.selectedModule )[0].title
+        Chapters[SelectedRegister].module_name = ChapterForm.modules.filter((module:any)=>module._id == ChapterForm.selectedModule )[0].module_name
         Chapters[SelectedRegister].module_id = ChapterForm.selectedModule
         Chapters[SelectedRegister].title = ChapterForm.title
         Chapters[SelectedRegister].description = ChapterForm.description
