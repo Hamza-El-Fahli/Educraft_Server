@@ -22,12 +22,12 @@ const [Courses, setCourses] = useState<any>({courses : [] ,  selectedCourse : ''
 const [Modules, setModules] = useState<any>({modules : [] ,  selectedModule : ''})
 const [Chapters, setChapters] = useState<any>({chapters : [] ,  selectedChapter : ''})
 const [Quizzes, setQuizzes] = useState<any>([])
-
+const [SearchedQuiz, setSearchedQuiz] = useState<number>(0)
 
 useEffect(()=>{
   axios.get('http://localhost:3000/api/courses')
   .then((res)=>{
-    setCourses({courses : res.data , selectedCourse : res.data[0]._id})
+    setCourses({courses : res.data , selectedCourse : '-1'})
   })
   .catch((error)=>{
     console.error(error)
@@ -40,7 +40,7 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get('http://localhost:3000/api/modules')
   .then((res)=>{
-    setModules({modules : res.data , selectedModule : res.data[0]._id})
+    setModules({modules : res.data , selectedModule : '-1'})
   })
   .catch((error)=>{
     console.error(error)
@@ -53,7 +53,7 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get('http://localhost:3000/api/chapters')
   .then((res)=>{
-    setChapters({chapters : res.data , selectedChapter : res.data[0]._id})
+    setChapters({chapters : res.data , selectedChapter : '-1'})
   })
   .catch((error)=>{
     console.error(error)
@@ -198,8 +198,9 @@ useEffect(()=>{
       </form>
     </Modal>
       <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
+      search={{setSearchedQuiz,SearchedQuiz}}
       setFilters={{setChapters , setModules , setCourses}} />
-      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} />
+      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} search={SearchedQuiz} />
     </div>
   );
 }
