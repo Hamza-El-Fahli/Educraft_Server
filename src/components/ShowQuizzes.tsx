@@ -37,15 +37,21 @@ export default function ShowQuizes({Quizzes , Filters}:{Quizzes : any , Filters:
 //           </div>
 <div
             key={index}
-           className={`border-2 rounded-md h-10 duration-500 p-0 m-2 overflow-hidden bg-secondary z-0 hover:h-60 quizHovering`}            >
+           className={`border-2 rounded-md h-10 duration-500 p-0 m-2 overflow-hidden bg-secondary z-0 hover:h-fit quizHovering`}            >
             <div className="h-10 p-0 m-0 flex items-center px-5 bg-blue-950"             
->Quiz N°{index+1} {quiz.chapter_name}</div>
+>Quiz N°{index+1}</div>
               <>
-              <div className={` bg-secondary duration-200  h-10 p-0 m-0 flex items-center px-5 `}>Answer</div>
-              <div className={` bg-secondary duration-150  h-10 p-0 m-0 flex items-center px-5 `}>Answer</div>
-              <div className={` bg-secondary duration-100  h-10 p-0 m-0 flex items-center px-5 `}>Answer</div>
-              <div className={` bg-secondary duration-75  h-10 p-0 m-0 flex items-center px-5 `}>Answer</div>
-              <div className={` bg-secondary duration-0  h-10 p-0 m-0 flex items-center px-5 `}>Correct</div>
+                <div className={` bg-secondary duration-0  p-2 m-0 flex items-center px-5 border-b-4 border-b-orange-50 `}>{quiz.question}</div>
+              <div className="max-h-40 overflow-y-scroll">
+
+              {quiz.answers.map((answer:any)=>{
+                return (
+                  <div className={` bg-secondary duration-200  h-10 p-0 m-0 flex items-center px-5 border-t `}>{answer}</div>
+                  
+                  )
+                })}
+                </div>
+              <div className={` bg-secondary duration-150  h-10 p-2 m-0 flex items-center px-5 border-t-4 border-t-orange-50`}>Correct : {quiz.correct_answer}</div>
               </>
             
           </div>

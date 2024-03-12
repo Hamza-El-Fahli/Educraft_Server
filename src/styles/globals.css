@@ -129,3 +129,4 @@ tr{
   transition-delay: 0.2s; /* Delay transition after losing focus */
   z-index: 0; /* Reset z-index after losing focus */
 }
+

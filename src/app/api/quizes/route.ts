@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
         const res = quizes.map((quiz)=>{
             return {
                 _id : quiz._id,
+                question : quiz.question,
                 answers : quiz.answers,
                 correct_answer : quiz.correct_answer,
                 chapter_id : quiz.chapter_id,
