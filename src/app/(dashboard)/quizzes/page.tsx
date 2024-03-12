@@ -5,7 +5,7 @@ import ShowQuizes from "@/components/ShowQuizzes";
 import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
-export default function Quizes() {
+export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
   const [quizForm, setquizForm] = useState({
@@ -21,6 +21,9 @@ export default function Quizes() {
 const [Courses, setCourses] = useState<any>({courses : [] ,  selectedCourse : ''})
 const [Modules, setModules] = useState<any>({modules : [] ,  selectedModule : ''})
 const [Chapters, setChapters] = useState<any>({chapters : [] ,  selectedChapter : ''})
+const [Quizzes, setQuizzes] = useState<any>([])
+
+
 useEffect(()=>{
   axios.get('http://localhost:3000/api/courses')
   .then((res)=>{
@@ -57,6 +60,15 @@ useEffect(()=>{
   })
 },[])
 
+useEffect(()=>{
+  axios.get('http://localhost:3000/api/quizes')
+  .then((res)=>{
+    setQuizzes(res.data)
+  })
+  .catch((error:any)=>{
+    console.log(error)
+  })
+},[])
 
 
 
@@ -92,7 +104,6 @@ useEffect(()=>{
   }, [SelectedRegister]);
 
 
-  let Data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
   return (
     <div className="col-span-4">
@@ -188,7 +199,7 @@ useEffect(()=>{
     </Modal>
       <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
       setFilters={{setChapters , setModules , setCourses}} />
-      <ShowQuizes Data={Data} />
+      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} />
     </div>
   );
 }
