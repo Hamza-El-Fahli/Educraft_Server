@@ -59,7 +59,7 @@ export default function UsersFormComponent({UserForm,setUserForm,AddORMod,AddUse
     onChange={(e) => setUserForm({ ...UserForm, filiere: e.target.value })}
   />
   <button 
-              onClick={(e: any) => { (AddORMod) ? AddUser(e) : modifyUser() }}
+              onClick={(e: any) => { (AddORMod) ? AddUser() : modifyUser() }}
 
   className="text-primary h-12 border p-3">
     Save

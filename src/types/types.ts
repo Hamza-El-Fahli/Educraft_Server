@@ -40,3 +40,11 @@ export interface IModule_Form {
   selectedCourse_id : string;
   selectedCourse_name : string;
 }
+export interface IUser_Form {
+  name: string;
+  filiere: string;
+  annee: number;
+  profile: string;
+  email: string;
+  password: string;
+}

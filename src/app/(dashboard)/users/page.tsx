@@ -5,7 +5,7 @@ import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IUser } from "@/types/types";
+import { IUser, IUser_Form } from "@/types/types";
 import { API_Server_Users } from "@/configuration/API";
 import UsersFormComponent from "@/components/UsersFormComponent";
 
@@ -13,12 +13,12 @@ import UsersFormComponent from "@/components/UsersFormComponent";
 
 // Component function
 export default function Users() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [loading, setloading] = useState(true);
-  const [AddORMod, setAddORMod] = useState(true)
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setloading] = useState<boolean>(true);
+  const [AddORMod, setAddORMod] = useState<boolean>(true)
   const [Users, setUsers] = useState<IUser[]>([]);
-const [selectedRegister, setselectedRegister] = useState<any>(null)
-const [UserForm, setUserForm] = useState( {
+const [selectedRegister, setselectedRegister] = useState<number|null>(null)
+const [UserForm, setUserForm] = useState<IUser_Form>( {
   name: '',
   filiere: '',
   annee: 0,
@@ -29,7 +29,7 @@ const [UserForm, setUserForm] = useState( {
 
 
   // Function to open modal
-  const openModal = () => {
+  const openModal = ():void => {
     if(selectedRegister == -1) {setUserForm( {
       name: '',
       filiere: '',
@@ -46,7 +46,7 @@ const [UserForm, setUserForm] = useState( {
   };
 
   // Function to close modal
-  const closeModal = () => {
+  const closeModal = ():void => {
     setIsOpen(false);
   };
 
@@ -54,7 +54,7 @@ const [UserForm, setUserForm] = useState( {
   useEffect(() => {
     // Fetching users from API
     axios.get(`${API_Server_Users}`).then(
-      (res) => {
+      (res:{data:IUser[]}) => {
         setUsers(res.data);
         setloading(false);
       },
@@ -71,13 +71,11 @@ const [UserForm, setUserForm] = useState( {
   }, [selectedRegister]);
 
   // Function to handle form submission for adding or modifying a user
-  const AddUser = (e: any) => {
-    
-    e.preventDefault();
-    const tmp = UserForm
-    axios.put(`${API_Server_Users}`, tmp).then(
-      (res) => {
-        setUsers([...Users, { _id: res.data._id, ...tmp }]);
+  const AddUser = () => {
+    const newUser = UserForm
+    axios.put(`${API_Server_Users}`, newUser).then(
+      (res:{data:{_id:string}}) => {
+        setUsers([...Users, { _id: res.data._id, ...newUser }]);
         closeModal();
       }
     ).catch((error)=>{
@@ -94,17 +92,17 @@ const [UserForm, setUserForm] = useState( {
     else  if(index == selectedRegister) openModal()
   else   setselectedRegister(index)
   
-  console.log(index)
+  // console.log(index)
   }
 
   // Function to modify a user
-  async function modifyUser(pointer?: any) {
-   
+  async function modifyUser() {
+   if(selectedRegister == null) throw Error('SelectedRgister is null')
       axios.put(`${API_Server_Users}/${Users[selectedRegister]._id}`, UserForm)
-      .then((res) => {
+      .then(() => {
         Users[selectedRegister] = {...Users[selectedRegister],...UserForm}
         closeModal()})
-      .catch((error) => {
+      .catch(() => {
         alert('Error updating user');
         closeModal(); })
     
@@ -112,9 +110,9 @@ const [UserForm, setUserForm] = useState( {
 
   // Function to remove a user
   async function removeUser(pointer: any) {
-    const tds = Users[pointer];
-    const id = tds._id;
-    const decision = window.confirm(`Are you sure to delete user ${tds.name}`);
+    const currentUser = Users[pointer];
+    const id = currentUser._id;
+    const decision = window.confirm(`Are you sure to delete user ${currentUser.name}`);
     const newState = Users.filter((user) => user._id != id);
     if (decision) {
       axios.delete(`${API_Server_Users}/${id}`).then((res) => {
