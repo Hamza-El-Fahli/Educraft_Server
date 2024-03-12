@@ -1,4 +1,5 @@
 export function Filters({setSelectedRegister , Data , setFilters}:any) {
+  
   return (
     <div className="flex flex-row-reverse">
       <div className=" flex items-center">
@@ -42,12 +43,9 @@ export function Filters({setSelectedRegister , Data , setFilters}:any) {
               )
             })}
           </select>
-          <div className="border ml-auto rounded-full m-1 p-2">Reset Filters</div>
-        </div>
+          <input className=" border m-1 rounded-full flex-auto p-2 text-black" placeholder='Here ID input' />
 
-        <div className=" flex gap-5 text-center">
-          <div className=" border m-1 rounded-full flex-auto p-2 ">Here ID input</div>
-          <div className=" border m-1 rounded-full p-2 ">Search button </div>
+          <div className="border ml-auto rounded-full m-1 p-2">Reset Filters</div>
         </div>
       </div>
     </div>
