@@ -14,9 +14,6 @@ export interface IUser {
     instructor: number;
   }
 
-  export interface ICourse_IModule extends Omit<ICourse,'course_name'> {
-    course_name: string
-  }
   export interface IModule {
     _id: string;
     course_id: string;
@@ -25,10 +22,10 @@ export interface IUser {
     description: string;
     order:number
   }
-  
+   
 
   
-interface IChapter  {
+export interface IChapter  {
   _id: number;
   module_id: string;
   title: string;
@@ -37,3 +34,9 @@ interface IChapter  {
 
   
 
+export interface IModule_Form {
+  module_name:string ;
+  description :string;
+  selectedCourse_id : string;
+  selectedCourse_name : string;
+}
