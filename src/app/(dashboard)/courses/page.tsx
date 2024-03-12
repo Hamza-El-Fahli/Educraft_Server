@@ -101,7 +101,7 @@ export default function Courses() {
     const decision = window.confirm(
       `Are you sure to delete course ${tds[1].textContent}`
     );
-    const newState = Courses.filter((user) => user._id != id);
+    const newState = Courses.filter((course) => course._id != id);
     if (decision)
       axios.delete(`${API_Server_Courses}/${id}`).then(
         (res) => {
@@ -119,7 +119,7 @@ export default function Courses() {
       {/* Main View */}
       {/* Form to add course */}
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Course</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
         <form
           onSubmit={(e) => e.preventDefault()}

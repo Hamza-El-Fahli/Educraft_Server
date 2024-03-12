@@ -150,7 +150,7 @@ const [UserForm, setUserForm] = useState( {
       </div>
       {/* loading spinner or table of users */}
 
-      <ShowData loading={loading} Data={Users} Cols={["ID",  "UserName",  "Email",  "Password",  "Profile",  "Annee",  "filiere",  "Action"]} 
+      <ShowData Loading={loading} Data={Users} Cols={["ID",  "UserName",  "Email",  "Password",  "Profile",  "Annee",  "filiere",  "Action"]} 
             setAddORUpdate={setAddORMod}
             Modify={OpenAndSet}
             Remove={removeUser}
