@@ -1,4 +1,4 @@
-export function Filters({setSelectedRegister}:any) {
+export function Filters({setSelectedRegister , Data , setFilters}:any) {
   return (
     <div className="flex flex-row-reverse">
       <div className=" flex items-center">
@@ -18,9 +18,30 @@ export function Filters({setSelectedRegister}:any) {
 
       <div className=" flex-auto flex  flex-col">
         <div className=" flex gap-5 text-center">
-          <div className="m-1 border rounded-md p-2">Class selection</div>
-          <div className="m-1 border rounded-md p-2">Module selection</div>
-          <div className="m-1 border rounded-md p-2">Chapter selection</div>
+        <select className="m-1 border rounded-md p-2 text-black max-w-48" value={Data.Courses.selectedCourse} onChange={(e)=>{setFilters.setCourses({...Data.Courses , selectedCourse : e.target.value})}}>
+            
+            {Data.Courses.courses.map((course:any)=>{
+              return (
+                <option value={course._id}>{course.course_name}</option>
+              )
+            })}
+          </select>
+          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={Data.Modules.selectedModule} onChange={(e)=>{setFilters.setModules({...Data.Modules , selectedModule : e.target.value})}}>
+            
+            {Data.Modules.modules.map((module:any)=>{
+              return (
+                <option value={module._id}>{module.module_name}</option>
+              )
+            })}
+          </select>
+          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={Data.Chapters.selectedChapter} onChange={(e)=>{setFilters.setChapters({...Data.Chapters , selectedChapter : e.target.value})}}>
+            
+            {Data.Chapters.chapters.map((chapter:any)=>{
+              return (
+                <option value={chapter._id}>{chapter.title}</option>
+              )
+            })}
+          </select>
           <div className="border ml-auto rounded-full m-1 p-2">Reset Filters</div>
         </div>
 

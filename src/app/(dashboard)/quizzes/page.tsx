@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ShowQuizes from "@/components/ShowQuizzes";
 import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
+import axios from "axios";
 export default function Quizes() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
@@ -15,6 +16,50 @@ export default function Quizes() {
     correctAnswer: "",
     answers: [""],
   });
+
+
+const [Courses, setCourses] = useState<any>({courses : [] ,  selectedCourse : ''})
+const [Modules, setModules] = useState<any>({modules : [] ,  selectedModule : ''})
+const [Chapters, setChapters] = useState<any>({chapters : [] ,  selectedChapter : ''})
+useEffect(()=>{
+  axios.get('http://localhost:3000/api/courses')
+  .then((res)=>{
+    setCourses({courses : res.data , selectedCourse : res.data[0]._id})
+  })
+  .catch((error)=>{
+    console.error(error)
+  })
+},[])
+
+
+
+
+useEffect(()=>{
+  axios.get('http://localhost:3000/api/modules')
+  .then((res)=>{
+    setModules({modules : res.data , selectedModule : res.data[0]._id})
+  })
+  .catch((error)=>{
+    console.error(error)
+  })
+},[])
+
+
+
+
+useEffect(()=>{
+  axios.get('http://localhost:3000/api/chapters')
+  .then((res)=>{
+    setChapters({chapters : res.data , selectedChapter : res.data[0]._id})
+  })
+  .catch((error)=>{
+    console.error(error)
+  })
+},[])
+
+
+
+
   function AddAnswer() {
     setquizForm({ ...quizForm, answers: [...quizForm.answers, ""] });
   }
@@ -141,7 +186,8 @@ export default function Quizes() {
         </div>
       </form>
     </Modal>
-      <Filters setSelectedRegister={setSelectedRegister} />
+      <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
+      setFilters={{setChapters , setModules , setCourses}} />
       <ShowQuizes Data={Data} />
     </div>
   );
