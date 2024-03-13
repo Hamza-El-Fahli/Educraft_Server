@@ -1,4 +1,14 @@
 // Importing necessary components and modules
+
+// 
+// 
+// 
+//      Still using DOM Manipulation , not using React State Benefits
+// 
+// 
+// 
+// 
+
 "use client";
 import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
@@ -11,9 +21,9 @@ import { API_Server_Courses } from "@/configuration/API";
 
 export default function Courses() {
   // State variables
-  const [isOpen, setIsOpen] = useState(false);
-  const [Loading, setLoading] = useState(true);
-  const [AddORMod, setAddORMod] = useState(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [Loading, setLoading] = useState<boolean>(true);
+  const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [Courses, setCourses] = useState<ICourse[]>([]);
 
   // Function to open modal
@@ -29,7 +39,7 @@ export default function Courses() {
   // Effect to fetch courses from the server
   useEffect(() => {
     axios.get(`${API_Server_Courses}`).then(
-      (res) => {
+      (res:{data:ICourse[]}) => {
         setCourses(res.data);
         setLoading(false);
       },
