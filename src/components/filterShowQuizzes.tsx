@@ -67,10 +67,10 @@ export function Filters({dataFilters, setSelectedRegister , Data , setFilters , 
           </select>
           <input className=" border m-1 rounded-full flex-auto py-2 px-5 text-black " placeholder='Search by number' type="number" value={search.SearchedQuiz || ''} onChange={(e)=>search.setSearchedQuiz(parseInt(e.target.value))} />
 
-          <button className="border ml-auto rounded-full m-1 p-2 text-firstBlue border-firstBlue hover:border-white hover:text-white hover:bg-firstBlue"
+          <button  className="border ml-auto rounded-full m-1 p-2 text-firstBlue border-firstBlue hover:border-white hover:text-white hover:bg-firstBlue "
           onClick={()=>resetFilters()}
           
-          >Reset Filters</button>
+          >Reset</button>
         </div>
       </div>
     </div>

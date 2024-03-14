@@ -102,7 +102,7 @@ useEffect(()=>{
   function openModal() {
     if(SelectedRegister == -1){
           setisOpen(true);
-          setquizForm({ seletedCourse: "1", selectedModule: "1", selectedChapter: "1", quizNumber: "1", correctAnswer: "", answers: [""] });
+          setquizForm({ seletedCourse: Quizzes[0].course_id, selectedModule: Quizzes[0].module_id, selectedChapter: Quizzes[0].chapter_id, quizNumber: Quizzes.length+'', correctAnswer: "", answers: [""] });
         }
     else{
       setquizForm({
@@ -129,7 +129,7 @@ useEffect(()=>{
 
 
   return (
-    <div className="col-span-4">
+    <div className="col-span-4 ">
       <Modal isOpen={isOpen} onClose={closeModal}>
       <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
       <p className="mb-4 text-blue-400">Fill the form</p>
@@ -137,6 +137,8 @@ useEffect(()=>{
         onSubmit={(e) => e.preventDefault()}
         className="flex flex-col gap-3 w-80 "
       >
+        <div className="flex flex-col">
+          
         <select
           name="course"
           id=""
@@ -146,13 +148,9 @@ useEffect(()=>{
             setquizForm({ ...quizForm, seletedCourse: e.target.value })
           }
         >
-          {Courses.map((course)=>(
-            <option value={course._id}>{course.course_name}</option>
+          {Courses.map((course,index)=>(
+            <option key={index} value={course._id}>{course.course_name}</option>
           ))}
-          <option value="1">CCNA1</option>
-          <option value="2">CCNA2</option>
-          <option value="3">CCNA3</option>
-          <option value="4">CCNA4</option>
         </select>
         <select
           name="module"
@@ -163,10 +161,11 @@ useEffect(()=>{
             setquizForm({ ...quizForm, selectedModule: e.target.value })
           }
         >
-          <option value="1">Module1</option>
-          <option value="2">Module2</option>
-          <option value="3">Module3</option>
-          <option value="4">Module4</option>
+          {Modules.map((modulee,index)=>{
+            if(modulee.course_id != quizForm.seletedCourse) return
+            return (
+            <option key={index} value={modulee._id}>{modulee.module_name}</option>
+          )})}
         </select>
 
         <select
@@ -178,11 +177,14 @@ useEffect(()=>{
             setquizForm({ ...quizForm, selectedChapter: e.target.value })
           }
         >
-          <option value="1">Chapter1</option>
-          <option value="2">Chapter2</option>
-          <option value="3">Chapter3</option>
-          <option value="4">Chapter4</option>
+          {Chapters.map((chapter,index)=>{
+                        if(chapter.module_id != quizForm.selectedModule) return
+
+            return    (
+            <option key={index} value={chapter._id}>{chapter.title}</option>
+          )})}
         </select>
+        </div>
 
         <input
           type="text"
@@ -225,10 +227,10 @@ useEffect(()=>{
       </form>
     </Modal>
       <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
-      
       search={{setSearchedQuiz,SearchedQuiz}}
       setFilters={setdataFilters} />
       <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} />
+    
     </div>
   );
 }
