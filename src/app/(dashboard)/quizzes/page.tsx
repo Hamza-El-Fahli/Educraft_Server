@@ -5,7 +5,7 @@ import ShowQuizes from "@/components/ShowQuizzes";
 import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
-import { IQuizz } from "@/types/types";
+import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
@@ -19,16 +19,25 @@ export default function QuizesScreen() {
   });
 
 
-const [Courses, setCourses] = useState<any>({courses : [] ,  selectedCourse : ''})
-const [Modules, setModules] = useState<any>({modules : [] ,  selectedModule : ''})
-const [Chapters, setChapters] = useState<any>({chapters : [] ,  selectedChapter : ''})
+const [Courses, setCourses] = useState<ICourse[]>([])
+const [Modules, setModules] = useState<IModule[]>([])
+const [Chapters, setChapters] = useState<IChapter[]>([])
 const [Quizzes, setQuizzes] = useState<IQuizz[]>([])
 const [SearchedQuiz, setSearchedQuiz] = useState<number>(0)
+
+const [dataFilters, setdataFilters] = useState({
+  selectedCourse : '-1',
+  selectedModule : '-1',
+  selectedChapter : '-1',
+})
+
+
 
 useEffect(()=>{
   axios.get('http://localhost:3000/api/courses')
   .then((res)=>{
-    setCourses({courses : res.data , selectedCourse : '-1'})
+    console.log(res.data)
+    setCourses(res.data)
   })
   .catch((error)=>{
     console.error(error)
@@ -41,7 +50,7 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get('http://localhost:3000/api/modules')
   .then((res)=>{
-    setModules({modules : res.data , selectedModule : '-1'})
+    setModules(res.data)
   })
   .catch((error)=>{
     console.error(error)
@@ -54,7 +63,7 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get('http://localhost:3000/api/chapters')
   .then((res)=>{
-    setChapters({chapters : res.data , selectedChapter : '-1'})
+    setChapters(res.data)
   })
   .catch((error)=>{
     console.error(error)
@@ -137,6 +146,9 @@ useEffect(()=>{
             setquizForm({ ...quizForm, seletedCourse: e.target.value })
           }
         >
+          {Courses.map((course)=>(
+            <option value={course._id}>{course.course_name}</option>
+          ))}
           <option value="1">CCNA1</option>
           <option value="2">CCNA2</option>
           <option value="3">CCNA3</option>
@@ -212,10 +224,11 @@ useEffect(()=>{
         <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third ">Save</button>
       </form>
     </Modal>
-      <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
+      <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
+      
       search={{setSearchedQuiz,SearchedQuiz}}
-      setFilters={{setChapters , setModules , setCourses}} />
-      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} />
+      setFilters={setdataFilters} />
+      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} />
     </div>
   );
 }

@@ -1,8 +1,17 @@
-export function Filters({setSelectedRegister , Data , setFilters , search}:any) {
+import { IChapter, ICourse, IModule } from "@/types/types"
+import { useState } from "react"
+
+export function Filters({dataFilters, setSelectedRegister , Data , setFilters , search}:{dataFilters:any,setSelectedRegister:any,Data:{Courses : ICourse[] , Modules : IModule[] , Chapters : IChapter[]},setFilters:any , search:any}) {
+
+
+
   function resetFilters(){
-    setFilters.setCourses({...Data.Courses , selectedCourse : -1})
-    setFilters.setModules({...Data.Modules , selectedModule : -1})
-    setFilters.setChapters({...Data.Chapters , selectedChapter : -1})
+    setFilters({
+      selectedCourse : '-1',
+      selectedModule : '-1',
+      selectedChapter : '-1',
+      }
+    )
   } 
   return (
     <div className="flex flex-row-reverse">
@@ -23,28 +32,34 @@ export function Filters({setSelectedRegister , Data , setFilters , search}:any) 
 
       <div className=" flex-auto flex  flex-col">
         <div className=" flex gap-5 text-center">
-        <select className="m-1 border rounded-md p-2 text-black max-w-48" value={Data.Courses.selectedCourse} onChange={(e)=>{setFilters.setCourses({...Data.Courses , selectedCourse : e.target.value})}}>
+        <select className="m-1 border rounded-md p-2 text-black max-w-48" value={dataFilters.selectedCourse} onChange={(e)=>{setFilters({...dataFilters,selectedCourse : e.target.value})}}>
         <option value={-1}>Courses</option>
 
-            {Data.Courses.courses.map((course:any)=>{
+            {Data.Courses.map((course:any)=>{
               return (
                 <option value={course._id}>{course.course_name}</option>
               )
             })}
           </select>
-          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={Data.Modules.selectedModule} onChange={(e)=>{setFilters.setModules({...Data.Modules , selectedModule : e.target.value})}}>
+          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={dataFilters.selectedModule} onChange={(e)=>{setFilters({...dataFilters,selectedModule : e.target.value})}}>
           <option value={-1}>Modules</option>
 
-            {Data.Modules.modules.map((module:any)=>{
+            {Data.Modules.map((module:any)=>{
+              if(dataFilters.selectedCourse != '-1' ) 
+                if(dataFilters.selectedCourse != module.course_id) return 
+                  
               return (
                 <option value={module._id}>{module.module_name}</option>
               )
             })}
           </select>
-          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={Data.Chapters.selectedChapter} onChange={(e)=>{setFilters.setChapters({...Data.Chapters , selectedChapter : e.target.value})}}>
+          <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={dataFilters.selectedChapter} onChange={(e)=>{setFilters({...dataFilters,selectedChapter : e.target.value})}}>
           <option value={-1}>Chapters</option>
 
-            {Data.Chapters.chapters.map((chapter:any)=>{
+            {Data.Chapters.map((chapter:any)=>{
+              if(dataFilters.selectedModule != '-1')
+                if(dataFilters.selectedModule != chapter.module_id) return 
+
               return (
                 <option value={chapter._id}>{chapter.title}</option>
               )
