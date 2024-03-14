@@ -214,7 +214,7 @@ setIsOpen(true)
             strokeWidth="2"
           />
         </svg>
-        Add Users
+        Add Module
       </div>
       {/* Loading  table of modules */}
       <ShowData Loading={Loading}

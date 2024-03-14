@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
             { chapter_id: string, question: string, correct_answer: string, answers: string[] } = await request.json()
         await connectDB()
         const res = await Quizes.create({ chapter_id, question, correct_answer, answers })
-        return NextResponse.json({ message: 'Quiz Created successfully', id: res.id })
+        return NextResponse.json({ message: 'Quiz Created successfully', _id: res._id })
     } catch (error) {
         return NextResponse.json({ message: 'No Quizes were created', context: error })
 

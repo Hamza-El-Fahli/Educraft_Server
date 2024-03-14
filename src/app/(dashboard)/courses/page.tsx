@@ -197,6 +197,7 @@ export default function Courses() {
         Data={Courses}
         Modify={modifyCourse}
         Remove={removeCourse}
+        setAddORUpdate={setAddORMod}
       />
     </div>
   );

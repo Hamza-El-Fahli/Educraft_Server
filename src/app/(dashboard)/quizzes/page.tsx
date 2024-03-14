@@ -6,6 +6,7 @@ import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
+import { API_Server_Quizzes } from "@/configuration/API";
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
@@ -13,6 +14,7 @@ export default function QuizesScreen() {
     seletedCourse: "1",
     selectedModule: "1",
     selectedChapter: "1",
+    question: "",
     quizNumber: "1",
     correctAnswer: "",
     answers: [""],
@@ -102,13 +104,14 @@ useEffect(()=>{
   function openModal() {
     if(SelectedRegister == -1){
           setisOpen(true);
-          setquizForm({ seletedCourse: Quizzes[0].course_id, selectedModule: Quizzes[0].module_id, selectedChapter: Quizzes[0].chapter_id, quizNumber: Quizzes.length+'', correctAnswer: "", answers: [""] });
+          setquizForm({ seletedCourse: Quizzes[0].course_id, selectedModule: Quizzes[0].module_id, selectedChapter: Quizzes[0].chapter_id, quizNumber: Quizzes.length+'', question: "", correctAnswer: "", answers: [""] });
         }
     else{
       setquizForm({
         seletedCourse: Quizzes[SelectedRegister].course_id,
         selectedModule: Quizzes[SelectedRegister].module_id,
         selectedChapter: Quizzes[SelectedRegister].chapter_id,
+        question: Quizzes[SelectedRegister].question,
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,
         answers: Quizzes[SelectedRegister].answers,
@@ -128,10 +131,23 @@ useEffect(()=>{
   }, [SelectedRegister]);
 
 
+function AddQuiz(){
+  axios.post(`${API_Server_Quizzes}`,{ chapter_id: quizForm.selectedChapter, question: quizForm.question, correct_answer: quizForm.correctAnswer, answers: quizForm.answers })
+  .then((res)=>{
+      console.log(res)
+  })
+  .catch((err)=>{
+    console.log(err)
+  })
+}
+
+
+
+
   return (
     <div className="col-span-4 ">
       <Modal isOpen={isOpen} onClose={closeModal}>
-      <h2 className="text-lg font-bold mb-2 text-blue-800">Add User</h2>
+      <h2 className="text-lg font-bold mb-2 text-blue-800">Add Quiz</h2>
       <p className="mb-4 text-blue-400">Fill the form</p>
       <form
         onSubmit={(e) => e.preventDefault()}
@@ -188,10 +204,18 @@ useEffect(()=>{
 
         <input
           type="text"
-          className="text-primary h-12 border p-3"
+          className="text-primary h-12 border p-3 hidden"
           value={quizForm.quizNumber}
           onChange={(e) =>
             setquizForm({ ...quizForm, quizNumber: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          className="text-primary h-12 border p-3"
+          value={quizForm.question}
+          onChange={(e) =>
+            setquizForm({ ...quizForm, question: e.target.value })
           }
         />
         <input
@@ -223,7 +247,11 @@ useEffect(()=>{
             />
           ))}
         </div>
-        <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third ">Save</button>
+        <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
+        onClick={()=>SelectedRegister == -1 ? AddQuiz() : true }
+        >
+          Save
+          </button>
       </form>
     </Modal>
       <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
