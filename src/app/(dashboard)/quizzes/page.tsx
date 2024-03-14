@@ -5,6 +5,7 @@ import ShowQuizes from "@/components/ShowQuizzes";
 import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
+import { IQuizz } from "@/types/types";
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
@@ -21,7 +22,7 @@ export default function QuizesScreen() {
 const [Courses, setCourses] = useState<any>({courses : [] ,  selectedCourse : ''})
 const [Modules, setModules] = useState<any>({modules : [] ,  selectedModule : ''})
 const [Chapters, setChapters] = useState<any>({chapters : [] ,  selectedChapter : ''})
-const [Quizzes, setQuizzes] = useState<any>([])
+const [Quizzes, setQuizzes] = useState<IQuizz[]>([])
 const [SearchedQuiz, setSearchedQuiz] = useState<number>(0)
 
 useEffect(()=>{
@@ -90,7 +91,19 @@ useEffect(()=>{
   }
 
   function openModal() {
-    setisOpen(true);
+    if(SelectedRegister == -1)
+          setisOpen(true);
+    else{
+      setquizForm({
+        seletedCourse: "1",
+        selectedModule: "1",
+        selectedChapter: "1",
+        quizNumber: "1",
+        correctAnswer: "",
+        answers: [""],
+      });
+    
+    }
   }
 
   function closeModal() {
@@ -103,7 +116,9 @@ useEffect(()=>{
     openModal();
   }, [SelectedRegister]);
 
-
+function OpenAndSet(index:number){
+  setSelectedRegister(index)
+}
 
   return (
     <div className="col-span-4">
@@ -195,6 +210,7 @@ useEffect(()=>{
             />
           ))}
         </div>
+        <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third ">Save</button>
       </form>
     </Modal>
       <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
