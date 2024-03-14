@@ -91,18 +91,21 @@ useEffect(()=>{
   }
 
   function openModal() {
-    if(SelectedRegister == -1)
+    if(SelectedRegister == -1){
           setisOpen(true);
+          setquizForm({ seletedCourse: "1", selectedModule: "1", selectedChapter: "1", quizNumber: "1", correctAnswer: "", answers: [""] });
+        }
     else{
       setquizForm({
-        seletedCourse: "1",
-        selectedModule: "1",
-        selectedChapter: "1",
-        quizNumber: "1",
-        correctAnswer: "",
-        answers: [""],
-      });
-    
+        seletedCourse: Quizzes[SelectedRegister].course_id,
+        selectedModule: Quizzes[SelectedRegister].module_id,
+        selectedChapter: Quizzes[SelectedRegister].chapter_id,
+        quizNumber: SelectedRegister,
+        correctAnswer: Quizzes[SelectedRegister].correct_answer,
+        answers: Quizzes[SelectedRegister].answers,
+        });
+      setisOpen(true);
+ 
     }
   }
 
@@ -112,13 +115,9 @@ useEffect(()=>{
   }
 
   useEffect(() => {
-    if(SelectedRegister != null)
-    openModal();
+    if(SelectedRegister != null) openModal();
   }, [SelectedRegister]);
 
-function OpenAndSet(index:number){
-  setSelectedRegister(index)
-}
 
   return (
     <div className="col-span-4">
@@ -216,7 +215,7 @@ function OpenAndSet(index:number){
       <Filters setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
       search={{setSearchedQuiz,SearchedQuiz}}
       setFilters={{setChapters , setModules , setCourses}} />
-      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} search={SearchedQuiz} />
+      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : Chapters.selectedChapter , selectedModule : Modules.selectedModule , selectedCourse : Courses.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} />
     </div>
   );
 }
