@@ -3,7 +3,14 @@
 
 import { useState } from "react";
 
-export default function ShowQuizes({Quizzes , Filters, search , setSelectedRegister}:{Quizzes : any , Filters:{selectedCourse:string , selectedModule : string , selectedChapter : string}, search : number,setSelectedRegister:any}){
+interface IParams {
+  Quizzes : any ; Filters:{selectedCourse:string ; selectedModule : string ; selectedChapter : string}; search : number;setSelectedRegister:any ; removeQuiz:any
+}
+
+
+
+
+export default function ShowQuizes({Quizzes , Filters, search , setSelectedRegister , removeQuiz}:IParams){
     
   const [expandedIndex, setExpandedIndex] = useState(-1);
 
@@ -31,7 +38,7 @@ Quiz N°{index+1}
 </div>
 <div className="flex gap-2">
   <button onClick={()=>setSelectedRegister(index)} >modify</button>
-  <button>Delete</button>
+  <button onClick={()=>removeQuiz(index)}>Delete</button>
 </div>
 </div>
               <>

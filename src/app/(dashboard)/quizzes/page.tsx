@@ -172,15 +172,31 @@ function modifyQuiz() {
             correct_answer: quizForm.correctAnswer
           }
         }
-        console.log(newQuizz[SelectedRegister])
         setQuizzes(newQuizz)
         closeModal()
     })
      .catch((err)=>console.log('error ',err))
-  
-  
 }
 
+
+function removeQuiz(index:number){
+
+  const decision = window.confirm(
+    `Are you sure to delete Quiz N ${index+1}}`
+  );
+if(decision){
+  axios.delete(`${API_Server_Quizzes}/${Quizzes[index]._id}`)
+  .then((res)=>{
+     const newQuiz = Quizzes.filter((quiz,index2) => index2 != index);
+     setQuizzes(newQuiz)
+     alert(res.data.message)
+
+  })
+  .catch(()=>{})
+}
+
+
+}
 
   return (
     <div className="col-span-4 ">
@@ -295,7 +311,7 @@ function modifyQuiz() {
       <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
       search={{setSearchedQuiz,SearchedQuiz}}
       setFilters={setdataFilters} />
-      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} />
+      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} removeQuiz={removeQuiz} />
     
     </div>
   );
