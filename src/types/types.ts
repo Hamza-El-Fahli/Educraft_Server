@@ -33,7 +33,7 @@ export interface IChapter {
 }
 
 export interface IQuizz {
-  id: string;
+  _id: string;
   question: string;
   answers: string[];
   correct_answer: string;

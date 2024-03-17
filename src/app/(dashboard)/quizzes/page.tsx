@@ -141,7 +141,45 @@ function AddQuiz(){
   })
 }
 
-
+function modifyQuiz() {
+  axios.put(`${API_Server_Quizzes}/${Quizzes[SelectedRegister]._id}`,{
+     question:quizForm.question
+      , chapter_id : quizForm.selectedChapter
+      , correct_answer : quizForm.correctAnswer
+      , answers : quizForm.answers
+     })
+     .then((res:{data:{data:IQuizz}})=>{
+      const data = res.data.data
+        const newQuizz = [...Quizzes]
+        if(res.data.data.hasOwnProperty('chapter_id')){
+          newQuizz[SelectedRegister] = {
+            _id: data._id,
+            question: quizForm.question,
+            answers: quizForm.answers,
+            correct_answer: quizForm.correctAnswer,
+            chapter_id: data.chapter_id,
+            chapter_name: data.chapter_name,
+            module_id: data.module_id,
+            module_name: data.module_name,
+            course_id: data.course_id,
+            course_name: data.course_name,
+          }
+        }else{
+          newQuizz[SelectedRegister] = {
+            ...newQuizz[SelectedRegister],
+            question: quizForm.question,
+            answers: quizForm.answers,
+            correct_answer: quizForm.correctAnswer
+          }
+        }
+        console.log(newQuizz[SelectedRegister])
+        setQuizzes(newQuizz)
+        closeModal()
+    })
+     .catch((err)=>console.log('error ',err))
+  
+  
+}
 
 
   return (
@@ -248,7 +286,7 @@ function AddQuiz(){
           ))}
         </div>
         <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
-        onClick={()=>SelectedRegister == -1 ? AddQuiz() : true }
+        onClick={()=>SelectedRegister == -1 ? AddQuiz() : modifyQuiz() }
         >
           Save
           </button>
