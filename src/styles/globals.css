@@ -130,3 +130,18 @@ tr{
   z-index: 0; /* Reset z-index after losing focus */
 }
 
+
+
+.modifyBTN{
+  @apply p-2 text-firstBlue border border-firstBlue rounded-full font-bold duration-200
+
+}
+.modifyBTN:hover{
+  @apply text-white bg-firstBlue
+}
+.removeBTN{
+  @apply p-2 text-red-500 border border-red-500 rounded-full font-bold duration-200
+}
+.removeBTN:hover{
+  @apply text-white bg-red-500
+}

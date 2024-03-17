@@ -37,8 +37,8 @@ export default function ShowQuizes({Quizzes , Filters, search , setSelectedRegis
 Quiz N°{index+1}  
 </div>
 <div className="flex gap-2">
-  <button onClick={()=>setSelectedRegister(index)} >modify</button>
-  <button onClick={()=>removeQuiz(index)}>Delete</button>
+  <button className="text-firstBlue font-bold opacity-20 hover:opacity-100 duration-100" onClick={()=>setSelectedRegister(index)} >modify</button>
+  <button className="text-red-500 font-bold opacity-20 hover:opacity-100 duration-100" onClick={()=>removeQuiz(index)}>Delete</button>
 </div>
 </div>
               <>
@@ -46,12 +46,12 @@ Quiz N°{index+1}
               <div className="max-h-40 overflow-y-scroll">
               {quiz.answers.map((answer:any)=>{
                 return (
-                  <div className={` bg-secondary   h-10 p-0 m-0 flex items-center px-5 border-t `}>{answer}</div>
+                  <div className={` bg-secondary   p-0 m-0 flex items-center px-5 border-t `}>{answer}</div>
                   
                   )
                 })}
                 </div>
-              <div className={` bg-secondary   h-10 p-2 m-0 flex items-center px-5 border-t-4 border-t-orange-50`}>Correct : {quiz.correct_answer}</div>
+              <div className={` bg-secondary   p-2 m-0 flex items-center px-5 border-t-4 border-t-orange-50`}>Correct : {quiz.correct_answer}</div>
               </>
             
           </div>

@@ -12,7 +12,7 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               <div>I</div>
               <div>D</div>
               <div>A</div>
-              <div>O</div>
+              <div>O</div> 
               <div>L</div>
             </div>
           </div>
@@ -55,13 +55,13 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
                   <td className="p-1 flex justify-around items-center" style={{ height: '100%' }}>
                     <button
                       onClick={(e) => { setAddORUpdate(false); Modify(index) }}
-                      className="p-2 text-firstBlue border border-firstBlue rounded-full font-bold "
+                      className="modifyBTN"
                     >
                       Modify {Subject}
                     </button>
                     <button
                       onClick={(e) => Remove(index)}
-                      className="p-2 text-red-500 border border-red-500 rounded-full font-bold "
+                      className="removeBTN "
                     >
                       Delete {Subject}
                     </button>
