@@ -44,8 +44,8 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               {/* Mapping over modules to display them in the table */}
               {Data.map((oneData:any,index:number) => (
                 <tr  key={index} id={`tr-${index}`}>
-                  {Object.keys(oneData).map((key:any,index)=>{
-                    if(index >= Cols.length -1  ) return
+                  {Object.keys(oneData).map((key:any,innerIndex)=>{
+                    if(innerIndex >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 
                     if(key == '_id') return <td>{oneData[key].slice(-5)}</td>
                     if(key != '_id') return <td>{ key == 'password' ? '******':  oneData[key] }</td>

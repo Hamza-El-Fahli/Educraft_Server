@@ -25,15 +25,34 @@ export default function Courses() {
   const [Loading, setLoading] = useState<boolean>(true);
   const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [Courses, setCourses] = useState<ICourse[]>([]);
-
+const [SelectedRegister, setSelectedRegister] = useState<null|number>(null)
+const [courseForm, setcourseForm] = useState({
+  course_name : '',
+  description : '',
+  instructor : 0
+})
   // Function to open modal
   const openModal = () => {
-    setIsOpen(true);
+    if(SelectedRegister != null){
+
+    if(SelectedRegister == -1) setcourseForm({
+      course_name : '',
+      description : '',
+      instructor : 0
+    })
+    else setcourseForm({
+      course_name : Courses[SelectedRegister].course_name,
+      description : Courses[SelectedRegister].description,
+      instructor : Courses[SelectedRegister].instructor
+    })
+    
+    setIsOpen(true);}
   };
 
   // Function to close modal
   const closeModal = () => {
     setIsOpen(false);
+    setSelectedRegister(null)
   };
 
   // Effect to fetch courses from the server
@@ -48,20 +67,14 @@ export default function Courses() {
       }
     );
   }, []);
-
+useEffect(()=>{
+  if(SelectedRegister != null) openModal() 
+},[SelectedRegister])
   // Function to add a course
-  const AddCourse = (e: any) => {
-    const frm = document.querySelector("form");
-    e.preventDefault();
-    const tmp = {
-      course_name: frm?.Coursename.value,
-      description: frm?.description.value,
-      instructor: frm?.instructor.value,
-    };
-    console.log(tmp);
-    axios.post(`${API_Server_Courses}`, tmp).then(
+  const AddCourse = () => {
+    axios.post(`${API_Server_Courses}`, courseForm).then(
       (res) => {
-        setCourses([...Courses, { _id: res.data._id, ...tmp }]);
+        setCourses([...Courses, { _id: res.data._id, ...courseForm}]);
         closeModal();
       },
       (rej) => {
@@ -71,49 +84,31 @@ export default function Courses() {
   };
 
   // Function to modify a course
-  async function modifyCourse(e: any) {
-    // Setting the mode to modify
-    setAddORMod(false);
-    await openModal();
-    const form: any = document.querySelector("form");
-    const tds = e.target.parentNode.parentNode.querySelectorAll("td");
-    const inputs = form?.querySelectorAll("input");
-    for (let td = 1; td <= inputs.length; td++) {
-      inputs[td - 1].value = tds[td].innerText;
-    }
-
-    document.querySelector("#send")?.addEventListener("click", () => {
-      console.log(tds[0].textContent.trim());
-      e.preventDefault();
+  async function modifyCourse() {
+    if(SelectedRegister == null) return
       axios
-        .put(`${API_Server_Courses}/${tds[0].textContent.trim()}`, {
-          course_name: inputs[0].value,
-          description: inputs[1].value,
-          instructor: inputs[2].value,
-        })
+        .put(`${API_Server_Courses}/${Courses[SelectedRegister]._id}`, courseForm)
         .then((res) => {
-          for (let td = 0; td < inputs.length; td++) {
-            tds[td + 1].innerText = inputs[td].value;
-          }
+          const newCourses= Courses
+          newCourses[SelectedRegister] = {...newCourses[SelectedRegister] , ...courseForm}
+          setCourses(newCourses)
           closeModal();
         })
         .catch((error) => {
           alert("Error updating course");
           closeModal();
         });
-    });
+  
   }
 
   // Function to remove a course
-  async function removeCourse(e: any) {
-    const tds = e.target.parentNode.parentNode.children;
-    const id = tds[0].textContent;
+  async function removeCourse(Exindex: any) {
     const decision = window.confirm(
-      `Are you sure to delete course ${tds[1].textContent}`
+      `Are you sure to delete course ${Courses[Exindex].course_name}`
     );
-    const newState = Courses.filter((course) => course._id != id);
+    const newState = Courses.filter((course,index) => index != Exindex);
     if (decision)
-      axios.delete(`${API_Server_Courses}/${id}`).then(
+      axios.delete(`${API_Server_Courses}/${Courses[Exindex]._id}`).then(
         (res) => {
           setCourses(newState);
           alert(res.data.message);
@@ -141,6 +136,8 @@ export default function Courses() {
             type="text"
             placeholder="Coursename"
             name="Coursename"
+            value={courseForm.course_name}
+            onChange={(e)=>setcourseForm({...courseForm , course_name : e.target.value})}
           />
           <input
             required
@@ -148,34 +145,29 @@ export default function Courses() {
             type="text"
             placeholder="description"
             name="description"
+            value={courseForm.description}
+            onChange={(e)=>setcourseForm({...courseForm , description : e.target.value})}
           />
           <input
             required
             className="text-primary h-12 border p-3"
-            type="text"
+            type="number"
             name="instructor"
             placeholder="instructor"
+            min={0}
+            value={courseForm.instructor}
+            onChange={(e)=>setcourseForm({...courseForm , instructor : parseInt(e.target.value)})}
           />
-          {AddORMod ? (
-            <button
-              onClick={(e) => {
-                AddCourse(e);
-              }}
-              className="text-primary h-12 border p-3"
-            >
+          
+            <button onClick={()=> SelectedRegister == -1 ? AddCourse() : modifyCourse()} id="send" className="text-primary h-12 border p-3">
               Save
             </button>
-          ) : (
-            <button id="send" className="text-primary h-12 border p-3">
-              Save
-            </button>
-          )}
+          
         </form>
       </Modal>
       <div
         onClick={(e) => {
-          setAddORMod(true);
-          openModal();
+          setSelectedRegister(-1)
         }}
         className="dashboardCards_add"
       >
@@ -195,7 +187,7 @@ export default function Courses() {
         Subject={'Course'}
         Loading={Loading}
         Data={Courses}
-        Modify={modifyCourse}
+        Modify={setSelectedRegister}
         Remove={removeCourse}
         setAddORUpdate={setAddORMod}
       />

@@ -4,7 +4,8 @@ const Modal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="modal" onClick={(e)=>{
+        <div className="modal" 
+        onClick={(e)=>{
             e.stopPropagation()
             onClose()
         }}>
