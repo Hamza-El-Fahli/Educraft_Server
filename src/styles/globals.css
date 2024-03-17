@@ -95,7 +95,7 @@ tr{
   @apply cursor-pointer text-center rounded-md py-1.5 pl-4 text-firstBlue border border-firstBlue flex flex-row items-center gap-5
 }
 .Sidenav_unselected {
-  @apply  cursor-pointer text-center rounded-md py-3
+  @apply  cursor-pointer text-center rounded-md py-1.5 pl-4 flex flex-row items-center gap-5 border-transparent
 }
 
 
