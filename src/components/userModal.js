@@ -5,10 +5,11 @@ const Modal = ({ isOpen, onClose, children }) => {
 
     return (
         <div className="modal" 
-        onClick={(e)=>{
-            e.stopPropagation()
-            onClose()
-        }}>
+        // onClick={(e)=>{
+        //     e.stopPropagation()
+        //     onClose()
+        // }}
+        >
             <div className="modal_1">
                 {children}
                 <button className="modal_btn" onClick={onClose}>Close</button>
