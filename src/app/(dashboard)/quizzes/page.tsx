@@ -7,9 +7,14 @@ import Modal from "@/components/userModal";
 import axios from "axios";
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
 import { API_Server_Quizzes } from "@/configuration/API";
+import LodingIndicator from "@/components/LoadingIndicator";
+
+
+
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
+  const [Loading, setLoading] = useState(true)
   const [quizForm, setquizForm] = useState({
     seletedCourse: "1",
     selectedModule: "1",
@@ -52,10 +57,14 @@ useEffect(()=>{
 useEffect(()=>{
   axios.get('http://localhost:3000/api/modules')
   .then((res)=>{
-    setModules(res.data)
+    setModules(res.data)   
+     setLoading(false)
+
   })
   .catch((error)=>{
     console.error(error)
+    setLoading(true)
+
   })
 },[])
 
@@ -66,9 +75,13 @@ useEffect(()=>{
   axios.get('http://localhost:3000/api/chapters')
   .then((res)=>{
     setChapters(res.data)
+    setLoading(false)
+
   })
   .catch((error)=>{
     console.error(error)
+    setLoading(true)
+
   })
 },[])
 
@@ -76,9 +89,12 @@ useEffect(()=>{
   axios.get('http://localhost:3000/api/quizes')
   .then((res)=>{
     setQuizzes(res.data)
+    setLoading(false)
   })
   .catch((error:any)=>{
     console.log(error)
+    setLoading(true)
+
   })
 },[])
 
@@ -311,7 +327,11 @@ if(decision){
       <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
       search={{setSearchedQuiz,SearchedQuiz}}
       setFilters={setdataFilters} />
+      {Loading ? 
+      <LodingIndicator />
+      :
       <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} removeQuiz={removeQuiz} />
+    }
     
     </div>
   );
