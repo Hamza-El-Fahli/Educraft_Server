@@ -45,7 +45,9 @@ td {
 .SideNav ul {
   @apply w-full p-5 flex gap-3 flex-col bg-secondary rounded-md
 }
-
+.SideNav *{
+  @apply duration-200
+}
 .theader{
   @apply sticky top-0 left-0 bg-primary ;
 }

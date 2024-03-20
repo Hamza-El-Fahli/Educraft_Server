@@ -1,6 +1,6 @@
 export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,Modify,Remove}:any){
     return (
-                <div className={`border m-5   relative`}
+                <div className={` m-5   relative`}
                 style={{minHeight : Loading ? '60vh' : 'auto'}}
                 >
           {Loading ? (

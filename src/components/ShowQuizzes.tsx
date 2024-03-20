@@ -46,7 +46,7 @@ Quiz N°{index+1}
               <div className="max-h-40 overflow-y-scroll">
               {quiz.answers.map((answer:any)=>{
                 return (
-                  <div className={` bg-secondary   p-0 m-0 flex items-center px-5 border-t `}>{answer}</div>
+                  <div className={` bg-secondary   p-1 m-0 flex items-center px-5 border-t `}>{answer}</div>
                   
                   )
                 })}

@@ -70,4 +70,21 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     }
 }
 
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
 
+    const id = params.id;
+    const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`);
+    const chapters = await ajax.json();
+
+    const data : any = []
+     await Promise.all(chapters.map(async (chapter: any) => {
+        const quiz = await Quizes.find({ "chapter_id": chapter._id });
+        if (quiz.length > 0) {
+            data.push({ chapter_name: chapter.title , chapter_id : chapter._id, ...quiz }); 
+        }
+        return null; 
+    }));
+
+    const Results : any = data.filter((result:any) => result !== null); 
+    return NextResponse.json({ Results });
+}

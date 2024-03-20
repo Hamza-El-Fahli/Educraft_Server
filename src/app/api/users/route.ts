@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
          user = await Users.findOne({ email, password   });
   
       if (user) {
+        console.log(user)
         return NextResponse.json(user);
       } else {
         return NextResponse.json({ error: "No user found" },{status : 404});
