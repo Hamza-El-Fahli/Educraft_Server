@@ -95,10 +95,12 @@ export async function GET(request: NextRequest) {
             }));
 
             const Results: any = data.filter((result: any) => result !== null);
-            return NextResponse.json({ Results });
+            return NextResponse.json({ quizzes: Results });
 
         } catch (error) {
             return NextResponse.json({ error: "No Quizes were found", context: error }, { status: 404 });
         }
     }
 }
+
+
