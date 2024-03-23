@@ -44,14 +44,14 @@ Quiz N°{index+1}
               <>
                 <div className={` bg-secondary   p-2 m-0 flex items-center px-5 border-b-4 border-b-orange-50 `}>{quiz.question}</div>
               <div className="max-h-40 overflow-y-scroll">
-              {quiz.answers.map((answer:any)=>{
+              {quiz.answers.map((answer:any, index:number)=>{
                 return (
-                  <div className={` bg-secondary   p-1 m-0 flex items-center px-5 border-t `}>{answer}</div>
+                  <div key={index} className={` bg-secondary   p-1 m-0 flex items-center px-5 border-t `}>{answer}</div>
                   
                   )
                 })}
                 </div>
-              <div className={` bg-secondary   p-2 m-0 flex items-center px-5 border-t-4 border-t-orange-50`}>Correct : {quiz.correct_answer}</div>
+              <div key={index}  className={` bg-secondary   p-2 m-0 flex items-center px-5 border-t-4 border-t-orange-50`}>Correct : {quiz.correct_answer}</div>
               </>
             
           </div>

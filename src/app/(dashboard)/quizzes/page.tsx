@@ -43,7 +43,6 @@ const [dataFilters, setdataFilters] = useState({
 useEffect(()=>{
   axios.get('http://localhost:3000/api/courses')
   .then((res)=>{
-    console.log(res.data)
     setCourses(res.data)
   })
   .catch((error)=>{
@@ -326,6 +325,7 @@ if(decision){
         <div className="w-full h-36 overflow-y-scroll hideScroll flex flex-col gap-1">
           {quizForm.answers.map((answer, index) => (
             <input
+            key={index}
               type="text"
               className="text-primary w-full border p-3"
               value={answer}
