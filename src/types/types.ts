@@ -26,7 +26,7 @@ export interface IModule {
 
 
 export interface IChapter {
-  _id: number;
+  _id: string;
   module_id: string;
   title: string;
   description: string;

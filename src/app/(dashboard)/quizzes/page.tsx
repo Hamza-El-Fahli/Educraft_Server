@@ -150,7 +150,23 @@ useEffect(()=>{
 function AddQuiz(){
   axios.post(`${API_Server_Quizzes}`,{ chapter_id: quizForm.selectedChapter, question: quizForm.question, correct_answer: quizForm.correctAnswer, answers: quizForm.answers })
   .then((res)=>{
-      console.log(res)
+    const Mchapter : IChapter = Chapters.filter((chap)=>chap._id == quizForm.selectedChapter )[0]
+    const Mmodule : IModule = Modules.filter((modu)=>modu._id == Mchapter.module_id )[0]
+    const newQuiz = {
+      _id : res.data._id,
+      question: quizForm.question,
+      answers: quizForm.answers,
+      correct_answer: quizForm.correctAnswer,
+      chapter_id: Mchapter._id,
+      chapter_name: Mchapter.title,
+      module_id: Mmodule._id,
+      module_name: Mmodule.module_name,
+      course_id: Mmodule.course_id,
+      course_name: Mmodule.course_name,
+    }
+      console.log(newQuiz)
+      Quizzes.push(newQuiz)
+      closeModal()
   })
   .catch((err)=>{
     console.log(err)
