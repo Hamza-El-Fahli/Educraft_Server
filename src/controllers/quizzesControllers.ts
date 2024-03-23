@@ -5,7 +5,26 @@ import _Modules from "@/database/models/modules"
 import Quizes from "@/database/models/quizes"
 import { NextRequest, NextResponse } from "next/server"
 
+async function DataMaps(){
 
+    const courses = await Courses.find({});
+    const modules = await _Modules.find({});
+    const chapters = await Chapters.find({});
+
+    const courseMap: any = {}
+    courses.forEach(course => {
+        courseMap[course._id] = course.course_name;
+    });
+    const moduleMap: any = {}
+    modules.forEach(module => {
+        moduleMap[module._id] = module;
+    });
+    const chapterMap: any = {}
+    chapters.forEach(chapter => {
+        chapterMap[chapter._id] = chapter;
+    });
+return {chapterMap,moduleMap,courseMap}
+}
 
 export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers }:
@@ -26,22 +45,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         filter["chapter_id"] = chapter_id;
     }
     const quizes = await Quizes.find(filter);
-    const courses = await Courses.find({});
-    const modules = await _Modules.find({});
-    const chapters = await Chapters.find({});
-
-    const courseMap: any = {}
-    courses.forEach(course => {
-        courseMap[course._id] = course.course_name;
-    });
-    const moduleMap: any = {}
-    modules.forEach(module => {
-        moduleMap[module._id] = module;
-    });
-    const chapterMap: any = {}
-    chapters.forEach(chapter => {
-        chapterMap[chapter._id] = chapter;
-    });
+    const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
     const res = quizes.map((quiz) => {
         return {
@@ -59,7 +63,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
     })
 
     if (res.length === 0 && chapter_id) {
-        return NextResponse.json({ error: "Quizes with given Module are not found" }, { status: 404 });
+        return NextResponse.json({ error: "Quizes with given Module were not found" }, { status: 404 });
     }
     return NextResponse.json(res);
 
@@ -70,22 +74,7 @@ export async function GetAllQuizzes() {
     await connectDB();
 
     const quizes = await Quizes.find();
-    const courses = await Courses.find({});
-    const modules = await _Modules.find({});
-    const chapters = await Chapters.find({});
-
-    const courseMap: any = {}
-    courses.forEach(course => {
-        courseMap[course._id] = course.course_name;
-    });
-    const moduleMap: any = {}
-    modules.forEach(module => {
-        moduleMap[module._id] = module;
-    });
-    const chapterMap: any = {}
-    chapters.forEach(chapter => {
-        chapterMap[chapter._id] = chapter;
-    });
+    const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
     const res = quizes.map((quiz) => {
         return {
@@ -143,25 +132,7 @@ export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
     let data: any = {}
 
     if (chapter_id != res?.chapter_id) { // if Chapter id chenged , the means the front-end should update chapter module and class of the quiz
- 
-        const courses = await Courses.find({});
-        const modules = await _Modules.find({});
-        const chapters = await Chapters.find({});
-
-        const courseMap: any = {}
-        courses.forEach(course => {
-            courseMap[course._id] = course.course_name;
-        });
-        const moduleMap: any = {}
-        modules.forEach(module => {
-            moduleMap[module._id] = module;
-        });
-        const chapterMap: any = {}
-        chapters.forEach(chapter => {
-            chapterMap[chapter._id] = chapter;
-        });
-
-
+        const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
         data = {
             _id: QuizID,

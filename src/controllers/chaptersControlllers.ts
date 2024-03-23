@@ -77,12 +77,12 @@ export async function GetChaptersWithModuleID(module_id: string) {
 }
 
 
-export async function UpdateChapterByID(request:NextRequest,chapter_id:string){
-    if(chapter_id == null || chapter_id == '')  throw Error('Chapter id is empty or null')
+export async function UpdateChapterByID(request: NextRequest, chapter_id: string) {
+    if (chapter_id == null || chapter_id == '') throw Error('Chapter id is empty or null')
 
     await connectDB()
-    const {title , module_id , description} = await request.json()
-    const res = await Chapters.findByIdAndUpdate(chapter_id ,{title ,module_id ,description} )
-    return NextResponse.json({message:"Chapter updated successfuly" , newChapter:res})
+    const { title, module_id, description } = await request.json()
+    const res = await Chapters.findByIdAndUpdate(chapter_id, { title, module_id, description })
+    return NextResponse.json({ message: "Chapter updated successfuly", newChapter: res })
 
 }

@@ -9,9 +9,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
-    const { id : QuizID } = params
+    const { id: QuizID } = params
     try {
-        UpdateQuizByID(request,QuizID)
+        UpdateQuizByID(request, QuizID)
     } catch (error) {
         return NextResponse.json({ message: "No Quizes were updated", context: error })
     }

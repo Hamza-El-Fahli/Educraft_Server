@@ -1,3 +1,4 @@
+import { DeleteModuleTyId, UpdateModuleByID } from "@/controllers/modulesControllers";
 import connectDB from "@/database/lib/mongodb";
 import _Modules from "@/database/models/modules";
 import { NextRequest, NextResponse } from "next/server";
@@ -6,27 +7,19 @@ import { NextRequest, NextResponse } from "next/server";
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params
     try {
-        await connectDB()
-        await _Modules.findByIdAndDelete(id)
-        return NextResponse.json({ message: "Module deleted successfuly" })
+        return DeleteModuleTyId(id)
     } catch (error) {
-        return NextResponse.json({ message: "No modules deleted", context: error })
+        return NextResponse.json({ message: "Error while handeling Module deleting request", context: error })
     }
 }
 
 // PUT update module by id
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     try {
-        await connectDB()
-        const { id } = params
-        const {course_id, title, description, order } = await request.json()
-
-        await _Modules.findByIdAndUpdate(id, {course_id, title, description, order })
-        return NextResponse.json({ message: "Module updated successfuly" })
-
-
+        const module_id = params.id
+        return UpdateModuleByID(request,module_id)
     } catch (error) {
-        return NextResponse.json({ message: "No modules updated", context: error })
+        return NextResponse.json({ message: "Error while handeling the Module updating request", context: error })
 
     }
 }

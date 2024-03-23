@@ -35,11 +35,11 @@ export async function GET(request: NextRequest) {
             }
     }
     else {
-        try { 
-            return GetAllChapters() 
+        try {
+            return GetAllChapters()
         }
-        catch (error) { 
-            return NextResponse.json({ error: "No Chapters were found", context: error }, { status: 404 }); 
+        catch (error) {
+            return NextResponse.json({ error: "No Chapters were found", context: error }, { status: 404 });
         }
 
     }
