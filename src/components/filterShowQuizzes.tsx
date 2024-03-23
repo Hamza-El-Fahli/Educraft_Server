@@ -35,33 +35,33 @@ export function Filters({dataFilters, setSelectedRegister , Data , setFilters , 
         <select className="m-1 border rounded-md p-2 text-black max-w-48" value={dataFilters.selectedCourse} onChange={(e)=>{setFilters({...dataFilters,selectedCourse : e.target.value})}}>
         <option value={-1}>Courses</option>
 
-            {Data.Courses.map((course:any)=>{
+            {Data.Courses.map((course:any,index:number)=>{
               return (
-                <option value={course._id}>{course.course_name}</option>
+                <option key={index} value={course._id}>{course.course_name}</option>
               )
             })}
           </select>
           <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={dataFilters.selectedModule} onChange={(e)=>{setFilters({...dataFilters,selectedModule : e.target.value})}}>
           <option value={-1}>Modules</option>
 
-            {Data.Modules.map((module:any)=>{
+            {Data.Modules.map((module:any,index:number)=>{
               if(dataFilters.selectedCourse != '-1' ) 
                 if(dataFilters.selectedCourse != module.course_id) return 
                   
               return (
-                <option value={module._id}>{module.module_name}</option>
+                <option key={index} value={module._id}>{module.module_name}</option>
               )
             })}
           </select>
           <select className="m-1 border rounded-md p-2 text-black max-w-48"  value={dataFilters.selectedChapter} onChange={(e)=>{setFilters({...dataFilters,selectedChapter : e.target.value})}}>
           <option value={-1}>Chapters</option>
 
-            {Data.Chapters.map((chapter:any)=>{
+            {Data.Chapters.map((chapter:any,index:number)=>{
               if(dataFilters.selectedModule != '-1')
                 if(dataFilters.selectedModule != chapter.module_id) return 
 
               return (
-                <option value={chapter._id}>{chapter.title}</option>
+                <option key={index} value={chapter._id}>{chapter.title}</option>
               )
             })}
           </select>
