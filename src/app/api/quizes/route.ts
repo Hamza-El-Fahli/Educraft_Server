@@ -30,7 +30,6 @@ export async function GET(request: NextRequest) {
         try {
             await connectDB();
             const chapter_id = request.nextUrl.searchParams.get('chapter_id');
-            console.log(chapter_id)
             let filter: any = {};
             if (chapter_id) {
                 filter["chapter_id"] = chapter_id;

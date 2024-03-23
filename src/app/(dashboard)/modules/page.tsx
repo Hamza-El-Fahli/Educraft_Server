@@ -1,26 +1,25 @@
 // Importing necessary components and libraries
-// 
-// 
-// 
-// 
+//
+//
+//
+//
 //        AddorMod is no need anymore
-// 
-// 
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
+//
 
 "use client";
 import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import {  ICourse, IModule_Form } from "@/types/types";
+import { ICourse, IModule_Form } from "@/types/types";
 import { IModule } from "@/types/types";
 import { API_Server_Courses } from "@/configuration/API";
 import { API_Server_Modules } from "@/configuration/API";
-
 
 // Component function
 export default function Users() {
@@ -28,30 +27,39 @@ export default function Users() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [Loading, setLoading] = useState<boolean>(true);
   const [AddORMod, setAddORMod] = useState<boolean>(true);
-const [SelectedRegister, setSelectedRegister] = useState<number|null>(null)
-const [moduleForm, setmoduleForm] = useState<IModule_Form>({
-  module_name:'',
-  description : '',
-  selectedCourse_id : '',
-  selectedCourse_name : '',
-})
-
+  const [SelectedRegister, setSelectedRegister] = useState<number | null>(null);
+  const [moduleForm, setmoduleForm] = useState<IModule_Form>({
+    module_name: "",
+    description: "",
+    selectedCourse_id: "",
+    selectedCourse_name: "",
+  });
 
   // Function to open modal
-  const openModal = () : void => {
-if(SelectedRegister == -1 )
-    setmoduleForm({...moduleForm , module_name:'',description:'',selectedCourse_id:Courses[0]._id,selectedCourse_name:Courses[0].course_name})
-else if(SelectedRegister != null) {
-  const currentModules = _Modules[SelectedRegister]
-  setmoduleForm({ module_name:currentModules.module_name ,description:currentModules.description,selectedCourse_id:currentModules.course_id,selectedCourse_name:currentModules.course_name})
+  const openModal = (): void => {
+    if (SelectedRegister == -1)
+      setmoduleForm({
+        ...moduleForm,
+        module_name: "",
+        description: "",
+        selectedCourse_id: Courses[0]._id,
+        selectedCourse_name: Courses[0].course_name,
+      });
+    else if (SelectedRegister != null) {
+      const currentModules = _Modules[SelectedRegister];
+      setmoduleForm({
+        module_name: currentModules.module_name,
+        description: currentModules.description,
+        selectedCourse_id: currentModules.course_id,
+        selectedCourse_name: currentModules.course_name,
+      });
+    }
 
-}
-
-setIsOpen(true)
+    setIsOpen(true);
   };
 
   // Function to close modal
-  const closeModal = () : void => {
+  const closeModal = (): void => {
     setIsOpen(false);
   };
 
@@ -62,7 +70,7 @@ setIsOpen(true)
   // Fetching modules and courses from API
   useEffect(() => {
     axios.get(`${API_Server_Modules}`).then(
-      (res:{data : IModule[]}) => {
+      (res: { data: IModule[] }) => {
         setModules(res.data);
         setLoading(false);
       },
@@ -74,7 +82,7 @@ setIsOpen(true)
 
   useEffect(() => {
     axios.get(`${API_Server_Courses}`).then(
-      (res:{data:ICourse[]}) => {
+      (res: { data: ICourse[] }) => {
         setCourses(res.data);
         setLoading(false);
       },
@@ -83,33 +91,37 @@ setIsOpen(true)
       }
     );
   }, []);
- 
+
   useEffect(() => {
     if (SelectedRegister !== null) {
       openModal();
     }
   }, [SelectedRegister]);
 
-  async function OpenAndSet(index:number){
-    if( index == undefined)    setSelectedRegister(-1)
-    else  if(index == SelectedRegister) openModal()
-  else   setSelectedRegister(index)
-  
-  // console.log(index)
+  async function OpenAndSet(index: number) {
+    if (index == undefined) setSelectedRegister(-1);
+    else if (index == SelectedRegister) openModal();
+    else setSelectedRegister(index);
+
+    // console.log(index)
   }
   // Function to add a module
   const AddModule = () => {
-    const tmp : {course_id:string,course_name:string,module_name:string,description:string,order:number} = {
+    const tmp: {
+      course_id: string;
+      course_name: string;
+      module_name: string;
+      description: string;
+      order: number;
+    } = {
       course_id: moduleForm.selectedCourse_id,
       course_name: moduleForm.selectedCourse_name,
       module_name: moduleForm.module_name,
       description: moduleForm.description,
-      order: _Modules.length
+      order: _Modules.length,
     };
     axios.post(`${API_Server_Modules}`, tmp).then(
-      (res:{data:{_id:string}}) => {
-        // console.log(_Modules)
-        console.log( { _id: res.data._id, ...tmp })
+      (res: { data: { _id: string } }) => {
         setModules([..._Modules, { _id: res.data._id, ...tmp }]);
         closeModal();
       },
@@ -122,38 +134,45 @@ setIsOpen(true)
 
   // Function to modify a module
   async function modifyModule() {
-    if(SelectedRegister == null) throw Error('Selected register is null')
-      await axios.put(`${API_Server_Modules}/${_Modules[SelectedRegister]._id}`, {
+    if (SelectedRegister == null) throw Error("Selected register is null");
+    await axios
+      .put(`${API_Server_Modules}/${_Modules[SelectedRegister]._id}`, {
         course_id: moduleForm.selectedCourse_id,
         module_name: moduleForm.module_name,
         title: moduleForm.module_name,
         description: moduleForm.description,
-      }).then(async () => {
-        console.log(moduleForm)
-        _Modules[SelectedRegister].course_name = moduleForm.selectedCourse_name
-        _Modules[SelectedRegister].module_name = moduleForm.module_name
-        _Modules[SelectedRegister].description = moduleForm.description
+      })
+      .then(async () => {
+        _Modules[SelectedRegister].course_name = moduleForm.selectedCourse_name;
+        _Modules[SelectedRegister].module_name = moduleForm.module_name;
+        _Modules[SelectedRegister].description = moduleForm.description;
         closeModal();
-      }).catch(() => {
-        alert('Error updating user');
+      })
+      .catch(() => {
+        alert("Error updating user");
         closeModal();
       });
-    }
-  
+  }
+
   // Function to remove a module
   async function removeModule(e: number) {
-    const _Module = _Modules[e]
+    const _Module = _Modules[e];
     const id = _Module._id;
     // console.log(_Modules[e])
-    const decision : boolean = window.confirm(`Are you sure to delete Module ${_Module.module_name} ?`)
-    const newState  = _Modules.filter((model:any) => model._id != id);
+    const decision: boolean = window.confirm(
+      `Are you sure to delete Module ${_Module.module_name} ?`
+    );
+    const newState = _Modules.filter((model: any) => model._id != id);
     if (decision)
-      axios.delete(`${API_Server_Modules}/${id}`).then((res) => {
-        setModules(newState);
-        alert(res.data.message)
-      }, () => {
-        alert('Error')
-      })
+      axios.delete(`${API_Server_Modules}/${id}`).then(
+        (res) => {
+          setModules(newState);
+          alert(res.data.message);
+        },
+        () => {
+          alert("Error");
+        }
+      );
   }
 
   // JSX return
@@ -168,8 +187,21 @@ setIsOpen(true)
           className="flex flex-col gap-3 w-80 "
         >
           {/* Select dropdown for courses */}
-          <select id="course" value={moduleForm.selectedCourse_id} onChange={e=>setmoduleForm({...moduleForm, selectedCourse_id : e.target.value , selectedCourse_name : Courses.find((course)=>course._id === e.target.value)?.course_name || ''})} className="border h-12 text-primary p-3">
-            {Courses.map((course : any) => (
+          <select
+            id="course"
+            value={moduleForm.selectedCourse_id}
+            onChange={(e) =>
+              setmoduleForm({
+                ...moduleForm,
+                selectedCourse_id: e.target.value,
+                selectedCourse_name:
+                  Courses.find((course) => course._id === e.target.value)
+                    ?.course_name || "",
+              })
+            }
+            className="border h-12 text-primary p-3"
+          >
+            {Courses.map((course: any) => (
               <option key={course._id} value={course._id}>
                 {course.course_name}
               </option>
@@ -183,7 +215,9 @@ setIsOpen(true)
             placeholder="module_name"
             name="module_name"
             value={moduleForm.module_name}
-            onChange={(e)=>setmoduleForm({...moduleForm , module_name:e.target.value})}
+            onChange={(e) =>
+              setmoduleForm({ ...moduleForm, module_name: e.target.value })
+            }
           />
           {/* Input field for description */}
           <input
@@ -193,19 +227,30 @@ setIsOpen(true)
             placeholder="Description"
             name="description"
             value={moduleForm.description}
-            onChange={(e)=>setmoduleForm({...moduleForm,  description:e.target.value})}
+            onChange={(e) =>
+              setmoduleForm({ ...moduleForm, description: e.target.value })
+            }
           />
           {/* Button to save the form */}
           <button
             className="text-primary h-12 border p-3"
-            onClick={() => { SelectedRegister != null && SelectedRegister < 0 ? AddModule() : modifyModule() }}
+            onClick={() => {
+              SelectedRegister != null && SelectedRegister < 0
+                ? AddModule()
+                : modifyModule();
+            }}
           >
             Save
           </button>
         </form>
       </Modal>
       {/* Button to open the modal for adding users */}
-      <div onClick={() => { OpenAndSet(-1) }} className="dashboardCards_add">
+      <div
+        onClick={() => {
+          OpenAndSet(-1);
+        }}
+        className="dashboardCards_add"
+      >
         <svg width="15" height="15" viewBox="0 0 15 15">
           <path
             d="M7.5 0L7.5 15M0 7.5L15 7.5"
@@ -217,15 +262,22 @@ setIsOpen(true)
         Add Module
       </div>
       {/* Loading  table of modules */}
-      <ShowData Loading={Loading}
-       Data={_Modules.map(({ _id , course_name , module_name , description}:any)=>
-            ({_id,  course_name,  module_name,    description}))} 
-       Cols={['ID', 'Course',     'Module Title', 'Description',  'Action']} 
-            setAddORUpdate={setAddORMod}
-            Modify={OpenAndSet}
-            Remove={removeModule}
-            Subject={'Module'}
-            />  
+      <ShowData
+        Loading={Loading}
+        Data={_Modules.map(
+          ({ _id, course_name, module_name, description }: any) => ({
+            _id,
+            course_name,
+            module_name,
+            description,
+          })
+        )}
+        Cols={["ID", "Course", "Module Title", "Description", "Action"]}
+        setAddORUpdate={setAddORMod}
+        Modify={OpenAndSet}
+        Remove={removeModule}
+        Subject={"Module"}
+      />
     </div>
-  )
+  );
 }

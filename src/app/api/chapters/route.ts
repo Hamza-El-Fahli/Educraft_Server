@@ -10,9 +10,9 @@ export async function POST(request: NextRequest) {
         await connectDB()
         const { module_id, title, description } = await request.json()
         const res = await Chapters.create({ module_id, title, description })
-        const modules = await _Modules.findById(module_id );
+        const modules = await _Modules.findById(module_id);
 
-        return NextResponse.json({ message: "Chapter created successfuly" , _id : res._id , module_name : modules?.title }, { status: 201 })
+        return NextResponse.json({ message: "Chapter created successfuly", _id: res._id, module_name: modules?.title }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ error: "No Chapters created", contexst: error })
     }
@@ -25,19 +25,18 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         await connectDB();
-        const module_id =  request.nextUrl.searchParams.get('module_id');
-        console.log(module_id)
+        const module_id = request.nextUrl.searchParams.get('module_id');
         let filter: any = {};
         if (module_id) {
             filter["module_id"] = module_id;
         }
         const chapters = await Chapters.find(filter);
         const modules = await _Modules.find({});
-        const moduleMap : any  = {}
+        const moduleMap: any = {}
         modules.forEach(module => {
             moduleMap[module._id] = module.title;
         });
-        const res = chapters.map(chapter=>{
+        const res = chapters.map(chapter => {
             return {
                 _id: chapter._id,
                 module_id: chapter.module_id,

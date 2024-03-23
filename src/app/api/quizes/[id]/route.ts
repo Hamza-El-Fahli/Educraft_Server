@@ -17,43 +17,42 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
 
 
-        
-        const res = await Quizes.findByIdAndUpdate(id, { question, chapter_id, correct_answer, answers })
-        let data : any = {}
 
-        if(chapter_id != res?.chapter_id){
+        const res = await Quizes.findByIdAndUpdate(id, { question, chapter_id, correct_answer, answers })
+        let data: any = {}
+
+        if (chapter_id != res?.chapter_id) {
 
             const courses = await Courses.find({});
             const modules = await _Modules.find({});
             const chapters = await Chapters.find({});
-    
-            const courseMap : any  = {}
+
+            const courseMap: any = {}
             courses.forEach(course => {
                 courseMap[course._id] = course.course_name;
             });
-            const moduleMap : any  = {}
+            const moduleMap: any = {}
             modules.forEach(module => {
-                moduleMap[module._id] =module;
+                moduleMap[module._id] = module;
             });
-            const chapterMap : any  = {}
+            const chapterMap: any = {}
             chapters.forEach(chapter => {
                 chapterMap[chapter._id] = chapter;
             });
-    
-    
-    
-             data =  {
-                    _id : id,
-                    chapter_id : chapter_id,
-                    chapter_name : chapterMap[chapter_id].title,
-                    module_id : chapterMap[chapter_id].module_id,
-                    module_name : moduleMap[chapterMap[chapter_id].module_id].title,
-                    course_id : moduleMap[chapterMap[chapter_id].module_id].course_id,
-                    course_name : courseMap[moduleMap[chapterMap[chapter_id].module_id].course_id]
-                }
+
+
+
+            data = {
+                _id: id,
+                chapter_id: chapter_id,
+                chapter_name: chapterMap[chapter_id].title,
+                module_id: chapterMap[chapter_id].module_id,
+                module_name: moduleMap[chapterMap[chapter_id].module_id].title,
+                course_id: moduleMap[chapterMap[chapter_id].module_id].course_id,
+                course_name: courseMap[moduleMap[chapterMap[chapter_id].module_id].course_id]
+            }
         }
-        console.log(data)
-        return NextResponse.json({ message: "Quize updated successfuly" , data })
+        return NextResponse.json({ message: "Quize updated successfuly", data })
     } catch (error) {
         return NextResponse.json({ message: "No Quizes were updated", context: error })
     }

@@ -9,12 +9,10 @@ import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
 import { API_Server_Quizzes } from "@/configuration/API";
 import LodingIndicator from "@/components/LoadingIndicator";
 
-
-
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
-  const [Loading, setLoading] = useState(true)
+  const [Loading, setLoading] = useState(true);
   const [quizForm, setquizForm] = useState({
     seletedCourse: "1",
     selectedModule: "1",
@@ -25,79 +23,67 @@ export default function QuizesScreen() {
     answers: [""],
   });
 
+  const [Courses, setCourses] = useState<ICourse[]>([]);
+  const [Modules, setModules] = useState<IModule[]>([]);
+  const [Chapters, setChapters] = useState<IChapter[]>([]);
+  const [Quizzes, setQuizzes] = useState<IQuizz[]>([]);
+  const [SearchedQuiz, setSearchedQuiz] = useState<number>(0);
 
-const [Courses, setCourses] = useState<ICourse[]>([])
-const [Modules, setModules] = useState<IModule[]>([])
-const [Chapters, setChapters] = useState<IChapter[]>([])
-const [Quizzes, setQuizzes] = useState<IQuizz[]>([])
-const [SearchedQuiz, setSearchedQuiz] = useState<number>(0)
+  const [dataFilters, setdataFilters] = useState({
+    selectedCourse: "-1",
+    selectedModule: "-1",
+    selectedChapter: "-1",
+  });
 
-const [dataFilters, setdataFilters] = useState({
-  selectedCourse : '-1',
-  selectedModule : '-1',
-  selectedChapter : '-1',
-})
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/courses")
+      .then((res) => {
+        setCourses(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/modules")
+      .then((res) => {
+        setModules(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(true);
+      });
+  }, []);
 
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/chapters")
+      .then((res) => {
+        setChapters(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(true);
+      });
+  }, []);
 
-useEffect(()=>{
-  axios.get('http://localhost:3000/api/courses')
-  .then((res)=>{
-    setCourses(res.data)
-  })
-  .catch((error)=>{
-    console.error(error)
-  })
-},[])
-
-
-
-
-useEffect(()=>{
-  axios.get('http://localhost:3000/api/modules')
-  .then((res)=>{
-    setModules(res.data)   
-     setLoading(false)
-
-  })
-  .catch((error)=>{
-    console.error(error)
-    setLoading(true)
-
-  })
-},[])
-
-
-
-
-useEffect(()=>{
-  axios.get('http://localhost:3000/api/chapters')
-  .then((res)=>{
-    setChapters(res.data)
-    setLoading(false)
-
-  })
-  .catch((error)=>{
-    console.error(error)
-    setLoading(true)
-
-  })
-},[])
-
-useEffect(()=>{
-  axios.get('http://localhost:3000/api/quizes')
-  .then((res)=>{
-    setQuizzes(res.data)
-    setLoading(false)
-  })
-  .catch((error:any)=>{
-    console.log(error)
-    setLoading(true)
-
-  })
-},[])
-
-
+  useEffect(() => {
+    axios
+      .get("http://localhost:3000/api/quizes")
+      .then((res) => {
+        setQuizzes(res.data);
+        setLoading(false);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        setLoading(true);
+      });
+  }, []);
 
   function AddAnswer() {
     setquizForm({ ...quizForm, answers: [...quizForm.answers, ""] });
@@ -117,11 +103,18 @@ useEffect(()=>{
   }
 
   function openModal() {
-    if(SelectedRegister == -1){
-          setisOpen(true);
-          setquizForm({ seletedCourse: Quizzes[0].course_id, selectedModule: Quizzes[0].module_id, selectedChapter: Quizzes[0].chapter_id, quizNumber: Quizzes.length+'', question: "", correctAnswer: "", answers: [""] });
-        }
-    else{
+    if (SelectedRegister == -1) {
+      setisOpen(true);
+      setquizForm({
+        seletedCourse: Quizzes[0].course_id,
+        selectedModule: Quizzes[0].module_id,
+        selectedChapter: Quizzes[0].chapter_id,
+        quizNumber: Quizzes.length + "",
+        question: "",
+        correctAnswer: "",
+        answers: [""],
+      });
+    } else {
       setquizForm({
         seletedCourse: Quizzes[SelectedRegister].course_id,
         selectedModule: Quizzes[SelectedRegister].module_id,
@@ -130,59 +123,67 @@ useEffect(()=>{
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,
         answers: Quizzes[SelectedRegister].answers,
-        });
+      });
       setisOpen(true);
- 
     }
   }
 
   function closeModal() {
-    setSelectedRegister(null)
+    setSelectedRegister(null);
     setisOpen(false);
   }
 
   useEffect(() => {
-    if(SelectedRegister != null) openModal();
+    if (SelectedRegister != null) openModal();
   }, [SelectedRegister]);
 
+  function AddQuiz() {
+    axios
+      .post(`${API_Server_Quizzes}`, {
+        chapter_id: quizForm.selectedChapter,
+        question: quizForm.question,
+        correct_answer: quizForm.correctAnswer,
+        answers: quizForm.answers,
+      })
+      .then((res) => {
+        const Mchapter: IChapter = Chapters.filter(
+          (chap) => chap._id == quizForm.selectedChapter
+        )[0];
+        const Mmodule: IModule = Modules.filter(
+          (modu) => modu._id == Mchapter.module_id
+        )[0];
+        const newQuiz = {
+          _id: res.data._id,
+          question: quizForm.question,
+          answers: quizForm.answers,
+          correct_answer: quizForm.correctAnswer,
+          chapter_id: Mchapter._id,
+          chapter_name: Mchapter.title,
+          module_id: Mmodule._id,
+          module_name: Mmodule.module_name,
+          course_id: Mmodule.course_id,
+          course_name: Mmodule.course_name,
+        };
+        Quizzes.push(newQuiz);
+        closeModal();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-function AddQuiz(){
-  axios.post(`${API_Server_Quizzes}`,{ chapter_id: quizForm.selectedChapter, question: quizForm.question, correct_answer: quizForm.correctAnswer, answers: quizForm.answers })
-  .then((res)=>{
-    const Mchapter : IChapter = Chapters.filter((chap)=>chap._id == quizForm.selectedChapter )[0]
-    const Mmodule : IModule = Modules.filter((modu)=>modu._id == Mchapter.module_id )[0]
-    const newQuiz = {
-      _id : res.data._id,
-      question: quizForm.question,
-      answers: quizForm.answers,
-      correct_answer: quizForm.correctAnswer,
-      chapter_id: Mchapter._id,
-      chapter_name: Mchapter.title,
-      module_id: Mmodule._id,
-      module_name: Mmodule.module_name,
-      course_id: Mmodule.course_id,
-      course_name: Mmodule.course_name,
-    }
-      console.log(newQuiz)
-      Quizzes.push(newQuiz)
-      closeModal()
-  })
-  .catch((err)=>{
-    console.log(err)
-  })
-}
-
-function modifyQuiz() {
-  axios.put(`${API_Server_Quizzes}/${Quizzes[SelectedRegister]._id}`,{
-     question:quizForm.question
-      , chapter_id : quizForm.selectedChapter
-      , correct_answer : quizForm.correctAnswer
-      , answers : quizForm.answers
-     })
-     .then((res:{data:{data:IQuizz}})=>{
-      const data = res.data.data
-        const newQuizz = [...Quizzes]
-        if(res.data.data.hasOwnProperty('chapter_id')){
+  function modifyQuiz() {
+    axios
+      .put(`${API_Server_Quizzes}/${Quizzes[SelectedRegister]._id}`, {
+        question: quizForm.question,
+        chapter_id: quizForm.selectedChapter,
+        correct_answer: quizForm.correctAnswer,
+        answers: quizForm.answers,
+      })
+      .then((res: { data: { data: IQuizz } }) => {
+        const data = res.data.data;
+        const newQuizz = [...Quizzes];
+        if (res.data.data.hasOwnProperty("chapter_id")) {
           newQuizz[SelectedRegister] = {
             _id: data._id,
             question: quizForm.question,
@@ -194,161 +195,181 @@ function modifyQuiz() {
             module_name: data.module_name,
             course_id: data.course_id,
             course_name: data.course_name,
-          }
-        }else{
+          };
+        } else {
           newQuizz[SelectedRegister] = {
             ...newQuizz[SelectedRegister],
             question: quizForm.question,
             answers: quizForm.answers,
-            correct_answer: quizForm.correctAnswer
-          }
+            correct_answer: quizForm.correctAnswer,
+          };
         }
-        setQuizzes(newQuizz)
-        closeModal()
-    })
-     .catch((err)=>console.log('error ',err))
-}
+        setQuizzes(newQuizz);
+        closeModal();
+      })
+      .catch((err) => console.log("error ", err));
+  }
 
-
-function removeQuiz(index:number){
-
-  const decision = window.confirm(
-    `Are you sure to delete Quiz N ${index+1}}`
-  );
-if(decision){
-  axios.delete(`${API_Server_Quizzes}/${Quizzes[index]._id}`)
-  .then((res)=>{
-     const newQuiz = Quizzes.filter((quiz,index2) => index2 != index);
-     setQuizzes(newQuiz)
-     alert(res.data.message)
-
-  })
-  .catch(()=>{})
-}
-
-
-}
+  function removeQuiz(index: number) {
+    const decision = window.confirm(
+      `Are you sure to delete Quiz N ${index + 1}}`
+    );
+    if (decision) {
+      axios
+        .delete(`${API_Server_Quizzes}/${Quizzes[index]._id}`)
+        .then((res) => {
+          const newQuiz = Quizzes.filter((quiz, index2) => index2 != index);
+          setQuizzes(newQuiz);
+          alert(res.data.message);
+        })
+        .catch(() => {});
+    }
+  }
 
   return (
     <div className="col-span-4 ">
       <Modal isOpen={isOpen} onClose={closeModal}>
-      <h2 className="text-lg font-bold mb-2 text-blue-800">Add Quiz</h2>
-      <p className="mb-4 text-blue-400">Fill the form</p>
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="flex flex-col gap-3 w-80 "
-      >
-        <div className="flex flex-col">
-          
-        <select
-          name="course"
-          id=""
-          className="text-primary h-12 border p-3"
-          value={quizForm.seletedCourse}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, seletedCourse: e.target.value })
-          }
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Quiz</h2>
+        <p className="mb-4 text-blue-400">Fill the form</p>
+        <form
+          onSubmit={(e) => e.preventDefault()}
+          className="flex flex-col gap-3 w-80 "
         >
-          {Courses.map((course,index)=>(
-            <option key={index} value={course._id}>{course.course_name}</option>
-          ))}
-        </select>
-        <select
-          name="module"
-          id=""
-          className="text-primary h-12 border p-3"
-          value={quizForm.selectedModule}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, selectedModule: e.target.value })
-          }
-        >
-          {Modules.map((modulee,index)=>{
-            if(modulee.course_id != quizForm.seletedCourse) return
-            return (
-            <option key={index} value={modulee._id}>{modulee.module_name}</option>
-          )})}
-        </select>
+          <div className="flex flex-col">
+            <select
+              name="course"
+              id=""
+              className="text-primary h-12 border p-3"
+              value={quizForm.seletedCourse}
+              onChange={(e) =>
+                setquizForm({ ...quizForm, seletedCourse: e.target.value })
+              }
+            >
+              {Courses.map((course, index) => (
+                <option key={index} value={course._id}>
+                  {course.course_name}
+                </option>
+              ))}
+            </select>
+            <select
+              name="module"
+              id=""
+              className="text-primary h-12 border p-3"
+              value={quizForm.selectedModule}
+              onChange={(e) =>
+                setquizForm({ ...quizForm, selectedModule: e.target.value })
+              }
+            >
+              {Modules.map((modulee, index) => {
+                if (modulee.course_id != quizForm.seletedCourse) return;
+                return (
+                  <option key={index} value={modulee._id}>
+                    {modulee.module_name}
+                  </option>
+                );
+              })}
+            </select>
 
-        <select
-          name="chapter"
-          id=""
-          className="text-primary h-12 border p-3"
-          value={quizForm.selectedChapter}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, selectedChapter: e.target.value })
-          }
-        >
-          {Chapters.map((chapter,index)=>{
-                        if(chapter.module_id != quizForm.selectedModule) return
+            <select
+              name="chapter"
+              id=""
+              className="text-primary h-12 border p-3"
+              value={quizForm.selectedChapter}
+              onChange={(e) =>
+                setquizForm({ ...quizForm, selectedChapter: e.target.value })
+              }
+            >
+              {Chapters.map((chapter, index) => {
+                if (chapter.module_id != quizForm.selectedModule) return;
 
-            return    (
-            <option key={index} value={chapter._id}>{chapter.title}</option>
-          )})}
-        </select>
-        </div>
+                return (
+                  <option key={index} value={chapter._id}>
+                    {chapter.title}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
-        <input
-          type="text"
-          className="text-primary h-12 border p-3 hidden"
-          value={quizForm.quizNumber}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, quizNumber: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          className="text-primary h-12 border p-3"
-          value={quizForm.question}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, question: e.target.value })
-          }
-        />
-        <input
-          type="text"
-          className="text-primary h-12 border p-3"
-          value={quizForm.correctAnswer}
-          onChange={(e) =>
-            setquizForm({ ...quizForm, correctAnswer: e.target.value })
-          }
-        />
-        <div className="flex justify-between">
-          <button className="text-2xl font-bold text-black" onClick={() => AddAnswer()}>
-            +
-          </button>
+          <input
+            type="text"
+            className="text-primary h-12 border p-3 hidden"
+            value={quizForm.quizNumber}
+            onChange={(e) =>
+              setquizForm({ ...quizForm, quizNumber: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            className="text-primary h-12 border p-3"
+            value={quizForm.question}
+            onChange={(e) =>
+              setquizForm({ ...quizForm, question: e.target.value })
+            }
+          />
+          <input
+            type="text"
+            className="text-primary h-12 border p-3"
+            value={quizForm.correctAnswer}
+            onChange={(e) =>
+              setquizForm({ ...quizForm, correctAnswer: e.target.value })
+            }
+          />
+          <div className="flex justify-between">
+            <button
+              className="text-2xl font-bold text-black"
+              onClick={() => AddAnswer()}
+            >
+              +
+            </button>
+            <button
+              className="text-2xl font-bold  text-black"
+              onClick={() => RemoveAnswer()}
+            >
+              -
+            </button>
+          </div>
+          <div className="w-full h-36 overflow-y-scroll hideScroll flex flex-col gap-1">
+            {quizForm.answers.map((answer, index) => (
+              <input
+                key={index}
+                type="text"
+                className="text-primary w-full border p-3"
+                value={answer}
+                onChange={(e) => setanswer(index, e.target.value)}
+              />
+            ))}
+          </div>
           <button
-            className="text-2xl font-bold  text-black"
-            onClick={() => RemoveAnswer()}
+            className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
+            onClick={() => (SelectedRegister == -1 ? AddQuiz() : modifyQuiz())}
           >
-            -
+            Save
           </button>
-        </div>
-        <div className="w-full h-36 overflow-y-scroll hideScroll flex flex-col gap-1">
-          {quizForm.answers.map((answer, index) => (
-            <input
-            key={index}
-              type="text"
-              className="text-primary w-full border p-3"
-              value={answer}
-              onChange={(e) => setanswer(index, e.target.value)}
-            />
-          ))}
-        </div>
-        <button className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
-        onClick={()=>SelectedRegister == -1 ? AddQuiz() : modifyQuiz() }
-        >
-          Save
-          </button>
-      </form>
-    </Modal>
-      <Filters dataFilters={dataFilters} setSelectedRegister={setSelectedRegister} Data={{Courses , Modules , Chapters}}
-      search={{setSearchedQuiz,SearchedQuiz}}
-      setFilters={setdataFilters} />
-      {Loading ? 
-      <LodingIndicator />
-      :
-      <ShowQuizes Quizzes={Quizzes} Filters={{selectedChapter : dataFilters.selectedChapter , selectedModule : dataFilters.selectedModule , selectedCourse : dataFilters.selectedCourse}} search={SearchedQuiz} setSelectedRegister={setSelectedRegister} removeQuiz={removeQuiz} />
-    }
-    
+        </form>
+      </Modal>
+      <Filters
+        dataFilters={dataFilters}
+        setSelectedRegister={setSelectedRegister}
+        Data={{ Courses, Modules, Chapters }}
+        search={{ setSearchedQuiz, SearchedQuiz }}
+        setFilters={setdataFilters}
+      />
+      {Loading ? (
+        <LodingIndicator />
+      ) : (
+        <ShowQuizes
+          Quizzes={Quizzes}
+          Filters={{
+            selectedChapter: dataFilters.selectedChapter,
+            selectedModule: dataFilters.selectedModule,
+            selectedCourse: dataFilters.selectedCourse,
+          }}
+          search={SearchedQuiz}
+          setSelectedRegister={setSelectedRegister}
+          removeQuiz={removeQuiz}
+        />
+      )}
     </div>
   );
 }

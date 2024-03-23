@@ -9,8 +9,8 @@ export async function POST(request: NextRequest) {
     try {
         await connectDB()
         const { course_id, title, description, order } = await request.json()
-       const res =  await _Modules.create({ course_id, title, description, order })
-        return NextResponse.json({ message: "Module created successfuly" , _id : res._id }, { status: 201 })
+        const res = await _Modules.create({ course_id, title, description, order })
+        return NextResponse.json({ message: "Module created successfuly", _id: res._id }, { status: 201 })
     } catch (error) {
         return NextResponse.json({ error: "No Modules created", contexst: error })
     }
@@ -45,8 +45,6 @@ export async function GET(request: NextRequest) {
     try {
         await connectDB();
         const courseId = request.nextUrl.searchParams.get('course_id');
-        console.log(courseId);
-
         let filter: any = {};
         if (courseId) {
             filter["course_id"] = courseId;
@@ -54,16 +52,16 @@ export async function GET(request: NextRequest) {
 
         const modules = await _Modules.find(filter)
         const courses = await Courses.find({})
-        const courseMap : any  = {}
+        const courseMap: any = {}
         courses.forEach(course => {
             courseMap[course._id] = course.course_name;
         });
 
-        const res = modules.map(module=>{
+        const res = modules.map(module => {
             return {
                 _id: module._id,
-                course_id : module.course_id,
-                course_name : courseMap[module.course_id],
+                course_id: module.course_id,
+                course_name: courseMap[module.course_id],
                 module_name: module.title,
                 order: module.order,
                 description: module.description
@@ -78,7 +76,7 @@ export async function GET(request: NextRequest) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
 
-        return NextResponse.json(res.sort((a,b)=>a.order - b.order));
+        return NextResponse.json(res.sort((a, b) => a.order - b.order));
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "An error occurred while fetching modules", context: error }, { status: 500 });
