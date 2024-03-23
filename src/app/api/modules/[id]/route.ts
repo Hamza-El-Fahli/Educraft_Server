@@ -1,4 +1,4 @@
-import { DeleteModuleTyId, UpdateModuleByID } from "@/controllers/modulesControllers";
+import { DeleteModuleById, UpdateModuleByID } from "@/controllers/modulesControllers";
 import connectDB from "@/database/lib/mongodb";
 import _Modules from "@/database/models/modules";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params
     try {
-        return DeleteModuleTyId(id)
+        return DeleteModuleById(id)
     } catch (error) {
         return NextResponse.json({ message: "Error while handeling Module deleting request", context: error })
     }
