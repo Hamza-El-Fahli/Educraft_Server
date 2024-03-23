@@ -133,21 +133,17 @@ export async function GetQuizzesWithModuleID(id: string) {
 
 
 
-export async function UpdateQuizByID(request:NextRequest,QuizID:string) {
-    
+export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
+
     await connectDB()
-    const { question, chapter_id, correct_answer, answers } = await request.json()
+    const { question, chapter_id, correct_answer, answers } = await request.json() // get the modufied data 
 
-
-
-
-
-
-    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers })
+    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers }) // update the data
+    // res hes the old register data , befor updating
     let data: any = {}
 
-    if (chapter_id != res?.chapter_id) {
-
+    if (chapter_id != res?.chapter_id) { // if Chapter id chenged , the means the front-end should update chapter module and class of the quiz
+ 
         const courses = await Courses.find({});
         const modules = await _Modules.find({});
         const chapters = await Chapters.find({});
@@ -178,5 +174,5 @@ export async function UpdateQuizByID(request:NextRequest,QuizID:string) {
         }
     }
     return NextResponse.json({ message: "Quize updated successfuly", data })
-    
+
 }
