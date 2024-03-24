@@ -1,31 +1,27 @@
+import { GetAllCourses, PostCourse } from "@/controllers/coursesControllers";
 import connectDB from "@/database/lib/mongodb";
 import Courses from "@/database/models/courses"
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 
 
 
 // POST      add one course
-export async function POST(request : Request) {
-    const {course_name, description, instructor} = await request.json()
+export async function POST(request : NextRequest) {
     try {
-        await connectDB()
-    const res = await Courses.create({course_name , description , instructor})
-    return NextResponse.json({message:"Course created successfuly", _id : res._id},{status : 201})
+        return PostCourse(request)
     } catch (error) {
         
-        return NextResponse.json({error:"No courses created" , contexst : error})
+        return NextResponse.json({error:"Error while handeling creation of new course" , contexst : error})
     }
 }
 
 // GET      select all courses
 export async function GET(){
     try {
-        await connectDB()
-        const res = await Courses.find()
-        return NextResponse.json(res)
+        return GetAllCourses()
     } catch (error) {
-        return NextResponse.json({error:"No courses was found" , contexst : error},{status : 301})
+        return NextResponse.json({error:"Error while handeling Get Courses request" , contexst : error},{status : 301})
 
     }
 }
