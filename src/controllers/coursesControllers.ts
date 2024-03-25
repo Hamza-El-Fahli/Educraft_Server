@@ -36,7 +36,7 @@ export async function UpdateCourseById(request:NextRequest ,course_id:string) {
 export async function DeleteCourseById(course_id:string) {
     
     await connectDB()
-    const res = await Courses.findByIdAndDelete(course_id)
-    return NextResponse.json({message : "Course deleted successfuly", data : res})
+    await Courses.findByIdAndDelete(course_id)
+    return NextResponse.json({message : "Course deleted successfuly"})
     
 }

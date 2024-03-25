@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     try {
         return PostQuizController(request)
     } catch (error) {
-        return NextResponse.json({ message: 'No Quizes were created', context: error })
+        return NextResponse.json({ message: 'No Quizzes were created', context: error })
 
     }
 }
@@ -22,7 +22,6 @@ export async function POST(request: NextRequest) {
 // note : if no chapter_id, select all
 export async function GET(request: NextRequest) {
     const params = (request.nextUrl.searchParams)
-
     if (params.has('module_id')) {
         try {
             const ModuleID: string | null = params.get('module_id');
