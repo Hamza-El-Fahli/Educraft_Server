@@ -125,6 +125,7 @@ export async function GetQuizzesWithModuleID(id: string) {
 export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 
     await connectDB()
+    
     const { question, chapter_id, correct_answer, answers } = await request.json() // get the modufied data 
 
     const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers }) // update the data
@@ -144,6 +145,6 @@ export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
             course_name: courseMap[moduleMap[chapterMap[chapter_id].module_id].course_id]
         }
     }
-    return NextResponse.json({ message: "Quize updated successfuly", data })
+    return NextResponse.json({ message: "Quiz Updated successfully", data })
 
 }

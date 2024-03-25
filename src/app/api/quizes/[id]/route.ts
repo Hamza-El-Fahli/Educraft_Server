@@ -11,9 +11,9 @@ import { NextRequest, NextResponse } from "next/server";
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     const { id: QuizID } = params
     try {
-        UpdateQuizByID(request, QuizID)
+        return UpdateQuizByID(request, QuizID)
     } catch (error) {
-        return NextResponse.json({ message: "No Quizes were updated", context: error })
+        return NextResponse.json({ message: "No Quizzes were updated", context: error })
     }
 }
 
@@ -22,9 +22,9 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     try {
         await connectDB()
         await Quizes.findByIdAndDelete(id)
-        return NextResponse.json({ message: "Quize Deleted successfuly" })
+        return NextResponse.json({ message: "Quiz Deleted successfuly" })
     } catch (error) {
-        return NextResponse.json({ message: "No Quizes were deleted", context: error })
+        return NextResponse.json({ message: "No Quizzes were deleted", context: error })
     }
 }
 
