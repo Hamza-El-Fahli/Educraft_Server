@@ -57,16 +57,22 @@ export async function POST(request: NextRequest) {
     if (!user) {
       return NextResponse.json({ error: "User Not found" }, { status: 404 });
     }
-// const isPasswordCorrect = await bcrypt.compare(password, user.password);
 const isPasswordCorrect = password == user.password;
 if (!isPasswordCorrect) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 404 });
     }
+    
     const accessToken= await JWT({_id:user._id,name:user.name,profile:user.profile})
     const maxAge = 60*60*1000
-    return NextResponse.json({...user
-      ,accessToken,maxAge
-    });
+    const resUser:IUser = {
+      _id : user._id,
+      name : user.name,
+      profile : user.profile,
+      accessToken : accessToken,
+      maxAge : maxAge
+    
+    }
+    return NextResponse.json(resUser);
   } catch (error: any) {
     console.error("Error:", error.message);
     return NextResponse.json({ error: "Invalid JSON input" }, { status: 404 });

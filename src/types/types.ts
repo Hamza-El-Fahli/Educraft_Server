@@ -1,11 +1,13 @@
 export interface IUser {
   _id: string;
   name: string;
-  filiere: string;
-  annee: number;
+  filiere?: string;
+  annee?: number;
   profile: string;
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
+  accessToken? : any;
+  maxAge? : number;
 }
 
 export interface ICourse {
