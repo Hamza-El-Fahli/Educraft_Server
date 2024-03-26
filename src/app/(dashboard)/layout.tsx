@@ -14,8 +14,6 @@ export default function DashboardLayout({
   children: React.ReactNode; 
 }) {
   return (
-    <html lang="en">
-      <body>
         <div className="dashboardContainer overflow-y-scroll overflow-x-hidden">
         <HeaderNav activeView="users management" />
         <SideNav activeView="users management" />
@@ -26,7 +24,5 @@ export default function DashboardLayout({
         <Copyright />
 
         </div>
-        </body>
-    </html>
   );
 }

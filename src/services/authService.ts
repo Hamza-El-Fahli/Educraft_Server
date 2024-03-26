@@ -3,10 +3,12 @@ import axios, { AxiosInstance } from 'axios'
 
 
 export interface UserType {
-        username : string,
+    _id:string;
+        name : string,
         accessToken : string,
         expiredAt? : any, 
-        maxAge : any
+        maxAge : any,
+        profile:string
 } 
 
 
@@ -29,14 +31,16 @@ export class AuthService {
         return this.instance
             .post("/api/users",loginData)
             .then(async (res)=>{
-                const {maxAge , name , accessToken} = res.data
+                const {maxAge , name , accessToken,_id,profile} = res.data
                 console.log(res.data.accessToken)
 
                 return {
-                    username : name,
+                    _id ,
+                    name,
                     accessToken : accessToken ,
                     maxAge : maxAge,
-                    expiredAt : maxAge
+                    expiredAt : maxAge,
+                    profile
 
                 }
             })

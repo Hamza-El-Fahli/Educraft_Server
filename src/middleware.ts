@@ -11,14 +11,11 @@ export async function middleware(request: NextRequest) {
             // ||  (Date.now() >= JSON.parse(currentUser).expiredAt)
         )
     ) {
-        if (request.nextUrl.pathname == '/login') return NextResponse.next()
-
-        else {
-
+        
 
             const response = NextResponse.redirect(new URL('/login', request.url))
             return response
-        }
+        
     }
     if (currentUser) {
 try {
@@ -27,19 +24,21 @@ try {
     if(
         decode.payload._id == JSON.parse(currentUser)._id &&
         decode.payload.name == JSON.parse(currentUser).name &&
-        decode.payload.profile == JSON.parse(currentUser).profile
+        decode.payload.profile == JSON.parse(currentUser).profile &&
+        (decode.payload.profile == 'prof' || decode.payload.profile == 'admin')
     )    return NextResponse.next()
     else {
-        
         request.cookies.delete('currentUser')
         const response = NextResponse.redirect(new URL('/login', request.url))
         response.cookies.delete('currentUser')
         return response
-        throw Error('Hacker detected')
 }
 } catch (error) {
     console.error('Error while verifying token:', error);
 
+    const response = NextResponse.redirect(new URL('/login', request.url))
+    response.cookies.delete('currentUser')
+    return response
 }
         
     }
@@ -47,3 +46,9 @@ try {
 
 }
 
+export const config = {
+    matcher: [
+        '/((?!login|api|_next/static|_next/image|favicon.ico).*)',
+
+    ],
+  }
