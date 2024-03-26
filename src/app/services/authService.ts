@@ -1,5 +1,14 @@
 import axios, { AxiosInstance } from 'axios'
 
+
+
+export interface UserType {
+        username : string,
+        accessToken : string,
+        expiredAt : any
+} 
+
+
 export class AuthService {
     protected readonly instance: AxiosInstance;
     public constructor (url:string){

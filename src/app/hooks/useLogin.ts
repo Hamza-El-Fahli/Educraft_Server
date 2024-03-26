@@ -1,4 +1,4 @@
-import { authService } from "../services/authService";
+import { UserType, authService } from "../services/authService";
 import Cookies from 'js-cookie'
 
 export const useLogin = () =>{
@@ -9,7 +9,7 @@ export const useLogin = () =>{
         if(user){
             Cookies.set('currentUser',JSON.stringify(user))
         }
-        return user 
+        return user as UserType 
     }
     return { login }
 }
