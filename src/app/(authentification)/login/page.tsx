@@ -1,31 +1,27 @@
 "use client";
-import axios from "axios";
+import { useLogin } from "@/hooks/useLogin";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-interface User {
-  _id: string;
-  name: string;
-}
 
 export default function Login(): JSX.Element {
   const router = useRouter();
-
+  const loginHook = useLogin()
+ 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       username: { value: string };
       password: { value: string };
     }; 
-
+   
     const name = target.username.value;
     const password = target.password.value;
 
     try {
-      const checkUserCall = await axios.post<User>(`http://localhost:3000/api/users`, { name, password });
-      const checkUser = checkUserCall.data;
-
-      if (checkUser.hasOwnProperty('_id')) {
+      const checkUser = await loginHook.login(name,password);
+      console.log(checkUser)
+      if (checkUser.hasOwnProperty('accessToken')) {
         router.push("/dashboard");
       } else {
       }
@@ -38,7 +34,6 @@ export default function Login(): JSX.Element {
       if( responseError.search('user')!=-1) document.getElementById("usernameError")?.classList.remove('hidden');
       if( responseError.search('pass')!=-1) document.getElementById("passwordError")?.classList.remove('hidden');
 
-      // Handle error, show error message, etc.
     }
   };
 

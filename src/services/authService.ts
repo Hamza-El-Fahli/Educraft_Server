@@ -1,12 +1,12 @@
 import axios, { AxiosInstance } from 'axios'
-import JWT from './jwt';
 
 
 
 export interface UserType {
         username : string,
         accessToken : string,
-        expiredAt : any
+        expiredAt? : any, 
+        maxAge : any
 } 
 
 
@@ -26,16 +26,16 @@ export class AuthService {
         if(identifier.search('@')==-1) loginData['name'] = identifier // if Identifier was a username
         else loginData['email'] = identifier // if the identifier was an email
 
-
         return this.instance
             .post("/api/users",loginData)
-            .then((res)=>{
-                const {_id , name , profile} = res.data
-                console.log(res.data)
+            .then(async (res)=>{
+                const {maxAge , name , accessToken} = res.data
                 return {
-                    username : res.data.username,
-                    accessToken : JWT({_id , name , profile}) ,
-                    expiredAt : 3000
+                    username : name,
+                    accessToken : accessToken ,
+                    maxAge : maxAge,
+                    expiredAt : maxAge
+
                 }
             })
     }

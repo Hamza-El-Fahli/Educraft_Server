@@ -2,7 +2,7 @@ import connectDB from "@/database/lib/mongodb";
 import Users from "@/database/models/users";
 import { IUser } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from 'bcrypt'
+import JWT from "@/services/jwt";
 
 
 // PUT      add one user
@@ -62,8 +62,11 @@ const isPasswordCorrect = password == user.password;
 if (!isPasswordCorrect) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 404 });
     }
-
-    return NextResponse.json(user);
+    const accessToken= await JWT({_id:user._id,name:user.name,profile:user.profile})
+    const maxAge = 60*60*1000
+    return NextResponse.json({...user
+      ,accessToken,maxAge
+    });
   } catch (error: any) {
     console.error("Error:", error.message);
     return NextResponse.json({ error: "Invalid JSON input" }, { status: 404 });
