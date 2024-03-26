@@ -1,6 +1,8 @@
 import connectDB from "@/database/lib/mongodb";
 import Users from "@/database/models/users";
+import { IUser } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from 'bcrypt'
 
 
 // PUT      add one user
@@ -35,23 +37,33 @@ export async function GET() {
 // Get One user By Email and password
 export async function POST(request: NextRequest) {
   try {
-    const data = await request.json();
+    const data = await request.json(); 
     const { email, password, name } = data;
-    if (password == "") return NextResponse.json({ error: "Invalid JSON input" }, { status: 404 });
-    if (email == '' && name == '') return NextResponse.json({ error: "Invalid JSON input" }, { status: 404 });
+    if (!email && !name) {
+      return NextResponse.json({ error: "Empty identifier field" }, { status: 404 });
+    }
+    if (!password) {
+      return NextResponse.json({ error: "Empty Password field" }, { status: 404 });
+    }
 
     await connectDB();
-    let user: any;
-    if (name)
-      user = await Users.findOne({ password, name });
-    else
-      user = await Users.findOne({ email, password });
-
-    if (user) {
-      return NextResponse.json(user);
+    let user: IUser|null;
+    if (name) {
+      user = await Users.findOne({ name });
     } else {
-      return NextResponse.json({ error: "No user found" }, { status: 404 });
+      user = await Users.findOne({ email });
     }
+
+    if (!user) {
+      return NextResponse.json({ error: "User Not found" }, { status: 404 });
+    }
+// const isPasswordCorrect = await bcrypt.compare(password, user.password);
+const isPasswordCorrect = password == user.password;
+if (!isPasswordCorrect) {
+      return NextResponse.json({ error: "Incorrect password" }, { status: 404 });
+    }
+
+    return NextResponse.json(user);
   } catch (error: any) {
     console.error("Error:", error.message);
     return NextResponse.json({ error: "Invalid JSON input" }, { status: 404 });

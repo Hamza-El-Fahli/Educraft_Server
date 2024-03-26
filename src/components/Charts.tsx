@@ -4,7 +4,7 @@ export default function Charts() {
       <main className="dashboardCards">
         <div className="dashboardCards_add">
         <svg width="15" height="15" viewBox="0 0 15 15">
-    <path d="M7.5 0L7.5 15M0 7.5L15 7.5" fill="none" stroke="#fff" stroke-width="2" />
+    <path d="M7.5 0L7.5 15M0 7.5L15 7.5" fill="none" stroke="#fff" strokeWidth="2" />
 </svg>
 
 

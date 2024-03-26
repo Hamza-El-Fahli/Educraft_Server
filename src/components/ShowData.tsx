@@ -43,7 +43,7 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
             <tbody  >
               {/* Mapping over modules to display them in the table */}
               {Data.map((oneData:any,index:number) => (
-                <tr  key={index} id={`tr-${index}`}>
+                <tr  key={index}  id={`tr-${index}`}>
                   {Object.keys(oneData).map((key:any,innerIndex)=>{
                     if(innerIndex >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 

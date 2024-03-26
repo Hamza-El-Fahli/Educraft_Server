@@ -1,4 +1,8 @@
-"use client";
+"use client"
+import { useRouter } from "next/navigation";
+
 export default function Hello() {
-  return <h1 className="text-2xl">Hiiii</h1>;
+  const route = useRouter()
+  route.push('/login')
+  // return <h1 className="text-2xl">Hiiii</h1>;
 }

@@ -16,7 +16,7 @@ export default function Login(): JSX.Element {
     const target = e.target as typeof e.target & {
       username: { value: string };
       password: { value: string };
-    };
+    }; 
 
     const name = target.username.value;
     const password = target.password.value;
@@ -26,13 +26,18 @@ export default function Login(): JSX.Element {
       const checkUser = checkUserCall.data;
 
       if (checkUser.hasOwnProperty('_id')) {
-        window.alert(`user ${checkUser.name} has id of ${checkUser._id}`);
         router.push("/dashboard");
       } else {
-        document.getElementById("loginError")?.classList.remove('hidden');
       }
-    } catch (error) {
-      console.error('Error during login:', error);
+    } catch (error:any) {
+      const responseError = error.response.data.error.toLowerCase()
+      console.error('Error during login:', responseError.search('user'));
+      
+      document.getElementById("usernameError")?.classList.add('hidden');
+      document.getElementById("passwordError")?.classList.add('hidden');
+      if( responseError.search('user')!=-1) document.getElementById("usernameError")?.classList.remove('hidden');
+      if( responseError.search('pass')!=-1) document.getElementById("passwordError")?.classList.remove('hidden');
+
       // Handle error, show error message, etc.
     }
   };
@@ -61,6 +66,7 @@ export default function Login(): JSX.Element {
             placeholder="Username"
             required
           />
+          <label id="usernameError" className="hidden text-red-800">Email/Username incorrect</label>
         </div>
         <div className="mb-6">
           <label
@@ -76,9 +82,9 @@ export default function Login(): JSX.Element {
             type="password"
             placeholder="Password"
             required
-          />
+          /> 
+                   <label id="passwordError" className="hidden text-red-800">Password incorrect</label>
         </div>
-        <div className="text-center text-red-300 hidden" id="loginError" style={{marginTop : "-24px"}}>Impossible de trouver votre compte</div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"

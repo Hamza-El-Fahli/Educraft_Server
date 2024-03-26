@@ -7,6 +7,7 @@ export interface IUser {
   email: string;
   password: string;
 }
+
 export interface ICourse {
   _id: string;
   course_name: string;
