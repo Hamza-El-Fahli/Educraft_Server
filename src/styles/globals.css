@@ -147,3 +147,39 @@ tr{
 .removeBTN:hover{
   @apply text-white bg-red-500
 }
+
+
+
+/* Login  */
+
+.LoginContainer {
+ @apply bg-primary flex justify-center items-center  h-screen
+}
+.loginform {
+  @apply  backdrop-filter  bg-third bg-opacity-30 shadow-md rounded-lg px-10 py-8 mb-4 flex flex-col w-96
+}
+
+.loginHeader{
+  @apply text-center text-2xl font-bold text-firstBlue mb-6
+}
+
+.loginLabel{
+  @apply block text-gray-400 text-sm font-bold mb-2
+}
+.loginInput{
+  @apply bg-opacity-20 backdrop-filter  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none
+}
+.loginError{
+  @apply hidden text-red-800
+}
+.loginButton{
+  @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none 
+}
+
+.loginFooter{
+ @apply mt-4 text-center text-gray-500  cursor-default
+}
+.loginLink{
+  @apply text-third font-bold hover:underline cursor-pointer
+}
+

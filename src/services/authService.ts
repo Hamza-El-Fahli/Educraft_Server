@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
+import JWT from './jwt';
 
 
 
@@ -29,10 +30,12 @@ export class AuthService {
         return this.instance
             .post("/api/users",loginData)
             .then((res)=>{
+                const {_id , name , profile} = res.data
+                console.log(res.data)
                 return {
                     username : res.data.username,
-                    accessToken : res.data.access_token,
-                    expiredAt : res.data.expiredAt
+                    accessToken : JWT({_id , name , profile}) ,
+                    expiredAt : 3000
                 }
             })
     }
