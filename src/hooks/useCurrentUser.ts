@@ -5,7 +5,7 @@ import { UserType } from "../services/authService";
 
 
 
-export const useCurrentUser = ()=>{
+export const useCurrentUser =  ()=>{
     const [user, setUser] = useState<UserType | null>(null)
     useEffect(()=>{
         const currentUser = Cookies.get('currentUser')

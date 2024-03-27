@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { IUser, IUser_Form } from "@/types/types";
 import { API_Server_Users } from "@/configuration/API";
 import UsersFormComponent from "@/components/UsersFormComponent";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 
 
@@ -27,6 +28,8 @@ const [UserForm, setUserForm] = useState<IUser_Form>( {
   password: '',
 })
 
+
+const JWTUser = useCurrentUser()
 
   // Function to open modal
   const openModal = ():void => {

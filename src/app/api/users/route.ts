@@ -3,7 +3,10 @@ import Users from "@/database/models/users";
 import { IUser } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
 import JWT from "@/services/jwt";
+import { jwtVerify } from 'jose';
+import { secret } from "@/services/secret";
 
+const secretKey = new TextEncoder().encode(secret);
 
 // PUT      add one user
 // GET      select all users
@@ -12,7 +15,7 @@ import JWT from "@/services/jwt";
 
 
 // Add user 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   const { name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string } = await request.json()
   try {
     await connectDB()
@@ -26,9 +29,21 @@ export async function PUT(request: Request) {
 
 
 // get All users
-export async function GET() {
+export async function GET(request:NextRequest) {
   await connectDB()
-  const user = await Users.find()
+  const currentUser = request.cookies.get('currentUser')?.value
+    if(currentUser)
+    {
+      const decode = await jwtVerify(JSON.parse(currentUser).accessToken, secretKey) // decode the cookies
+      console.log(decode.payload.profile)
+      if(testPayload(decode,currentUser) && decode.payload.profile != 'admin' ){
+        const user = await Users.find({ profile: { $in: ['prof', 'user'] } })
+        return NextResponse.json(user)
+
+      }
+    }
+    const user = await Users.find()
+
   return NextResponse.json(user)
 }
 
@@ -63,14 +78,15 @@ if (!isPasswordCorrect) {
     }
     
     const accessToken= await JWT({_id:user._id,name:user.name,profile:user.profile})
-    const maxAge = 60*60*1000
     const resUser:IUser = {
       _id : user._id,
       name : user.name,
       profile : user.profile,
-      accessToken : accessToken,
-      maxAge : maxAge
-    
+      filiere:user.filiere,
+      annee : user.annee,
+    email:user.email,
+    password:user.password,
+    accessToken : accessToken
     }
     return NextResponse.json(resUser);
   } catch (error: any) {
@@ -81,3 +97,13 @@ if (!isPasswordCorrect) {
 
 
 
+
+
+
+
+function testPayload(decode: any, currentUser: any) {
+  return (decode.payload._id == JSON.parse(currentUser)._id && // id didn't change
+      decode.payload.name == JSON.parse(currentUser).name && // username didn't change
+      decode.payload.profile == JSON.parse(currentUser).profile && // user profile/privilages didn't change
+      (decode.payload.profile == 'prof' || decode.payload.profile == 'admin')) // admins and profs are allowed , app users not allowed into this server side
+}

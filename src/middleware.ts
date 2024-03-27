@@ -9,8 +9,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/login',request.url))
         if(!!currentUser && request.nextUrl.pathname == '/login') 
             return NextResponse.redirect(new URL('/dashboard',request.url))
-    if (!currentUser)
-        return redirectToLogin(request)
+    if (!currentUser){
+        if(request.nextUrl.pathname == '/login') return NextResponse.next()
+        return redirectToLogin(request)}
     else
         return await testuserCredentials(request, currentUser)
 }
