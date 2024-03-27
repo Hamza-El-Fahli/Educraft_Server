@@ -20,9 +20,9 @@ export default function Login(): JSX.Element {
 
     try {
       const checkUser = await loginHook.login(name,password);
+      console.log(checkUser)
       if (checkUser.hasOwnProperty('accessToken')) {
         router.push("/dashboard");
-
       } else {
       }
     } catch (error:any) {
