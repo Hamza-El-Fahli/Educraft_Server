@@ -1,4 +1,5 @@
 "use client";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useLogout } from "@/hooks/useLogout";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -6,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function HeaderNav({ activeView }: { activeView: string }) {
   const router = useRouter();
   const logoutHook = useLogout();
+  const user = useCurrentUser()
   const logout = () => {
     logoutHook.logout();
     router.push("/");
@@ -21,7 +23,7 @@ export default function HeaderNav({ activeView }: { activeView: string }) {
           height={35} // Optional: Set height
         />
         <span>
-          Mr Whigga <br /> (white nigga)
+          {user && user.name+'     (Logout)'}    
         </span>
         <span>▼</span>
       </div>

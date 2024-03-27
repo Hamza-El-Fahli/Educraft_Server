@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
   if (currentUser) {
     const decode = await jwtVerify(JSON.parse(currentUser).accessToken, secretKey) // decode the cookies
     if (testPayload(decode, currentUser) && decode.payload.profile != 'admin') {
-      const user = await Users.find({ profile: { $in: ['prof', 'user'] } })
+      const user = await Users.find({ profile: 'user' }) // prof can only see users
       return NextResponse.json(user)
 
     }

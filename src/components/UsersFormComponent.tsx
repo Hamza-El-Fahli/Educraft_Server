@@ -31,16 +31,17 @@ export default function UsersFormComponent({UserForm,setUserForm,AddORMod,AddUse
     value={UserForm?.password}
     onChange={(e) => setUserForm({ ...UserForm, password: e.target.value })}
   />
-  <input
-    required
-    className="text-primary h-12 border p-3"
-    type="text"
-    name="profile"
-    placeholder="Profile"
-    value={UserForm?.profile}
-    onChange={(e) => setUserForm({ ...UserForm, profile: e.target.value })}
-  />
-  <input
+  
+  <select className="m-1 border rounded-md p-2 text-black h-12 w-full" name="profile" value={UserForm?.profile} 
+      onChange={(e) => setUserForm({ ...UserForm, profile: e.target.value })}
+
+id="">
+<option value="user" selected>utilisateur</option>
+<option value="prof" >professeur</option>
+<option value="admin" >administrateur</option>
+
+</select>
+  {UserForm?.profile == 'user' && <input
     required
     className="text-primary h-12 border p-3"
     type="number"
@@ -48,7 +49,7 @@ export default function UsersFormComponent({UserForm,setUserForm,AddORMod,AddUse
     placeholder="Annee"
     value={UserForm?.annee}
     onChange={(e) => setUserForm({ ...UserForm, annee: parseInt(e.target.value) })}
-  />
+  />}
   <input
     required
     className="text-primary h-12 border p-3"
