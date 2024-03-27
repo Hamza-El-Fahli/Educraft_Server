@@ -5,7 +5,11 @@ const secretKey = new TextEncoder().encode(secret);
 export async function middleware(request: NextRequest) {
 
     const currentUser = request.cookies.get('currentUser')?.value
-    if (!currentUser )
+    if(request.nextUrl.pathname == '/') 
+        return NextResponse.redirect(new URL('/login',request.url))
+        if(!!currentUser && request.nextUrl.pathname == '/login') 
+            return NextResponse.redirect(new URL('/dashboard',request.url))
+    if (!currentUser)
         return redirectToLogin(request)
     else
         return await testuserCredentials(request, currentUser)
@@ -13,7 +17,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: [
-        '/((?!login|api|_next/static|_next/image|favicon.ico).*)',
+        '/((?!api|_next/static|_next/image|favicon.ico).*)',
 
     ],
 }
@@ -22,6 +26,8 @@ export const config = {
 
 
 function redirectToLogin(request: NextRequest) {
+    request.cookies.delete('currentUser') // clear the old cookie
+
     const response = NextResponse.redirect(new URL('/login', request.url)) // redirect to login
     response.cookies.delete('currentUser') // clear the old cookie
 
