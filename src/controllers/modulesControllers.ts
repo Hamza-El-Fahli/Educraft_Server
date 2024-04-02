@@ -1,6 +1,7 @@
 import connectDB from "@/database/lib/mongodb"
 import Courses from "@/database/models/courses"
 import _Modules from "@/database/models/modules"
+import ModulesProgression from "@/database/models/modulesProgression";
 import { NextRequest, NextResponse } from "next/server"
 
 
@@ -28,7 +29,6 @@ export async function GetAllModules() {
         courses.forEach(course => {
             courseMap[course._id] = course.course_name;
         });
-
         const res = modules.map(module => {
             return {
                 _id: module._id,
@@ -39,15 +39,9 @@ export async function GetAllModules() {
                 description: module.description
             };
         })
-
-
-
-
-
         if (res.length === 0 ) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
-
         return NextResponse.json(res.sort((a, b) => a.order - b.order));
     } catch (error) {
         console.error(error);
@@ -55,42 +49,38 @@ export async function GetAllModules() {
     }
 }
 
-export async function GetModulesWithCourseID(courseId:string|null) {
+export async function GetModulesWithCourseID(courseId:string|null,user_id:string|null) {
     try{
     await connectDB();
         let filter: any = {};
         if (courseId) {
             filter["course_id"] = courseId;
         }
-
         const modules = await _Modules.find(filter)
         const courses = await Courses.find({})
         const courseMap: any = {}
         courses.forEach(course => {
             courseMap[course._id] = course.course_name;
         });
-
-        const res = modules.map(module => {
-            return {
+        const res =await  Promise.all(modules.map(async (module) => {
+            let ModuleProgress = null
+            if(user_id)
+                 ModuleProgress = await ModulesProgression.findOne({user_id , module_id : module._id})
+            return    {
                 _id: module._id,
                 course_id: module.course_id,
                 course_name: courseMap[module.course_id],
                 module_name: module.title,
                 order: module.order,
-                description: module.description
+                description: module.description,
+                score : ModuleProgress ? ModuleProgress.score : '0'
             };
-        })
-
-
-
-
-
+        }))
+        console.log(res)
         if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
-
         return NextResponse.json(res.sort((a, b) => a.order - b.order));
-
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Failed to get modules" }, { status: 500 });

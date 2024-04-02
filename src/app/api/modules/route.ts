@@ -22,13 +22,18 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
     try {
         const params = request.nextUrl.searchParams
+        //     const currentUser = request.cookies.get('currentUser')?.value
+        //    const user_id =  JSON.parse(currentUser||'')._id
+
+        const user_id = params.get('user_id')
+
         if (params.has('course_id')) {
             const courseId = params.get('course_id')
             if (courseId == null || courseId == '') {
                 throw Error('Course id either null or empty')
             }
             else
-                return GetModulesWithCourseID(courseId)
+                return GetModulesWithCourseID(courseId,user_id)
         }
         else {
             return GetAllModules()
