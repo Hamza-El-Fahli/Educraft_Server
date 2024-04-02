@@ -3,13 +3,13 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface ModulesProgression extends Document {
   chapter_id: string;
   user_id: string;
-  score: string;
+  score: number;
 }
 
 const ModulesScheme: Schema = new Schema({
   module_id: { type: String, require: true },
   user_id: { type: String, require: true },
-  score: { type: String, require: true },
+  score: { type: Number, require: true },
 });
 
 

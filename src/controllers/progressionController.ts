@@ -23,7 +23,7 @@ export async function AddModuleProgress({ user_id, module_id, score }: { user_id
     await connectDB()
     const currnetScore = await ModulesProgression.findOne({ user_id, module_id })
     if (currnetScore) {
-        if (score && score > currnetScore.score) {
+        if (score && parseInt(score) > currnetScore.score) {
             await ModulesProgression.findOneAndUpdate(currnetScore._id, { score })
             return NextResponse.json({ message: 'Module user score updated successfully' })
         }
