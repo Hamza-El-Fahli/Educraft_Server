@@ -73,7 +73,7 @@ export async function GetModulesWithCourseID(courseId:string|null,user_id:string
                 module_name: module.title,
                 order: module.order,
                 description: module.description,
-                score : ModuleProgress ? ModuleProgress.score : '0'
+                progress : ModuleProgress ? ModuleProgress.score : '0'
             };
         }))
         console.log(res)
