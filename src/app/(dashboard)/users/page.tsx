@@ -11,7 +11,6 @@ import UsersFormComponent from "@/components/UsersFormComponent";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 
-
 // Component function
 export default function Users() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
