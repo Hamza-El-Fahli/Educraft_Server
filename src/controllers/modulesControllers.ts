@@ -76,7 +76,7 @@ export async function GetModulesWithCourseID(courseId:string|null,user_id:string
                 progress : ModuleProgress ? ModuleProgress.score : '0'
             };
         }))
-        console.log(res)
+        // console.log(res)
         if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }

@@ -48,10 +48,20 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
     const res = quizes.map((quiz) => {
+
+        const NUMBER_OF_OPTIONS_PER_QUIZ = 3
+
+        const optionsList = []
+        while(optionsList.length < NUMBER_OF_OPTIONS_PER_QUIZ){
+            const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
+            if(testOption && !(testOption in optionsList) && testOption != quiz.correct_answer)    
+                    optionsList.push(testOption)
+        }
+        optionsList.push(quiz.correct_answer)
         return {
             _id: quiz._id,
             question: quiz.question,
-            answers: quiz.answers,
+            answers: optionsList,
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
             chapter_name: chapterMap[quiz.chapter_id].title,
@@ -111,7 +121,7 @@ export async function GetQuizzesWithModuleID(id: string) {
     await Promise.all(chapters.map(async (chapter: any) => {
         const quiz = await Quizes.find({ "chapter_id": chapter._id });
         if (quiz.length > 0) {
-            data.push({ chapter_name: chapter.title, chapter_id: chapter._id, ...quiz });
+            data.push({ chapter_name: chapter.title, chapter_id: chapter._id,group:0, ...quiz });
         }
         return null;
     }));
@@ -148,3 +158,31 @@ export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
     return NextResponse.json({ message: "Quiz Updated successfully", data })
 
 }
+
+export const getQuizGroupCounts = async () => {
+    try {
+        const result = await Quizes.aggregate([
+            { $group: {
+                _id: { chapter_id: '$chapter_id', group: '$group' },
+                count: { $sum: 1 }
+            }},
+            { $group: {
+                _id: '$_id.chapter_id',
+                groups: { $push: { k: '$_id.group', v: '$count' } }
+            }},
+            { $addFields: {
+                groups: { $arrayToObject: '$groups' }
+            }},
+            { $project: {
+                chapter: '$_id',
+                groups: 1,
+                _id: 0
+            }}
+        ]);
+
+        return result;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+};

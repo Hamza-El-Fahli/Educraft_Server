@@ -1,7 +1,9 @@
 import connectDB from "@/database/lib/mongodb";
 import Chapters from "@/database/models/chapters";
 import _Modules from "@/database/models/modules";
+import Quizes from "@/database/models/quizes";
 import { NextRequest, NextResponse } from "next/server";
+import { getQuizGroupCounts } from "./quizzesControllers";
 
 
 export async function PostChapter(request: NextRequest) {
@@ -55,21 +57,25 @@ export async function GetChaptersWithModuleID(module_id: string) {
     if (module_id) {
         filter["module_id"] = module_id;
     }
+    const quizzes = await getQuizGroupCounts()
     const chapters = await Chapters.find(filter);
     const modules = await _Modules.find({});
     const moduleMap: any = {}
     modules.forEach(module => {
         moduleMap[module._id] = module.title;
     });
-    const res = chapters.map(chapter => {
+   
+    const res = await Promise.all(chapters.map(async chapter => {
+        const currChapterQuizz : any = quizzes?.filter((quiz)=>quiz.chapter == chapter._id)
         return {
             _id: chapter._id,
             module_id: chapter.module_id,
             module_name: moduleMap[chapter.module_id],
             title: chapter.title,
-            description: chapter.description
+            description: chapter.description,
+            quizGroupes : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
         };
-    })
+    }))
     if (res.length === 0) {
         return NextResponse.json({ error: "No Chapter found with the given Module ID" }, { status: 404 });
     }

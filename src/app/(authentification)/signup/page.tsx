@@ -20,7 +20,7 @@ export default function Signup() {
       },
       body: JSON.stringify({ name, email, password }),
     });
-    console.log(res);
+    // console.log(res);
   }
 
   return (

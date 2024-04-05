@@ -32,7 +32,7 @@ export class AuthService {
             .post("/api/users",loginData)
             .then(async (res)=>{
                 const {maxAge , name , accessToken,_id,profile} = res.data
-                console.log(res.data.accessToken)
+                // console.log(res.data.accessToken)
 
                 return {
                     _id ,
