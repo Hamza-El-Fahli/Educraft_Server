@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
 // GET      select Quizes with specific chapter_id
 // note : if no chapter_id, select all
 export async function GET(request: NextRequest) {
+
     const params = (request.nextUrl.searchParams)
     if (params.has('module_id')) {
         try {
@@ -37,7 +38,7 @@ export async function GET(request: NextRequest) {
     else {
         try {
             if (params.has('chapter_id')) return GetQuizzesWithChapterID(request)
-            else return GetAllQuizzes()
+                else return GetAllQuizzes()
         } catch (error) {
             return NextResponse.json({ error: "Problem While handling request", context: error }, { status: 404 });
         }

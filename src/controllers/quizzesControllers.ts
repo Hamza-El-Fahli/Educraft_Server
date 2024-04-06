@@ -44,20 +44,25 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
     if (chapter_id) {
         filter["chapter_id"] = chapter_id;
     }
+    if (request.nextUrl.searchParams.has('quiz_group')) {
+        filter["group"] = request.nextUrl.searchParams.get('quiz_group');;
+    }
+
     const quizes = await Quizes.find(filter);
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
     const res = quizes.map((quiz) => {
 
-        const NUMBER_OF_OPTIONS_PER_QUIZ = 3
-
+        // Limit options to only 4 options including the correct one
         const optionsList = []
+        const NUMBER_OF_OPTIONS_PER_QUIZ = 3
         while(optionsList.length < NUMBER_OF_OPTIONS_PER_QUIZ){
             const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
             if(testOption && !(testOption in optionsList) && testOption != quiz.correct_answer)    
-                    optionsList.push(testOption)
-        }
-        optionsList.push(quiz.correct_answer)
+                    optionsList.push(testOption)}
+        optionsList.push(quiz.correct_answer) // add the correct option
+
+
         return {
             _id: quiz._id,
             question: quiz.question,

@@ -67,13 +67,14 @@ export async function GetChaptersWithModuleID(module_id: string) {
    
     const res = await Promise.all(chapters.map(async chapter => {
         const currChapterQuizz : any = quizzes?.filter((quiz)=>quiz.chapter == chapter._id)
+        
         return {
             _id: chapter._id,
             module_id: chapter.module_id,
             module_name: moduleMap[chapter.module_id],
             title: chapter.title,
             description: chapter.description,
-            quizGroupes : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
+            quizGroups : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
         };
     }))
     if (res.length === 0) {
