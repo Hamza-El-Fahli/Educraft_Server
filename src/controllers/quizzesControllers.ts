@@ -54,15 +54,16 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
     const res = quizes.map((quiz) => {
 
         // Limit options to only 4 options including the correct one
-        const optionsList = []
         const NUMBER_OF_OPTIONS_PER_QUIZ = 3
-        while(optionsList.length < NUMBER_OF_OPTIONS_PER_QUIZ){
-            const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
-            if(testOption && !(testOption in optionsList) && testOption != quiz.correct_answer)    
-                    optionsList.push(testOption)}
-        optionsList.push(quiz.correct_answer) // add the correct option
-
-
+        
+            const optionsList =new Set()
+            optionsList.add(quiz.correct_answer) // add the correct option
+            while(optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ){
+                const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
+                if(!(optionsList.has(testOption)))    
+                        optionsList.add(testOption)
+                    }
+    
         return {
             _id: quiz._id,
             question: quiz.question,
