@@ -19,6 +19,7 @@ export default function QuizesScreen() {
     selectedChapter: "1",
     question: "",
     quizNumber: "1",
+    group: 0,
     correctAnswer: "",
     answers: [""],
   });
@@ -105,6 +106,7 @@ export default function QuizesScreen() {
   function openModal() {
     if (SelectedRegister == -1) {
       setisOpen(true);
+      if(Quizzes.length)
       setquizForm({
         seletedCourse: Quizzes[0].course_id,
         selectedModule: Quizzes[0].module_id,
@@ -113,7 +115,19 @@ export default function QuizesScreen() {
         question: "",
         correctAnswer: "",
         answers: [""],
+        group : 0
       });
+      else
+      setquizForm({
+    seletedCourse: "",
+    selectedModule: "",
+    selectedChapter: "",
+    question: "",
+    quizNumber: "1",
+    group: 0,
+    correctAnswer: "",
+    answers: [""],
+  })
     } else {
       setquizForm({
         seletedCourse: Quizzes[SelectedRegister].course_id,
@@ -123,6 +137,7 @@ export default function QuizesScreen() {
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,
         answers: Quizzes[SelectedRegister].answers,
+        group:0
       });
       setisOpen(true);
     }
@@ -144,6 +159,7 @@ export default function QuizesScreen() {
         question: quizForm.question,
         correct_answer: quizForm.correctAnswer,
         answers: quizForm.answers,
+        group : 0
       })
       .then((res) => {
         const Mchapter: IChapter = Chapters.filter(

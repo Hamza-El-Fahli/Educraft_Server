@@ -11,7 +11,7 @@ const ChaptersScheme: Schema = new Schema({
   module_id: { type: String, require: true },
   title: { type: String, require: true },
   description: { type: String, require: true },
-  quizGroups: { type: Number, require: true },
+  quizGroupes: { type: Number, require: true },
 });
 
 

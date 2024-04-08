@@ -32,8 +32,9 @@ export async function PostQuizController(request: NextRequest) {
     await connectDB()
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers,group })
     const chapter = await Chapters.findById(chapter_id)
-    if(chapter && chapter.quizGroupes <= group)
-        Chapters.findByIdAndUpdate(chapter,{quizGroupes : group+1})
+    if(chapter && chapter.quizGroupes <= group){
+        console.log('update')
+        await Chapters.findByIdAndUpdate(chapter._id,{quizGroupes : group+1})}
     return NextResponse.json({ message: 'Quiz Created successfully', _id: res._id })
 
 

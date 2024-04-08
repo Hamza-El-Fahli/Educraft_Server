@@ -15,8 +15,8 @@ const QuizSchema = new Schema<IQuiz>({
     chapter_id: { type: String, required: true },
     question: { type: String, required: true },
     correct_answer: { type: String, required: true },
-    answers: { type: [String], required: true },
     group: { type: String, required: true },
+    answers: { type: [String], required: true },
 })
 
 const Quizes: Model<IQuiz> = mongoose.models.Quizes as Model<IQuiz> || mongoose.model('Quizes', QuizSchema)
