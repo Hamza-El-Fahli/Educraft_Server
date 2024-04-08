@@ -27,10 +27,13 @@ return {chapterMap,moduleMap,courseMap}
 }
 
 export async function PostQuizController(request: NextRequest) {
-    const { chapter_id, question, correct_answer, answers }:
-        { chapter_id: string, question: string, correct_answer: string, answers: string[] } = await request.json()
+    const { chapter_id, question, correct_answer, answers,group }:
+        { chapter_id: string, question: string, correct_answer: string, answers: string[], group:number } = await request.json()
     await connectDB()
-    const res = await Quizes.create({ chapter_id, question, correct_answer, answers })
+    const res = await Quizes.create({ chapter_id, question, correct_answer, answers,group })
+    const chapter = await Chapters.findById(chapter_id)
+    if(chapter && chapter.quizGroupes <= group)
+        Chapters.findByIdAndUpdate(chapter,{quizGroupes : group+1})
     return NextResponse.json({ message: 'Quiz Created successfully', _id: res._id })
 
 

@@ -15,5 +15,5 @@ const ProgressionScheme: Schema = new Schema({
 });
 
 
-const Progression = mongoose.models.ChaptersProgression as Model<Progression> || mongoose.model<Progression>('Progression',ProgressionScheme)
+const Progression = mongoose.models.Progression as Model<Progression> || mongoose.model<Progression>('Progression',ProgressionScheme)
 export default Progression

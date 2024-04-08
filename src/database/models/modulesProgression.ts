@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 interface ModulesProgression extends Document {
-  chapter_id: string;
+  module_id: string;
   user_id: string;
   score: number;
 }

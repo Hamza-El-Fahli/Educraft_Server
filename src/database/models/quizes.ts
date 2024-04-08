@@ -6,7 +6,7 @@ interface IQuiz extends Document {
     question: string;
     correct_answer: string;
     answers: string[];
-    group?:string;
+    group:string;
 }
 
 
@@ -16,7 +16,7 @@ const QuizSchema = new Schema<IQuiz>({
     question: { type: String, required: true },
     correct_answer: { type: String, required: true },
     answers: { type: [String], required: true },
-    group: { type: [String], required: false },
+    group: { type: String, required: true },
 })
 
 const Quizes: Model<IQuiz> = mongoose.models.Quizes as Model<IQuiz> || mongoose.model('Quizes', QuizSchema)

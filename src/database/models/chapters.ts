@@ -4,12 +4,14 @@ interface IChapter extends Document {
   module_id: string;
   title: string;
   description: string;
+  quizGroupes : number; // count the number of tests groups under this chapter
 }
 
 const ChaptersScheme: Schema = new Schema({
   module_id: { type: String, require: true },
   title: { type: String, require: true },
   description: { type: String, require: true },
+  quizGroups: { type: Number, require: true },
 });
 
 
