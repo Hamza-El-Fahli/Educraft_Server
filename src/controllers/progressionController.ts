@@ -9,18 +9,60 @@ export async function AddProgress({ user_id, chapter_id,module_id, quizGroup }: 
         return NextResponse.json({ message: 'Progress user  didnt changed' })
     }
     else 
-    {
+    { 
         await Progression.create({ user_id, chapter_id, module_id, quizGroup })
         return NextResponse.json({ message: 'NEW Progress user score Create successfully' })
     }
 }
 export async function GetUserProgress({ user_id, module_id}: { user_id: string, module_id: string}){
     await connectDB()
-    const userProgress = await Progression.find({ user_id,  module_id })
-    if(userProgress){
-        const result = {user_id, module_id , 
-            quizzes : userProgress.map((prog)=>( {chapter : prog.chapter_id , quizGroup : prog.quizGroup}))}
-            return NextResponse.json(result)
-    }
-    return NextResponse.json({Error:'no Score'},{status:404})
+    const userProgress = await getQuizGroupsByChapter({ user_id,  module_id })
+
+    return  NextResponse.json(userProgress)
+
+
+
+
+    // return NextResponse.json({Error:'no Score'},{status:404})
 }
+
+
+
+
+export async function getQuizGroupsByChapter({user_id, module_id}:{user_id:string, module_id:string}) {
+    try {
+      const result = await Progression.aggregate([
+        {
+          $match: {
+            module_id,
+            user_id
+          },
+        },
+        {
+          $group: {
+            _id: '$chapter_id',
+            quizGroups: { $push: '$quizGroup' },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            chapter_id: '$_id',
+            quizGroups: 1,
+          },
+        },
+      ]);
+  
+      // Transform the result into the desired format
+      const formattedResult : any = {};
+      result.forEach((item) => {
+        formattedResult[item.chapter_id] = item.quizGroups;
+      });
+  
+      return formattedResult;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
+  }
+  
