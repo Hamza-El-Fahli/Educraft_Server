@@ -59,13 +59,14 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
 
         // Limit options to only 4 options including the correct one
         const NUMBER_OF_OPTIONS_PER_QUIZ = 4
-        
+        let safetyCounter = 0 // to avoid infinit loop in case oprions are less than 4
             const optionsList =new Set()
             optionsList.add(quiz.correct_answer) // add the correct option
-            while(optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ){
+            while(optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ){
                 const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
                 if(!(optionsList.has(testOption)))    
                         optionsList.add(testOption)
+                safetyCounter++
                     }
     
         return {
