@@ -1,5 +1,7 @@
 import connectDB from "@/database/lib/mongodb"
 import Progression from "@/database/models/progression"
+import Chapters from "@/database/models/chapters";
+
 import { NextRequest, NextResponse } from "next/server"
 
 export async function AddProgress({ user_id, chapter_id,module_id, quizGroup }: { user_id: string, module_id: string, chapter_id: string, quizGroup: string }) {
@@ -52,7 +54,6 @@ export async function getQuizGroupsByChapter({user_id, module_id}:{user_id:strin
           },
         },
       ]);
-  
       // Transform the result into the desired format
       const formattedResult : any = {};
       result.forEach((item) => {
@@ -66,3 +67,19 @@ export async function getQuizGroupsByChapter({user_id, module_id}:{user_id:strin
     }
   }
   
+
+
+
+export async function getModuleProgression({user_id, module_id}:{user_id:string, module_id:string}){
+    await connectDB()
+    const passedQuizzes =await getQuizGroupsByChapter({user_id,module_id})
+    const chapterUnderTheModule =await Chapters.find({module_id})
+    let numberOfPassedChapters = 0
+    chapterUnderTheModule.map((chapter)=>{
+        if(passedQuizzes[chapter._id])
+            if( chapter.quizGroupes == passedQuizzes[chapter._id].length )
+                numberOfPassedChapters += 1
+            })
+    
+    return ({ numberOfPassedChapters , totalOfChapters  : chapterUnderTheModule.length})
+}
