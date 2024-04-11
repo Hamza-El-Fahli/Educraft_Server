@@ -84,10 +84,14 @@ tr{
 }
 
 .modal{
-  @apply fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-75;
+ 
 }
+
 .modal_1{
-  @apply bg-white p-8 rounded shadow-lg
+  @apply bg-white p-8 rounded shadow-lg;
+  max-height : 90%;
+  overflow-y : scroll;
 }
 .modal_btn{
   @apply mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded
@@ -216,4 +220,8 @@ tr{
   100% {
     transform: rotate(360deg);
   }
+}
+
+label {
+  color: black;
 }
