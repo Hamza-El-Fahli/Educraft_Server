@@ -45,6 +45,7 @@ export interface IQuizz {
   module_name: string;
   course_id: string;
   course_name: string;
+  group: number;
 
 }
 

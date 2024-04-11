@@ -159,7 +159,7 @@ export default function QuizesScreen() {
         question: quizForm.question,
         correct_answer: quizForm.correctAnswer,
         answers: quizForm.answers,
-        group : 0
+        group : quizForm.group
       })
       .then((res) => {
         const Mchapter: IChapter = Chapters.filter(
@@ -172,6 +172,7 @@ export default function QuizesScreen() {
           _id: res.data._id,
           question: quizForm.question,
           answers: quizForm.answers,
+          group : quizForm.group ,
           correct_answer: quizForm.correctAnswer,
           chapter_id: Mchapter._id,
           chapter_name: Mchapter.title,
@@ -195,6 +196,7 @@ export default function QuizesScreen() {
         chapter_id: quizForm.selectedChapter,
         correct_answer: quizForm.correctAnswer,
         answers: quizForm.answers,
+        group: quizForm.group,
       })
       .then((res: { data: { data: IQuizz } }) => {
         const data = res.data.data;
@@ -211,6 +213,7 @@ export default function QuizesScreen() {
             module_name: data.module_name,
             course_id: data.course_id,
             course_name: data.course_name,
+            group : data.group
           };
         } else {
           newQuizz[SelectedRegister] = {
@@ -252,6 +255,7 @@ export default function QuizesScreen() {
           className="flex flex-col gap-3 w-80 "
         >
           <div className="flex flex-col">
+            <label htmlFor="course">Select Course</label>
             <select
               name="course"
               id=""
@@ -267,6 +271,7 @@ export default function QuizesScreen() {
                 </option>
               ))}
             </select>
+            <label htmlFor="module">Select Module</label>
             <select
               name="module"
               id=""
@@ -285,7 +290,7 @@ export default function QuizesScreen() {
                 );
               })}
             </select>
-
+<label htmlFor="chapter">Select Chapter</label>
             <select
               name="chapter"
               id=""
@@ -306,16 +311,29 @@ export default function QuizesScreen() {
               })}
             </select>
           </div>
-
+<label htmlFor="quizNumber"></label>
           <input
             type="text"
             className="text-primary h-12 border p-3 hidden"
+            name="quizNumber"
             value={quizForm.quizNumber}
             onChange={(e) =>
               setquizForm({ ...quizForm, quizNumber: e.target.value })
             }
           />
+          <label htmlFor="quizGroup">Group</label>
           <input
+                      type="number"
+                      className="text-primary h-12 border p-3"
+                      name="quizGroup"
+                      value={quizForm.group}
+                      onChange={(e) =>
+                        setquizForm({ ...quizForm, group: parseInt(e.target.value) })
+                      }
+            />
+          <label htmlFor="question">Question</label>
+          <input
+          name="question"
             type="text"
             className="text-primary h-12 border p-3"
             value={quizForm.question}
@@ -323,6 +341,7 @@ export default function QuizesScreen() {
               setquizForm({ ...quizForm, question: e.target.value })
             }
           />
+          <label htmlFor="correct answer">Answer</label>
           <input
             type="text"
             className="text-primary h-12 border p-3"
@@ -345,6 +364,7 @@ export default function QuizesScreen() {
               -
             </button>
           </div>
+          <label htmlFor="">Options</label>
           <div className="w-full h-36 overflow-y-scroll hideScroll flex flex-col gap-1">
             {quizForm.answers.map((answer, index) => (
               <input
