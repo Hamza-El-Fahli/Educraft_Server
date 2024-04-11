@@ -30,7 +30,7 @@ export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers,group }:
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group:number } = await request.json()
     await connectDB()
-    const res = await Quizes.create({ chapter_id, question, correct_answer, answers,group })
+    const res = await Quizes.create({ chapter_id, question, correct_answer, answers, group })
     const chapter = await Chapters.findById(chapter_id)
     if(chapter && chapter.quizGroupes <= group){
         console.log('update')
@@ -72,6 +72,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         return {
             _id: quiz._id,
             question: quiz.question,
+            group : quiz.group,
             answers: Array.from(optionsList),
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
@@ -101,6 +102,7 @@ export async function GetAllQuizzes() {
         return {
             _id: quiz._id,
             question: quiz.question,
+            group : quiz.group,
             answers: quiz.answers,
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
@@ -147,9 +149,8 @@ export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 
     await connectDB()
     
-    const { question, chapter_id, correct_answer, answers } = await request.json() // get the modufied data 
-
-    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers }) // update the data
+    const { question, chapter_id, correct_answer, answers , group } = await request.json() // get the modufied data 
+    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers , group}) // update the data
     // res hes the old register data , befor updating
     let data: any = {}
 
