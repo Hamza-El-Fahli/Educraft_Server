@@ -2,6 +2,8 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import PDFHandler from "./components/PDFHandler";
+import axios from "axios";
+import { API_Server_Lessons } from "@/configuration/API";
 
 type Event = any;
 
@@ -9,7 +11,10 @@ export default function Lessons() {
   const [selectedOption, setSelectedOption] = useState("");
   const [textAreaValue, setTextAreaValue] = useState("");
   const [mediaUrl, setMediaUrl] = useState();
-  const [PDFFile, setPDFFile] = useState()
+  const [PDFFile, setPDFFile] = useState('')
+
+
+  console.log(PDFFile)
   const handleOptionChange = (event: Event) => {
     setSelectedOption(event.target.value);
   };
@@ -22,7 +27,7 @@ export default function Lessons() {
     const file = event.target.files[0];
     // Convert the uploaded file to a URL
     const url: any = URL.createObjectURL(file);
-    setPDFFile(file)
+    setPDFFile(event.target.files[0])
     setMediaUrl(url);
   };
 
@@ -30,6 +35,14 @@ export default function Lessons() {
     event.preventDefault();
     // Handle form submission here
     
+    let body = new FormData();
+    if(selectedOption == 'pdf')
+      body.append("PDFFile", PDFFile)
+
+
+    axios.post(`${API_Server_Lessons}`,
+      body
+    )
 
   };
 

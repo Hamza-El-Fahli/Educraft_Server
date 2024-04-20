@@ -6,3 +6,4 @@ export const API_Server_Courses = `${API_Server}/courses`;
 export const API_Server_Modules = `${API_Server}/modules`;
 export const API_Server_Chapters = `${API_Server}/chapters`;
 export const API_Server_Quizzes = `${API_Server}/quizes`;
+export const API_Server_Lessons = `${API_Server}/lessons`;
