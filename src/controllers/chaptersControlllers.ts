@@ -4,6 +4,7 @@ import _Modules from "@/database/models/modules";
 import Quizes from "@/database/models/quizes";
 import { NextRequest, NextResponse } from "next/server";
 import { getQuizGroupCounts } from "./quizzesControllers";
+import { getChapterProgression } from "./progressionController";
 
 
 export async function PostChapter(request: NextRequest) {
@@ -49,7 +50,7 @@ export async function GetAllChapters() {
 
 
 
-export async function GetChaptersWithModuleID(module_id: string) {
+export async function GetChaptersWithModuleID(module_id: string,user_id:string|null) {
 
     await connectDB();
 
@@ -67,7 +68,10 @@ export async function GetChaptersWithModuleID(module_id: string) {
    
     const res = await Promise.all(chapters.map(async chapter => {
         const currChapterQuizz : any = quizzes?.filter((quiz)=>quiz.chapter == chapter._id)
-        
+        let isDone = null
+        if(user_id)
+            isDone = await getChapterProgression({chapter_id:chapter._id,user_id})
+
         return {
             _id: chapter._id,
             module_id: chapter.module_id,
@@ -75,6 +79,7 @@ export async function GetChaptersWithModuleID(module_id: string) {
             title: chapter.title,
             description: chapter.description,
             quizGroups : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
+            isDone : isDone?.isDone
         };
     }))
     if (res.length === 0) {

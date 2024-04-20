@@ -23,12 +23,13 @@ export async function GET(request: NextRequest) {
     if (params.has('module_id')) {
 
         const module_id = params.get('module_id')
+        const user_id = params.get('user_id')
 
         if (module_id == null || module_id == '')
             return NextResponse.json({ error: "Module_id is empty or invalid" }, { status: 404 });
         else
             try {
-                return GetChaptersWithModuleID(module_id)
+                return GetChaptersWithModuleID(module_id,user_id)
             }
             catch (error) {
                 return NextResponse.json({ error: "No Chapters with Given Module id were found", context: error }, { status: 404 });
