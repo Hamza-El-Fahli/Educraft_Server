@@ -225,3 +225,15 @@ tr{
 label {
   color: black;
 }
+
+
+.pdfViewer{
+height: 500px;
+width: 500px;
+}
+
+.lessonSubmitBtn{
+  @apply row-start-1 col-start-5 rounded-xl  cursor-pointer bg-third h-10 w-32  m-1 ml-auto
+
+  
+}
