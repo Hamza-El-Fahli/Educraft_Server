@@ -12,6 +12,8 @@ const ProgressionScheme: Schema = new Schema({
   module_id: { type: String, require: true },
   chapter_id: { type: String, require: true },
   quizGroup: { type: Number, require: true },
+}, {
+  timestamps: true
 });
 
 
