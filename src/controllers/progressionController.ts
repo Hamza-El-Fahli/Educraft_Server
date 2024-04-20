@@ -88,9 +88,8 @@ export async function getChapterProgression({ chapter_id, user_id }: { chapter_i
     const chapter = await Chapters.findById(chapter_id)
     if (chapter == null) throw Error("Chapter id is not correct")
     const quizGroupes = await Progression.find({ user_id, chapter_id })
-    if ((quizGroupes.length == chapter.quizGroupes) && chapter.quizGroupes != 0 )
-      return { isDone: true }
-    else return { isDone: false }
+    
+    return {isDone : quizGroupes.length}
 
   } catch (error) {
     return {isDone : null}
