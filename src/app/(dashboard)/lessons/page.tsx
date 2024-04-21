@@ -44,6 +44,9 @@ export default function Lessons() {
     axios.post(`${API_Server_Lessons}`,
       body
     )
+    .then((res)=>{
+      console.log(res.data)
+    })
 
   };
 
