@@ -18,7 +18,7 @@ export default function PDFHandler({ handleMediaUpload, mediaUrl }: any) {
             data={mediaUrl}
             type="application/pdf"
             width="100%"
-            style={{gridRow : 'span 12',
+            style={{gridRow : 'span 11',
                 gridColumn:'span 5'
                 ,height:'100%'}}
           >

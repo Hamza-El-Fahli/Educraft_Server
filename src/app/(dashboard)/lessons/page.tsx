@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import PDFHandler from "./components/PDFHandler";
 import axios from "axios";
 import { API_Server_Lessons } from "@/configuration/API";
+import { ChapterFilter } from "@/components/chapterFilter";
 
 type Event = any;
 
@@ -12,9 +13,9 @@ export default function Lessons() {
   const [textAreaValue, setTextAreaValue] = useState("");
   const [mediaUrl, setMediaUrl] = useState();
   const [PDFFile, setPDFFile] = useState('')
+  const [selectedChapter, setselectedChapter] = useState('')
 
 
-  console.log(PDFFile)
   const handleOptionChange = (event: Event) => {
     setSelectedOption(event.target.value);
   };
@@ -38,7 +39,7 @@ export default function Lessons() {
     let body = new FormData();
     if(selectedOption == 'pdf')
       body.append("PDFFile", PDFFile)
-
+      body.append('Chapter_id',selectedChapter)
 
     axios.post(`${API_Server_Lessons}`,
       body
@@ -47,11 +48,16 @@ export default function Lessons() {
   };
 
   return (
-    <div className="col-span-4 row-span-11" >
+    <div className="col-span-4 row-span-11" style={{height:'90%'}} >
+      <div className="h-10 m-2">
+      <ChapterFilter setselectedChapter={setselectedChapter} />
+
+
+      </div>
       <form onSubmit={handleSubmit} className="h-full grid grid-cols-5 grid-rows-12"> 
         <select
           value={selectedOption}
-          style={{ color: "black" , gridRowStart:1 , gridColumnStart:1  , width  : 'fit-content' , height : '90%' }}
+          style={{ color: "black" , gridRowStart:1 , gridColumnStart:1  , width  : 'fit-content' , height : '45px' , borderRadius:'5px' }}
           onChange={handleOptionChange}
         >
           <option value="">
