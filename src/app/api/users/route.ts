@@ -42,7 +42,6 @@ export async function GET(request: NextRequest) {
   //   }
   // }
   const user = await Users.find()
-  console.log(user)
   return NextResponse.json(user)
 }
 
@@ -60,14 +59,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Empty Password field" }, { status: 404 });
     }
 
-    await connectDB();
     let user: IUser | null;
     if (name) {
       user = await Users.findOne({ name });
     } else {
       user = await Users.findOne({ email });
     }
-
     if (!user) {
       return NextResponse.json({ error: "User Not found" }, { status: 404 });
     }
@@ -87,6 +84,8 @@ export async function POST(request: NextRequest) {
       password: user.password,
       accessToken: accessToken
     }
+    console.log(resUser)
+
     return NextResponse.json(resUser);
   } catch (error: any) {
     console.error("Error:", error.message);

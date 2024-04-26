@@ -27,6 +27,7 @@ export default function Login(): JSX.Element {
       if (checkUser.hasOwnProperty("accessToken")) {
         router.push("/dashboard");
       } else {
+
       }
     } catch (error: any) {
       const responseError = error.response.data.error.toLowerCase();
