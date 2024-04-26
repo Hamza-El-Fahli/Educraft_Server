@@ -18,7 +18,7 @@ const secretKey = new TextEncoder().encode(secret);
 export async function PUT(request: NextRequest) {
   const { name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string } = await request.json()
   try {
-    await connectDB()
+   //  await connectDB()
     const res = await Users.create({ name, email, password, annee, filiere, profile })
     return NextResponse.json({ message: 'user created', _id: res._id }, { status: 201 })
   } catch (error) {
@@ -30,7 +30,7 @@ export async function PUT(request: NextRequest) {
 
 // get All users
 export async function GET(request: NextRequest) {
-  // await connectDB()
+  ////  await connectDB()
   // const currentUser = request.cookies.get('currentUser')?.value
   // if (currentUser) {
   //   const decode = await jwtVerify(JSON.parse(currentUser).accessToken, secretKey) // decode the cookies

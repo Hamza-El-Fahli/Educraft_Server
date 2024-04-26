@@ -4,7 +4,7 @@ import Quizes from "@/database/models/quizes";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request:NextRequest) {
-   try{ await connectDB()
+   try{//  await connectDB()
     const {
         answers,
         user_id,

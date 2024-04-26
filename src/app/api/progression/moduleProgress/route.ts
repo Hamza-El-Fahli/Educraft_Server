@@ -8,7 +8,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     const { user_id, score, module_id } = await request.json()
     try {
-        await connectDB()
+       //  await connectDB()
         const old = await ModulesProgression.findOne({ user_id, module_id })
         if (old) {
             await ModulesProgression.findByIdAndUpdate(old._id, { score })
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 }
 export async function GET(request: NextRequest) {
     try {
-        await connectDB()
+       //  await connectDB()
         const res = await ModulesProgression.find()
         return NextResponse.json(res)
     } catch (error) {

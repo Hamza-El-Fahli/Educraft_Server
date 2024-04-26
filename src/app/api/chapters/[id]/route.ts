@@ -26,7 +26,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params
     try {
-        await connectDB()
+       //  await connectDB()
         await Chapters.findByIdAndDelete(id)
         return NextResponse.json({ message: "Chapter Deleted successfuly" })
     } catch (error) {

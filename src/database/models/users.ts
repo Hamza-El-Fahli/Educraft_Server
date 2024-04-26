@@ -67,12 +67,50 @@ Users.find =async (data:null|any)=>{
 Users.create = ()=>{
     
 }
-Users.findByIdAndUpdate = ()=>{
-    
+Users.findByIdAndUpdate = async (id, {name , email , password , annee , filiere , profile })=>{
+    let conn ;
+    const query = `UPDATE users
+    SET name = '${name}',
+        email = '${email}',
+        password = '${password}',
+        annee = '${annee}',
+        filiere = '${filiere}',
+        profile = '${profile}'
+    WHERE _id = ${id};`;
+
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        rows = await conn.query(query);
+        conn.release();
+        if(rows.affectedRows>0)
+        return rows
+    else
+    return null
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
 }
 
-Users.findByIdAndDelete = (id:string)=>{
-    
+Users.findByIdAndDelete =async (id:string)=>{
+    let conn ;
+    const query = `DELETE FROM users    WHERE _id = ${id};
+    `;
+
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        rows = await conn.query(query);
+        conn.release();
+        if(rows.affectedRows>0)
+        return rows
+    else
+    return null
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
 }
 
 

@@ -29,7 +29,7 @@ return {chapterMap,moduleMap,courseMap}
 export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers,group }:
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group:number } = await request.json()
-    await connectDB()
+   //  await connectDB()
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers, group })
     const chapter = await Chapters.findById(chapter_id)
     if(chapter && chapter.quizGroupes <= group){
@@ -42,7 +42,7 @@ export async function PostQuizController(request: NextRequest) {
 
 
 export async function GetQuizzesWithChapterID(request: NextRequest) {
-    await connectDB();
+   //  await connectDB();
     const chapter_id = request.nextUrl.searchParams.get('chapter_id');
     let filter: any = {};
     if (chapter_id) {
@@ -93,7 +93,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
 
 
 export async function GetAllQuizzes() {
-    await connectDB();
+   //  await connectDB();
 
     const quizes = await Quizes.find();
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
@@ -126,7 +126,7 @@ export async function GetAllQuizzes() {
 
 
 export async function GetQuizzesWithModuleID(id: string) {
-    await connectDB();
+   //  await connectDB();
     const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`); // Update this line when write Chapters controllers
     const chapters = await ajax.json();
 
@@ -147,7 +147,7 @@ export async function GetQuizzesWithModuleID(id: string) {
 
 export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 
-    await connectDB()
+   //  await connectDB()
     
     const { question, chapter_id, correct_answer, answers , group } = await request.json() // get the modufied data 
     const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers , group}) // update the data

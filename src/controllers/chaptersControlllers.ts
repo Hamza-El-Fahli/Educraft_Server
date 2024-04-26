@@ -9,7 +9,7 @@ import { getChapterProgression } from "./progressionController";
 
 export async function PostChapter(request: NextRequest) {
 
-    await connectDB()
+   //  await connectDB()
     const { module_id, title, description } = await request.json()
     const res = await Chapters.create({ module_id, title, description })
     const modules = await _Modules.findById(module_id);
@@ -24,7 +24,7 @@ export async function PostChapter(request: NextRequest) {
 
 export async function GetAllChapters() {
 
-    await connectDB();
+   //  await connectDB();
     let filter: any = {};
 
     const chapters = await Chapters.find();
@@ -52,7 +52,7 @@ export async function GetAllChapters() {
 
 export async function GetChaptersWithModuleID(module_id: string,user_id:string|null) {
 
-    await connectDB();
+   //  await connectDB();
 
     let filter: any = {};
     if (module_id) {
@@ -92,7 +92,7 @@ export async function GetChaptersWithModuleID(module_id: string,user_id:string|n
 export async function UpdateChapterByID(request: NextRequest, chapter_id: string) {
     if (chapter_id == null || chapter_id == '') throw Error('Chapter id is empty or null')
 
-    await connectDB()
+   //  await connectDB()
     const { title, module_id, description } = await request.json()
     const res = await Chapters.findByIdAndUpdate(chapter_id, { title, module_id, description })
     return NextResponse.json({ message: "Chapter updated successfuly", newChapter: res })

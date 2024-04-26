@@ -5,7 +5,7 @@ import Chapters from "@/database/models/chapters";
 import { NextRequest, NextResponse } from "next/server"
 
 export async function AddProgress({ user_id, chapter_id, module_id, quizGroup }: { user_id: string, module_id: string, chapter_id: string, quizGroup: string }) {
-  await connectDB()
+ //  await connectDB()
   const currnetScore = await Progression.findOne({ user_id, chapter_id, module_id, quizGroup })
   if (currnetScore) {
     return NextResponse.json({ message: 'Progress user  didnt changed' })
@@ -16,7 +16,7 @@ export async function AddProgress({ user_id, chapter_id, module_id, quizGroup }:
   }
 }
 export async function GetUserProgress({ user_id, module_id }: { user_id: string, module_id: string }) {
-  await connectDB()
+ //  await connectDB()
   const userProgress = await getQuizGroupsByChapter({ user_id, module_id })
 
   return NextResponse.json(userProgress)
@@ -70,7 +70,7 @@ export async function getQuizGroupsByChapter({ user_id, module_id }: { user_id: 
 
 
 export async function getModuleProgression({ user_id, module_id }: { user_id: string, module_id: string }) {
-  await connectDB()
+ //  await connectDB()
   const passedQuizzes = await getQuizGroupsByChapter({ user_id, module_id })
   const chapterUnderTheModule = await Chapters.find({ module_id })
   let numberOfPassedChapters = 0
