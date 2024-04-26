@@ -28,3 +28,48 @@
 
 // const Users: Model<IUser> = mongoose.models.Users as Model<IUser> || mongoose.model<IUser>('Users', UserSchema);
 // export default Users;
+
+import pool from "./../lib/mariadb";
+
+const Users :any = {};
+
+Users.findOne = async()=>{
+    let conn ;
+    try {
+        conn = await pool.getConnection();
+        const rows = await conn.query('SELECT * FROM users');
+        conn.release();
+        return rows
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+    }
+Users.find =async (data:null|any)=>{
+    let conn ;
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        if(data==null)
+         rows = await conn.query('SELECT * FROM users');
+        conn.release();
+        return rows
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
+Users.create = ()=>{
+    
+}
+Users.findByIdAndUpdate = ()=>{
+    
+}
+
+Users.findByIdAndDelete = (id:string)=>{
+    
+}
+
+
+export default Users

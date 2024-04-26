@@ -30,18 +30,19 @@ export async function PUT(request: NextRequest) {
 
 // get All users
 export async function GET(request: NextRequest) {
-  await connectDB()
-  const currentUser = request.cookies.get('currentUser')?.value
-  if (currentUser) {
-    const decode = await jwtVerify(JSON.parse(currentUser).accessToken, secretKey) // decode the cookies
-    if (testPayload(decode, currentUser) && decode.payload.profile != 'admin') {
-      const user = await Users.find({ profile: 'user' }) // prof can only see users
-      return NextResponse.json(user)
+  // await connectDB()
+  // const currentUser = request.cookies.get('currentUser')?.value
+  // if (currentUser) {
+  //   const decode = await jwtVerify(JSON.parse(currentUser).accessToken, secretKey) // decode the cookies
+  //   if (testPayload(decode, currentUser) && decode.payload.profile != 'admin') {
+  //     const user = await Users.find({ profile: 'user' }) // prof can only see users
 
-    }
-  }
+  //     return NextResponse.json(user)
+
+  //   }
+  // }
   const user = await Users.find()
-
+  console.log(user)
   return NextResponse.json(user)
 }
 
