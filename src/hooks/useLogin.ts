@@ -7,7 +7,7 @@ export const useLogin = () =>{
     const login = async (username:string,password:string)=>{
         const user = await authService.login(username,password)
         if(user){
-            Cookies.set('currentUser', JSON.stringify(user), { expires: 3 });
+            Cookies.set('currentUser', JSON.stringify(user), { expires: user.maxAge });
         }
         return user as UserType 
     }

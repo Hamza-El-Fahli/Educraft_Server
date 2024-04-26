@@ -31,9 +31,9 @@ export class AuthService {
         return this.instance
             .post("/api/users",loginData)
             .then(async (res)=>{
-                const {maxAge , name , accessToken,_id,profile} = res.data
-                // console.log(res.data.accessToken)
-
+                let {maxAge , name , accessToken,_id,profile} = res.data
+                if(!maxAge) maxAge = 3*60*60
+                
                 return {
                     _id ,
                     name,
