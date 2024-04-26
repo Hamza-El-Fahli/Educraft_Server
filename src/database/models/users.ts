@@ -64,8 +64,22 @@ Users.find =async (data:null|any)=>{
     }
 }
 
-Users.create = ()=>{
+Users.create = async({name , email , password , annee , filiere , profile })=>{
+    let conn
+    const query = `INSERT INTO users (name, email, password, annee, filiere, profile)
+    VALUES ('${name}', '${email}', '${password}', '${annee}', '${filiere}', '${profile}');
+    `
     
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        rows = await conn.query(query);
+        conn.release();
+        return {_id : parseInt(rows.insertId)}
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
 }
 Users.findByIdAndUpdate = async (id, {name , email , password , annee , filiere , profile })=>{
     let conn ;
