@@ -11,7 +11,6 @@ export async function PostCourse(request:NextRequest ) {
    //  await connectDB()
 const res = await Courses.create({course_name , description , instructor})
 return NextResponse.json({message:"Course created successfuly", _id : res._id},{status : 201})
-    
 }
 
 

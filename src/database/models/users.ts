@@ -33,7 +33,7 @@ import pool from "./../lib/mariadb";
 
 const Users :any = {};
 
-Users.findOne = async(data)=>{
+Users.findOne = async(data:{name?:string , email?:string})=>{
     let nameOrEmail = data.name ? data.name : data.email ;
     
     const query = `SELECT * FROM users WHERE name = '${nameOrEmail}' OR email = '${nameOrEmail}' LIMIT 1`;
@@ -64,7 +64,7 @@ Users.find =async (data:null|any)=>{
     }
 }
 
-Users.create = async({name , email , password , annee , filiere , profile })=>{
+Users.create = async({name , email , password , annee , filiere , profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string })=>{
     let conn
     const query = `INSERT INTO users (name, email, password, annee, filiere, profile)
     VALUES ('${name}', '${email}', '${password}', '${annee}', '${filiere}', '${profile}');
@@ -81,7 +81,7 @@ Users.create = async({name , email , password , annee , filiere , profile })=>{
         return null
     }
 }
-Users.findByIdAndUpdate = async (id, {name , email , password , annee , filiere , profile })=>{
+Users.findByIdAndUpdate = async (id:string, {name , email , password , annee , filiere , profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string })=>{
     let conn ;
     const query = `UPDATE users
     SET name = '${name}',
