@@ -47,7 +47,7 @@ Modules.find =async (data:null|any)=>{
     try {
         conn = await pool.getConnection();
         let rows;
-        if(data.course_id) query = `SELECT * FROM modules WHERE course_id = ${data.course_id}`
+        if(data?.course_id) query = `SELECT * FROM modules WHERE course_id = ${data.course_id}`
          rows = await conn.query(query);
         conn.release();
         return rows
@@ -74,14 +74,16 @@ Modules.create = async({ course_id, title, description, order }:any)=>{
         return null
     }
 }
-Modules.findByIdAndUpdate = async (id:string, {course_name , description  , instructor }:any)=>{
+Modules.findByIdAndUpdate = async (id:string,  { course_id, title, description, order }:any)=>{
     let conn ;
-    const query = `UPDATE modules
-    SET course_name = '${course_name}',
-    description = '${description}',
-    instructor = '${instructor}'
-    WHERE _id = ${id};`;
 
+    const query = `UPDATE modules
+    SET course_id = '${course_id}',
+    title = '${title}',
+    description = '${description}' 
+    WHERE _id = '${id}' ;`;
+    // , order_num = '${order}'
+    
     try {
         conn = await pool.getConnection();
         let rows;
@@ -89,7 +91,7 @@ Modules.findByIdAndUpdate = async (id:string, {course_name , description  , inst
         const _id = parseInt(rows.insertId)
         conn.release();
         if(rows.affectedRows>0)
-            return {_id , course_name , description  , instructor}
+            return {_id , course_id, title, description }
             else
     return null
     } catch (error) {
@@ -100,7 +102,7 @@ Modules.findByIdAndUpdate = async (id:string, {course_name , description  , inst
 
 Modules.findByIdAndDelete =async (id:string)=>{
     let conn ;
-    const query = `DELETE FROM modules    WHERE _id = ${id};
+    const query = `DELETE FROM modules  WHERE _id = '${id}';
     `;
 
     try {
