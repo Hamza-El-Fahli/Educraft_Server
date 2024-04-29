@@ -4,8 +4,7 @@ import ShowData from "@/components/ShowData";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IModule } from "@/types/types";
-import { API_Server_Courses, API_Server_Modules } from "@/configuration/API";
+import { API_Server_RetrieveData } from "@/configuration/API";
 import { API_Server_Chapters } from "@/configuration/API";
 
 // Component function
@@ -18,7 +17,7 @@ export default function Chapters() {
   const [ChapterForm, setChapterForm] = useState<{
     modules: {
       _id: number;
-      module_name: string;
+      title: string;
       course_id: string;
       course_name: string;
       order: number;
@@ -54,9 +53,7 @@ export default function Chapters() {
         ChapterForm.modules.find(
           (module) => module._id == Chapters[SelectedRegister].module_id
         )?.course_id || "";
-      // ChapterForm.modules.forEach((module:any) => {
-      //   if(module._id == Chapters[SelectedRegister].module_id ) course_id = module.course_id._id
-      // });
+      
       const tmp = {
         title: Chapters[SelectedRegister].title,
         description: Chapters[SelectedRegister].description,
@@ -82,9 +79,15 @@ export default function Chapters() {
 
   // Fetching modules and courses from API
   useEffect(() => {
-    axios.get(`${API_Server_Chapters}`).then(
+    axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`).then(
       (res) => {
-        setChapters(res.data);
+        setChapters(res.data.chapters);
+
+        setChapterForm({ ...ChapterForm, modules: res.data.modules, selectedCourse: res.data.courses[0]._id });
+        setCourses(res.data.courses);
+
+
+
         setLoading(false);
       },
       (rej) => {
@@ -93,30 +96,6 @@ export default function Chapters() {
     );
   }, []);
 
-  useEffect(() => {
-    axios.get(`${API_Server_Courses}`).then(
-      (res: any) => {
-        setChapterForm({ ...ChapterForm, selectedCourse: res.data[0]._id });
-        setCourses(res.data);
-      },
-      (rej) => {
-        alert(rej);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    axios.get(`${API_Server_Modules}`).then(
-      (res) => {
-        setChapterForm({ ...ChapterForm, modules: res.data });
-        setLoading(false);
-      },
-      (rej) => {
-        alert(rej);
-      }
-    );
-  }, []);
-  //
   useEffect(() => {
     if (SelectedRegister !== null) {
       openModal();
@@ -165,7 +144,7 @@ export default function Chapters() {
       .then(async (res) => {
         Chapters[SelectedRegister].module_name = ChapterForm.modules.filter(
           (module: any) => module._id == ChapterForm.selectedModule
-        )[0].module_name;
+        )[0].title;
         Chapters[SelectedRegister].module_id = ChapterForm.selectedModule;
         Chapters[SelectedRegister].title = ChapterForm.title;
         Chapters[SelectedRegister].description = ChapterForm.description;
@@ -236,14 +215,13 @@ export default function Chapters() {
             }}
           >
             {ChapterForm.modules.map((module: any) => {
-              // console.log(ChapterForm.selectedCourse)
               if (
                 module.course_id == ChapterForm.selectedCourse ||
                 !ChapterForm.selectedCourse
               )
                 return (
                   <option key={module._id} value={module._id}>
-                    {module.module_name}
+                    {module.title}
                   </option>
                 );
             })}
