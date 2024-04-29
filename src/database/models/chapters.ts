@@ -34,7 +34,7 @@ Chapters.find =async (data:null|any)=>{
         let rows;
         if(data?.module_id) query = `SELECT chapters.*, modules.title AS module_name  FROM chapters WHERE module_id = ${data.module_id} JOIN modules ON chapters.module_id = modules._id;`
          rows = await conn.query(query);
-        //conn.release();
+        conn.release();
         return rows
     } catch (error) {
         console.error('Error:', error);

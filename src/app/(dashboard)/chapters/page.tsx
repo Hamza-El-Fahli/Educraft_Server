@@ -79,13 +79,11 @@ export default function Chapters() {
 
   // Fetching modules and courses from API
   useEffect(() => {
-    axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`).then(
+    axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=0`).then(
       (res) => {
-        setChapters(res.data.chapters);
 
         setChapterForm({ ...ChapterForm, modules: res.data.modules, selectedCourse: res.data.courses[0]._id });
         setCourses(res.data.courses);
-
 
 
         setLoading(false);
@@ -95,6 +93,20 @@ export default function Chapters() {
       }
     );
   }, []);
+ // Fetching modules and courses from API
+ useEffect(() => {
+  axios.get(`${API_Server_Chapters}`).then(
+    (res) => {
+      setChapters(res.data);
+      console.log(res.data)
+      setLoading(false);
+    },
+    (rej) => {
+      alert(rej);
+    }
+  );
+}, []);
+
 
   useEffect(() => {
     if (SelectedRegister !== null) {
@@ -283,7 +295,10 @@ export default function Chapters() {
       {/* Loading spinner or table of modules */}
       <ShowData
         Loading={Loading}
-        Data={Chapters.map(({ module_id, ...rest }: any) => rest)}
+        Data={Chapters.map(({ module_id, id , module_name , title, description }: any) =>{
+          const data =  {_id : id , module_name , title, description}
+ return data}
+          )}
         Cols={["ID", "Module name", "Chapter Title", "Description", "Action"]}
         setAddORUpdate={setAddORMod}
         Modify={OpenAndSet}
