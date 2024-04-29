@@ -1,7 +1,6 @@
 import connectDB from "@/database/lib/mongodb";
 import Chapters from "@/database/models/chapters";
 import _Modules from "@/database/models/modules";
-import Quizes from "@/database/models/quizes";
 import { NextRequest, NextResponse } from "next/server";
 import { getQuizGroupCounts } from "./quizzesControllers";
 import { getChapterProgression } from "./progressionController";
@@ -28,24 +27,24 @@ export async function GetAllChapters() {
     let filter: any = {};
 
     const chapters = await Chapters.find();
-    const modules = await _Modules.find({});
-    const moduleMap: any = {}
-    modules.forEach(module => {
-        moduleMap[module._id] = module.title;
-    });
-    const res = chapters.map(chapter => {
-        return {
-            _id: chapter._id,
-            module_id: chapter.module_id,
-            module_name: moduleMap[chapter.module_id],
-            title: chapter.title,
-            description: chapter.description
-        };
-    })
-    if (res.length === 0) {
+    // const modules = await _Modules.find({});
+    // const moduleMap: any = {}
+    // modules.forEach(module => {
+    //     moduleMap[module._id] = module.title;
+    // });
+    // const res = chapters.map(chapter => {
+    //     return {
+    //         _id: chapter._id,
+    //         module_id: chapter.module_id,
+    //         module_name: moduleMap[chapter.module_id],
+    //         title: chapter.title,
+    //         description: chapter.description
+    //     };
+    // })
+    if (chapters.length === 0) {
         return NextResponse.json({ error: "Module_id not found" }, { status: 404 });
     }
-    return NextResponse.json(res);
+    return NextResponse.json(chapters);
 }
 
 

@@ -25,22 +25,8 @@ import pool from "./../lib/mariadb";
 
 const Modules :any = {};
 
-Modules.findOne = async(data:{name?:string , email?:string})=>{
-    let nameOrEmail = data.name ? data.name : data.email ;
-    
-    const query = `SELECT * FROM modules WHERE name = '${nameOrEmail}' OR email = '${nameOrEmail}' LIMIT 1`;
 
-    let conn ;
-    try {
-        conn = await pool.getConnection();
-        const rows = await conn.query(query);
-        conn.release();
-        return rows[0]
-    } catch (error) {
-        console.error('Error:', error);
-        return null
-    }
-    }
+
 Modules.find =async (data:null|any)=>{
     let conn ;
     let query  ='SELECT * FROM modules' ;
@@ -49,7 +35,7 @@ Modules.find =async (data:null|any)=>{
         let rows;
         if(data?.course_id) query = `SELECT * FROM modules WHERE course_id = ${data.course_id}`
          rows = await conn.query(query);
-        conn.release();
+        //conn.release();
         return rows
     } catch (error) {
         console.error('Error:', error);
@@ -67,7 +53,7 @@ Modules.create = async({ course_id, title, description, order }:any)=>{
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
-        conn.release();
+        //conn.release();
         return {_id : parseInt(rows.insertId)}
     } catch (error) {
         console.error('Error:', error);
@@ -89,7 +75,7 @@ Modules.findByIdAndUpdate = async (id:string,  { course_id, title, description, 
         let rows;
         rows = await conn.query(query);
         const _id = parseInt(rows.insertId)
-        conn.release();
+        //conn.release();
         if(rows.affectedRows>0)
             return {_id , course_id, title, description }
             else
@@ -109,7 +95,7 @@ Modules.findByIdAndDelete =async (id:string)=>{
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
-        conn.release();
+        //conn.release();
         if(rows.affectedRows>0)
         return rows
     else
