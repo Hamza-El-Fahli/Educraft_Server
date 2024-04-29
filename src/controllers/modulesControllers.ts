@@ -53,38 +53,40 @@ export async function GetAllModules() {
 export async function GetModulesWithCourseID(courseId: string | null, user_id: string | null) {
     try {
        //  await connectDB();
-        let filter: any = {};
-        if (courseId) {
-            filter["course_id"] = courseId;
-        }
-        const modules = await _Modules.find(filter)
-        const courses = await Courses.find({})
-        const courseMap: any = {}
-        courses.forEach(course => {
-            courseMap[course._id] = course.course_name;
-        });
-        const res = await Promise.all(modules.map(async (module) => {
+        // let filter: any = {};
+        // if (courseId) {
+        //     filter["course_id"] = courseId;
+        // }
+        // const modules = await _Modules.find(filter)
+        // const courses = await Courses.find({})
+        // const courseMap: any = {}
+        // courses.forEach(course => {
+        //     courseMap[course._id] = course.course_name;
+        // });
+        // const res = await Promise.all(modules.map(async (module) => {
 
-            const tmpResponse = await fetch(`http://localhost:3000/api/progression/quizProgress?user_id=${user_id}&module_id=${module._id}`)
-            let ModuleProgress: null | { numberOfPassedChapters: string, totalOfChapters: string } = await tmpResponse.json()
-            // progress : is 0 if response is null , or no chapters under the module
-            // else it calculates the percentage
-            const progres = ModuleProgress && parseInt(ModuleProgress.totalOfChapters) != 0 ? parseInt(ModuleProgress.numberOfPassedChapters) * 100 / parseInt(ModuleProgress.totalOfChapters) : 0
-            return {
-                _id: module._id,
-                course_id: module.course_id,
-                course_name: courseMap[module.course_id],
-                module_name: module.title,
-                order: module.order,
-                description: module.description,
-                progress: progres
-            };
-        }))
-        // console.log(res)
+        //     const tmpResponse = await fetch(`http://localhost:3000/api/progression/quizProgress?user_id=${user_id}&module_id=${module._id}`)
+        //     let ModuleProgress: null | { numberOfPassedChapters: string, totalOfChapters: string } = await tmpResponse.json()
+        //     // progress : is 0 if response is null , or no chapters under the module
+        //     // else it calculates the percentage
+        //     const progres = ModuleProgress && parseInt(ModuleProgress.totalOfChapters) != 0 ? parseInt(ModuleProgress.numberOfPassedChapters) * 100 / parseInt(ModuleProgress.totalOfChapters) : 0
+        //     return {
+        //         _id: module._id,
+        //         course_id: module.course_id,
+        //         course_name: courseMap[module.course_id],
+        //         module_name: module.title,
+        //         order: module.order,
+        //         description: module.description,
+        //         progress: progres
+        //     };
+        // }))
+
+        const res = await _Modules.find({course_id : courseId})
+
         if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
-        return NextResponse.json(res.sort((a, b) => a.order - b.order));
+        return NextResponse.json(res/*.sort((a, b) => a.order - b.order)*/);
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Failed to get modules" }, { status: 500 });
