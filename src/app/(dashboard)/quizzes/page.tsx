@@ -6,7 +6,7 @@ import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
-import { API_Server_Quizzes } from "@/configuration/API";
+import { API_Server_Quizzes, API_Server_RetrieveData } from "@/configuration/API";
 import LodingIndicator from "@/components/LoadingIndicator";
 
 export default function QuizesScreen() {
@@ -37,45 +37,26 @@ export default function QuizesScreen() {
   });
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/courses")
-      .then((res) => {
-        setCourses(res.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`).then(
+      (res) => {
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/modules")
-      .then((res) => {
-        setModules(res.data);
+        setCourses(res.data.courses)
+        setModules(res.data.modules)
+        setChapters(res.data.chapters)
+
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(true);
-      });
+      },
+      (rej) => {
+        alert(rej);
+        setLoading(true)
+      }
+    );
   }, []);
+
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/chapters")
-      .then((res) => {
-        setChapters(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(true);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/quizes")
+      .get(`${API_Server_Quizzes}`)
       .then((res) => {
         setQuizzes(res.data);
         setLoading(false);

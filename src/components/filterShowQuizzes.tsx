@@ -49,7 +49,7 @@ export function Filters({dataFilters, setSelectedRegister , Data , setFilters , 
                 if(dataFilters.selectedCourse != module.course_id) return 
                   
               return (
-                <option key={index} value={module._id}>{module.module_name}</option>
+                <option key={index} value={module._id}>{module.title}</option>
               )
             })}
           </select>
