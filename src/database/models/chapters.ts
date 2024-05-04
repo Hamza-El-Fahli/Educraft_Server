@@ -26,13 +26,32 @@ import pool from "./../lib/mariadb";
 const Chapters :any = {};
 
 
-Chapters.find =async (data:null|any)=>{
+Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
     let conn ;
     let query  ='SELECT chapters.*, modules.title AS module_name  FROM chapters JOIN modules ON chapters.module_id = modules._id;' ;
     try {
         conn = await pool.getConnection();
         let rows;
-        if(data?.module_id) query = `SELECT chapters.*, modules.title AS module_name  FROM chapters WHERE module_id = ${data.module_id} JOIN modules ON chapters.module_id = modules._id;`
+        if(data?.module_id && data?.user_id) 
+            query = `
+        SELECT 
+            chapters.*, 
+            modules.title AS module_name,
+            CASE WHEN chapter_progression.chapter_id IS NOT NULL THEN TRUE ELSE FALSE END AS isDone
+        FROM 
+            chapters 
+        JOIN 
+            modules ON chapters.module_id = modules._id
+        LEFT JOIN 
+            chapter_progression ON chapters.id = chapter_progression.chapter_id
+        AND 
+            chapter_progression.user_id = '${data.user_id}'
+        WHERE
+            chapters.module_id = '${data.module_id}'
+      ;`
+
+
+
          rows = await conn.query(query);
         conn.release();
         return rows

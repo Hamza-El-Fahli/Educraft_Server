@@ -53,38 +53,41 @@ export async function GetChaptersWithModuleID(module_id: string,user_id:string|n
 
    //  await connectDB();
 
-    let filter: any = {};
-    if (module_id) {
-        filter["module_id"] = module_id;
-    }
-    const quizzes = await getQuizGroupCounts()
-    const chapters = await Chapters.find(filter);
-    const modules = await _Modules.find({});
-    const moduleMap: any = {}
-    modules.forEach(module => {
-        moduleMap[module._id] = module.title;
-    });
+    // let filter: any = {};
+    // if (module_id) {
+    //     filter["module_id"] = module_id;
+    // }
+    // const quizzes = await getQuizGroupCounts()
+    // const chapters = await Chapters.find(filter);
+    // const modules = await _Modules.find({});
+    // const moduleMap: any = {}
+    // modules.forEach(module => {
+    //     moduleMap[module._id] = module.title;
+    // });
    
-    const res = await Promise.all(chapters.map(async chapter => {
-        const currChapterQuizz : any = quizzes?.filter((quiz)=>quiz.chapter == chapter._id)
-        let isDone = null
-        if(user_id)
-            isDone = await getChapterProgression({chapter_id:chapter._id,user_id})
+    // const res = await Promise.all(chapters.map(async chapter => {
+    //     const currChapterQuizz : any = quizzes?.filter((quiz)=>quiz.chapter == chapter._id)
+    //     let isDone = null
+    //     if(user_id)
+    //         isDone = await getChapterProgression({chapter_id:chapter._id,user_id})
 
-        return {
-            _id: chapter._id,
-            module_id: chapter.module_id,
-            module_name: moduleMap[chapter.module_id],
-            title: chapter.title,
-            description: chapter.description,
-            quizGroups : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
-            isDone : isDone?.isDone
-        };
-    }))
-    if (res.length === 0) {
+    //     return {
+    //         _id: chapter._id,
+    //         module_id: chapter.module_id,
+    //         module_name: moduleMap[chapter.module_id],
+    //         title: chapter.title,
+    //         description: chapter.description,
+    //         quizGroups : currChapterQuizz[0]?.groups ? currChapterQuizz[0]?.groups : null,
+    //         isDone : isDone?.isDone
+    //     };
+    // }))
+
+    const chapters = await Chapters.find({module_id , user_id });
+
+    if (chapters.length === 0) {
         return NextResponse.json({ error: "No Chapter found with the given Module ID" }, { status: 404 });
     }
-    return NextResponse.json(res);
+    return NextResponse.json(chapters);
 }
 
 
