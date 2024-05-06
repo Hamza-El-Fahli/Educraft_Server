@@ -41,7 +41,7 @@ Quizzes.find =async (data:null|any)=>{
     try {
         conn = await pool.getConnection();
         let rows;
-       
+        if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  `
 
          rows = await conn.query(query);
         conn.release();
