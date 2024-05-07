@@ -61,6 +61,22 @@ Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
     }
 }
 
+Chapters.findById =async (id:string)=>{
+    let conn ;
+    let query  =`SELECT *  FROM chapters WHERE id=${id};` ;
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        
+         rows = await conn.query(query);
+        conn.release();
+        return rows
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
+
 Chapters.create = async({ module_id, title, description, quizGroupes }:any)=>{
     let conn
     const query = `INSERT INTO chapters (module_id, title, description, quizGroupes)
