@@ -36,13 +36,13 @@ const Quizzes :any = {};
 
 
 Quizzes.find =async (data:null|any)=>{
-    let conn ;
     let query  ='SELECT *  FROM quiz ' ;
+    if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  ;`
+    if(data?.chapter_id && data?.quiz_group) query =   `SELECT * FROM quiz WHERE chapter_id ='${data.chapter_id}' AND quiz_group = ${data.quiz_group}  ;`
     try {
+        let conn ;
         conn = await pool.getConnection();
         let rows;
-        if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  ;`
-        if(data?.chapter_id && data?.quiz_group) query =   `SELECT * FROM quiz WHERE chapter_id ='${data.chapter_id}' AND quiz_group = ${data.quiz_group}  ;`
          rows = await conn.query(query);
         conn.release();
         return rows
@@ -52,18 +52,20 @@ Quizzes.find =async (data:null|any)=>{
     }
 }
 
-Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:string,answers:string[],quiz_group:number,module_id:string })=>{
+Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:string,answers:string[],quiz_group:number })=>{
     let conn
-    const {chapter_id , question,answers,quiz_group,module_id,correct_answer } = data
-    const query = `INSERT INTO quiz 
-    ( 'chapter_id', 'question', 'answers', 'correct_answer', 'quiz_group', 'module_id') 
-    VALUES ( '${chapter_id}', '${question}', '${answers}', '${correct_answer}', '${quiz_group}' , '${module_id}');
-    `
+    const {chapter_id , question,answers,quiz_group,correct_answer } = data
+    
     try {
         conn = await pool.getConnection();
         let rows;
+        const {module_id} = (await conn.query(`SELECT module_id FROM chapters WHERE id='${1}' LIMIT 1 `))[0];
+        const query = `INSERT INTO quiz 
+        ( chapter_id, question, answers, correct_answer, quiz_group, module_id) 
+        VALUES ( '${chapter_id}', '${question}', '${answers}', '${correct_answer}', '${quiz_group}' , '${module_id}');
+        `
         rows = await conn.query(query);
-        //conn.release();
+        conn.release();
         return {_id : parseInt(rows.insertId)}
     } catch (error) {
         console.error('Error:', error);
