@@ -41,8 +41,8 @@ Quizzes.find =async (data:null|any)=>{
     try {
         conn = await pool.getConnection();
         let rows;
-        if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  `
-
+        if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  ;`
+        if(data?.chapter_id && data?.quiz_group) query =   `SELECT * FROM quiz WHERE chapter_id ='${data.chapter_id}' AND quiz_group = ${data.quiz_group}  ;`
          rows = await conn.query(query);
         conn.release();
         return rows

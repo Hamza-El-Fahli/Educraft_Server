@@ -48,12 +48,9 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
    //  await connectDB();
     const chapter_id = request.nextUrl.searchParams.get('chapter_id');
     let filter: any = {};
-    if (chapter_id) {
         filter["chapter_id"] = chapter_id;
-    }
-    if (request.nextUrl.searchParams.has('quiz_group')) {
-        filter["group"] = request.nextUrl.searchParams.get('quiz_group');;
-    }
+        filter["quiz_group"] = request.nextUrl.searchParams.get('quiz_group');;
+    
 
     const quizes = await Quizes.find(filter);
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
