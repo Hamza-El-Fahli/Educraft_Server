@@ -6,14 +6,19 @@ import { Filters } from "@/components/filterShowQuizzes";
 import Modal from "@/components/userModal";
 import axios from "axios";
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types";
-import { API_Server_Quizzes, API_Server_RetrieveData } from "@/configuration/API";
+import {
+  API_Server_Quizzes,
+  API_Server_RetrieveData,
+} from "@/configuration/API";
 import LodingIndicator from "@/components/LoadingIndicator";
 
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
   const [Loading, setLoading] = useState(true);
-  const [quizForm, setquizForm] = useState({
+
+
+  const initialForm = {
     seletedCourse: "1",
     selectedModule: "1",
     selectedChapter: "1",
@@ -22,14 +27,19 @@ export default function QuizesScreen() {
     group: 0,
     correctAnswer: "",
     answers: [""],
-  });
+  }
+  const [quizForm, setquizForm] = useState(initialForm);
 
+
+
+
+  
   const [Courses, setCourses] = useState<ICourse[]>([]);
   const [Modules, setModules] = useState<IModule[]>([]);
   const [Chapters, setChapters] = useState<IChapter[]>([]);
   const [Quizzes, setQuizzes] = useState<IQuizz[]>([]);
   const [SearchedQuiz, setSearchedQuiz] = useState<number>(0);
-
+  
   const [dataFilters, setdataFilters] = useState({
     selectedCourse: "-1",
     selectedModule: "-1",
@@ -37,22 +47,22 @@ export default function QuizesScreen() {
   });
 
   useEffect(() => {
-    axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`).then(
-      (res) => {
+    axios
+      .get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`)
+      .then(
+        (res) => {
+          setCourses(res.data.courses);
+          setModules(res.data.modules);
+          setChapters(res.data.chapters);
 
-        setCourses(res.data.courses)
-        setModules(res.data.modules)
-        setChapters(res.data.chapters)
-
-        setLoading(false);
-      },
-      (rej) => {
-        alert(rej);
-        setLoading(true)
-      }
-    );
+          setLoading(false);
+        },
+        (rej) => {
+          alert(rej);
+          setLoading(true);
+        }
+      );
   }, []);
-
 
   useEffect(() => {
     axios
@@ -87,28 +97,19 @@ export default function QuizesScreen() {
   function openModal() {
     if (SelectedRegister == -1) {
       setisOpen(true);
-      if(Quizzes.length)
-      setquizForm({
-        seletedCourse: Quizzes[0].course_id,
-        selectedModule: Quizzes[0].module_id,
-        selectedChapter: Quizzes[0].chapter_id,
-        quizNumber: Quizzes.length + "",
-        question: "",
-        correctAnswer: "",
-        answers: [""],
-        group : 0
-      });
+      if (Quizzes.length)
+        setquizForm({
+          seletedCourse: Quizzes[0].course_id,
+          selectedModule: Quizzes[0].module_id,
+          selectedChapter: Quizzes[0].chapter_id,
+          quizNumber: Quizzes.length + "",
+          question: "",
+          correctAnswer: "",
+          answers: [""],
+          group: 0,
+        });
       else
-      setquizForm({
-    seletedCourse: "",
-    selectedModule: "",
-    selectedChapter: "",
-    question: "",
-    quizNumber: "1",
-    group: 0,
-    correctAnswer: "",
-    answers: [""],
-  })
+        setquizForm(initialForm);
     } else {
       setquizForm({
         seletedCourse: Quizzes[SelectedRegister].course_id,
@@ -118,7 +119,7 @@ export default function QuizesScreen() {
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,
         answers: Quizzes[SelectedRegister].answers,
-        group:0
+        group: 0,
       });
       setisOpen(true);
     }
@@ -140,11 +141,11 @@ export default function QuizesScreen() {
         question: quizForm.question,
         correct_answer: quizForm.correctAnswer,
         answers: quizForm.answers,
-        group : quizForm.group
+        group: quizForm.group,
       })
       .then((res) => {
         const Mchapter: IChapter = Chapters.filter(
-          (chap) => chap._id == quizForm.selectedChapter
+          (chap) => chap.id == quizForm.selectedChapter
         )[0];
         const Mmodule: IModule = Modules.filter(
           (modu) => modu._id == Mchapter.module_id
@@ -153,7 +154,7 @@ export default function QuizesScreen() {
           _id: res.data._id,
           question: quizForm.question,
           answers: quizForm.answers,
-          group : quizForm.group ,
+          group: quizForm.group,
           correct_answer: quizForm.correctAnswer,
           chapter_id: Mchapter._id,
           chapter_name: Mchapter.title,
@@ -194,7 +195,7 @@ export default function QuizesScreen() {
             module_name: data.module_name,
             course_id: data.course_id,
             course_name: data.course_name,
-            group : data.group
+            group: data.group,
           };
         } else {
           newQuizz[SelectedRegister] = {
@@ -265,13 +266,13 @@ export default function QuizesScreen() {
               {Modules.map((modulee, index) => {
                 if (modulee.course_id != quizForm.seletedCourse) return;
                 return (
-                  <option key={index} value={modulee._id}>
-                    {modulee.module_name}
+                  <option  key={index} value={modulee._id}>
+                    {modulee.title}
                   </option>
                 );
               })}
             </select>
-<label htmlFor="chapter">Select Chapter</label>
+            <label htmlFor="chapter">Select Chapter</label>
             <select
               name="chapter"
               id=""
@@ -292,7 +293,7 @@ export default function QuizesScreen() {
               })}
             </select>
           </div>
-<label htmlFor="quizNumber"></label>
+          <label htmlFor="quizNumber"></label>
           <input
             type="text"
             className="text-primary h-12 border p-3 hidden"
@@ -304,17 +305,17 @@ export default function QuizesScreen() {
           />
           <label htmlFor="quizGroup">Group</label>
           <input
-                      type="number"
-                      className="text-primary h-12 border p-3"
-                      name="quizGroup"
-                      value={quizForm.group}
-                      onChange={(e) =>
-                        setquizForm({ ...quizForm, group: parseInt(e.target.value) })
-                      }
-            />
+            type="number"
+            className="text-primary h-12 border p-3"
+            name="quizGroup"
+            value={quizForm.group}
+            onChange={(e) =>
+              setquizForm({ ...quizForm, group: parseInt(e.target.value) })
+            }
+          />
           <label htmlFor="question">Question</label>
           <input
-          name="question"
+            name="question"
             type="text"
             className="text-primary h-12 border p-3"
             value={quizForm.question}
