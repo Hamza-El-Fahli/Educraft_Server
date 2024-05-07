@@ -1,3 +1,4 @@
+import pool from "@/database/lib/mariadb"
 import connectDB from "@/database/lib/mongodb"
 import Chapters from "@/database/models/chapters"
 import Courses from "@/database/models/courses"
@@ -7,10 +8,12 @@ import { NextRequest, NextResponse } from "next/server"
 
 async function DataMaps(){
 
-    const courses = await Courses.find({});
-    const modules = await _Modules.find({});
-    const chapters = await Chapters.find({});
-
+    const conn = await pool.getConnection();
+    const courses =  await conn.query(`SELECT * FROM courses `);
+    const modules =  await conn.query(`SELECT * FROM modules `);
+    const chapters =  await conn.query(`SELECT * FROM chapters `);
+    conn.release();
+    
     const courseMap: any = {}
     courses.forEach(course => {
         courseMap[course._id] = course.course_name;
@@ -21,7 +24,7 @@ async function DataMaps(){
     });
     const chapterMap: any = {}
     chapters.forEach(chapter => {
-        chapterMap[chapter._id] = chapter;
+        chapterMap[chapter.id] = chapter;
     });
 return {chapterMap,moduleMap,courseMap}
 }
@@ -127,19 +130,22 @@ export async function GetAllQuizzes() {
 
 export async function GetQuizzesWithModuleID(id: string) {
    //  await connectDB();
-    const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`); // Update this line when write Chapters controllers
-    const chapters = await ajax.json();
+    // const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`); // Update this line when write Chapters controllers
+    // const chapters = await ajax.json();
+    // const data: any = []
+    // await Promise.all(chapters.map(async (chapter: any) => {
+    //     const quiz = await Quizes.find({ "chapter_id": chapter._id });
+    //     if (quiz.length > 0) {
+    //         data.push({ chapter_name: chapter.title, chapter_id: chapter._id,group:0, ...quiz });
+    //     }
+    //     return null;
+    // }));
 
-    const data: any = []
-    await Promise.all(chapters.map(async (chapter: any) => {
-        const quiz = await Quizes.find({ "chapter_id": chapter._id });
-        if (quiz.length > 0) {
-            data.push({ chapter_name: chapter.title, chapter_id: chapter._id,group:0, ...quiz });
-        }
-        return null;
-    }));
+    // const Results: any = data.filter((result: any) => result !== null);
 
-    const Results: any = data.filter((result: any) => result !== null);
+
+            const Results = await Quizes.find({ module_id: id });
+
     return NextResponse.json({ quizzes: Results });
 }
 
