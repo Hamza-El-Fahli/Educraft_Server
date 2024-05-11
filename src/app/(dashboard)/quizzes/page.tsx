@@ -156,10 +156,10 @@ export default function QuizesScreen() {
           answers: quizForm.answers,
           group: quizForm.group,
           correct_answer: quizForm.correctAnswer,
-          chapter_id: Mchapter._id,
+          chapter_id: Mchapter.id,
           chapter_name: Mchapter.title,
           module_id: Mmodule._id,
-          module_name: Mmodule.module_name,
+          module_name: Mmodule.title,
           course_id: Mmodule.course_id,
           course_name: Mmodule.course_name,
         };
@@ -286,7 +286,7 @@ export default function QuizesScreen() {
                 if (chapter.module_id != quizForm.selectedModule) return;
 
                 return (
-                  <option key={index} value={chapter._id}>
+                  <option key={index} value={chapter.id}>
                     {chapter.title}
                   </option>
                 );

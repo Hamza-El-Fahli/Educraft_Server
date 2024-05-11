@@ -20,7 +20,7 @@ export interface IModule {
   _id: string;
   course_id: string;
   course_name: string;
-  module_name: string;
+  title: string;
   description: string;
   order: number
 }
@@ -28,7 +28,7 @@ export interface IModule {
 
 
 export interface IChapter {
-  _id: string;
+  id: string;
   module_id: string;
   title: string;
   description: string;
