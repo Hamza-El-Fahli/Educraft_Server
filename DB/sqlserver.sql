@@ -150,3 +150,27 @@ VALUES (1, 'Quelle institution a créé ARPANET?', '["Département de la Défens
 
 
 
+
+
+
+
+ALTER TABLE modules
+ADD CONSTRAINT fk_course_id
+FOREIGN KEY (course_id) REFERENCES courses(_id);
+
+
+ALTER TABLE chapters
+ADD CONSTRAINT fk_module_id
+FOREIGN KEY (module_id) REFERENCES modules(_id);
+
+ALTER TABLE quiz
+ADD CONSTRAINT fk_chapter_id
+FOREIGN KEY (chapter_id) REFERENCES chapters(_id);
+
+ALTER TABLE quiz
+ADD CONSTRAINT fk_quiz_module_id
+FOREIGN KEY (module_id) REFERENCES modules(_id);
+
+
+
+
