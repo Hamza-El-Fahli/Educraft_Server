@@ -174,3 +174,51 @@ FOREIGN KEY (module_id) REFERENCES modules(_id);
 
 
 
+
+
+
+
+DELIMITER //
+CREATE TRIGGER update_quizGroupes_after_quiz_change
+AFTER INSERT ON quiz
+FOR EACH ROW
+BEGIN
+    UPDATE chapters c
+    SET quizGroupes = (
+        SELECT COUNT(DISTINCT quiz_group)
+        FROM quiz
+        WHERE chapter_id = NEW.chapter_id
+    )
+    WHERE c._id = NEW.chapter_id;
+END;
+//
+
+CREATE TRIGGER update_quizGroupes_after_quiz_update
+AFTER UPDATE ON quiz
+FOR EACH ROW
+BEGIN
+    UPDATE chapters c
+    SET quizGroupes = (
+        SELECT COUNT(DISTINCT quiz_group)
+        FROM quiz
+        WHERE chapter_id = NEW.chapter_id
+    )
+    WHERE c._id = NEW.chapter_id;
+END;
+//
+
+CREATE TRIGGER update_quizGroupes_after_quiz_delete
+AFTER DELETE ON quiz
+FOR EACH ROW
+BEGIN
+    UPDATE chapters c
+    SET quizGroupes = (
+        SELECT COUNT(DISTINCT quiz_group)
+        FROM quiz
+        WHERE chapter_id = OLD.chapter_id
+    )
+    WHERE c._id = OLD.chapter_id;
+END;
+//
+
+DELIMITER ;
