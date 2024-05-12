@@ -283,7 +283,7 @@ export default function QuizesScreen() {
               }
             >
               {Chapters.map((chapter, index) => {
-                if (chapter.module_id != quizForm.selectedModule) return;
+                if (!quizForm.selectedModule && chapter.module_id != quizForm.selectedModule) return;
 
                 return (
                   <option key={index} value={chapter.id}>
