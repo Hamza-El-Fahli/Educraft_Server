@@ -99,7 +99,6 @@ export default function Chapters() {
   axios.get(`${API_Server_Chapters}`).then(
     (res) => {
       setChapters(res.data);
-      console.log(res.data)
       setLoading(false);
     },
     (rej) => {

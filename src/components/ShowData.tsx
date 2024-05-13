@@ -43,12 +43,12 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
             <tbody  >
               {/* Mapping over modules to display them in the table */}
               {Data.map((oneData:any,index:number) => (
-                <tr  key={index}  id={`tr-${index}`}>
+                <tr  key={'t'+index}  id={`tr-${index}`}>
                   {Object.keys(oneData).map((key:any,innerIndex)=>{
                     if(innerIndex >= Cols.length -1  ) return
                     // if(typeof oneData) == 'object') 
-                    if(key == '_id') return <td>{oneData[key].length>5 ? oneData[key].slice(-5) : oneData[key]}</td>
-                    if(key != '_id') return <td>{ key == 'password' ? '******':  oneData[key] }</td>
+                    if(key == '_id') return <td key={innerIndex+'5'}>{oneData[key].length>5 ? oneData[key].slice(-5) : oneData[key]}</td>
+                    if(key != '_id') return <td key={innerIndex+'5'}>{ key == 'password' ? '******':  oneData[key] }</td>
                   })}
                   
                   {/* Buttons to modify or delete the module */}

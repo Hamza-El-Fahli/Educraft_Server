@@ -87,7 +87,7 @@ Chapters.create = async({ module_id, title, description, quizGroupes }:any)=>{
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
-        //conn.release();
+        conn.release();
         return {_id : parseInt(rows.insertId)}
     } catch (error) {
         console.error('Error:', error);
@@ -110,7 +110,7 @@ Chapters.findByIdAndUpdate = async (id:string,  { module_id, title, description,
         let rows;
         rows = await conn.query(query);
         const _id = parseInt(rows.insertId)
-        //conn.release();
+        conn.release();
         if(rows.affectedRows>0)
             return {_id , module_id, title, description ,quizGroupes  }
             else
@@ -130,7 +130,7 @@ Chapters.findByIdAndDelete =async (id:string)=>{
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
-        //conn.release();
+        conn.release();
         if(rows.affectedRows>0)
         return rows
     else

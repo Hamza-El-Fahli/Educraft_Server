@@ -90,7 +90,7 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
 //         let rows;
 //         rows = await conn.query(query);
 //         const _id = parseInt(rows.insertId)
-//         //conn.release();
+//         conn.release();
 //         if(rows.affectedRows>0)
 //             return {_id , module_id, title, description ,quizGroupes  }
 //             else
@@ -110,7 +110,7 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
 //         conn = await pool.getConnection();
 //         let rows;
 //         rows = await conn.query(query);
-//         //conn.release();
+//         conn.release();
 //         if(rows.affectedRows>0)
 //         return rows
 //     else
