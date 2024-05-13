@@ -28,16 +28,17 @@ export interface IModule {
 
 
 export interface IChapter {
-  id: string;
-  module_id: string;
+  _id: number;
+  module_id: any;                      //////////
   title: string;
+  module_name ? : string;                ///////////
   description: string;
 }
 
 export interface IQuizz {
   _id: string;
   question: string;
-  answers: string[];
+  answers: string;
   correct_answer: string;
   chapter_id: string;
   chapter_name: string;

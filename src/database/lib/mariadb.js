@@ -1,7 +1,7 @@
 import mariadb from "mariadb";
 
 const pool = mariadb.createPool({
-  host: 'localhost',
+  host: 'db.educraft.com',
   user: 'root',
   password: '',
   database: 'educraft',

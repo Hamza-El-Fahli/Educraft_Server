@@ -4,6 +4,7 @@ import Chapters from "@/database/models/chapters"
 import Courses from "@/database/models/courses"
 import _Modules from "@/database/models/modules"
 import Quizes from "@/database/models/quizes"
+import { IChapter, ICourse, IModule, IQuizz } from "@/types/types"
 import { NextRequest, NextResponse } from "next/server"
 
 async function DataMaps(){
@@ -15,16 +16,16 @@ async function DataMaps(){
     conn.release();
     
     const courseMap: any = {}
-    courses.forEach(course => {
+    courses.forEach((course:ICourse) => {
         courseMap[course._id] = course.course_name;
     });
     const moduleMap: any = {}
-    modules.forEach(module => {
+    modules.forEach((module:IModule) => {
         moduleMap[module._id] = module;
     });
     const chapterMap: any = {}
-    chapters.forEach(chapter => {
-        chapterMap[chapter.id] = chapter;
+    chapters.forEach((chapter:IChapter) => {
+        chapterMap[chapter._id] = chapter;
     });
 return {chapterMap,moduleMap,courseMap}
 }
@@ -57,7 +58,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
     const quizes = await Quizes.find(filter);
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
-    const res = quizes.map((quiz) => {
+    const res = quizes.map((quiz:IQuizz) => {
 
         // Limit options to only 4 options including the correct one
         const NUMBER_OF_OPTIONS_PER_QUIZ = 4
@@ -65,7 +66,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
             const optionsList =new Set()
             optionsList.add(quiz.correct_answer) // add the correct option
             while(optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ){
-                const testOption = quiz.answers[Math.floor(Math.random()*quiz.answers.length)]
+                const testOption = JSON.parse(quiz.answers)[Math.floor(Math.random()*quiz.answers.length)]
                 if(!(optionsList.has(testOption)))    
                         optionsList.add(testOption)
                 safetyCounter++
@@ -100,12 +101,12 @@ export async function GetAllQuizzes() {
     const quizes = await Quizes.find();
     const {chapterMap,moduleMap,courseMap} = await DataMaps()
 
-    const res = quizes.map((quiz) => {
+    const res = quizes.map((quiz:IQuizz) => {
         return {
             _id: quiz._id,
             question: quiz.question,
             group : quiz.group,
-            answers: quiz.answers,
+            answers: JSON.parse(quiz.answers),
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
             chapter_name: chapterMap[quiz.chapter_id].title,

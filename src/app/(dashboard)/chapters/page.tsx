@@ -6,6 +6,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { API_Server_RetrieveData } from "@/configuration/API";
 import { API_Server_Chapters } from "@/configuration/API";
+import { IChapter } from "@/types/types";
 
 // Component function
 export default function Chapters() {
@@ -36,7 +37,7 @@ export default function Chapters() {
   });
   const [Courses, setCourses] = useState<any>([]);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
-  const [Chapters, setChapters] = useState<any>([]);
+  const [Chapters, setChapters] = useState<IChapter[]>([]);
 
   // Function to open modal
   const openModal = () => {
@@ -65,7 +66,7 @@ export default function Chapters() {
         ...ChapterForm,
         title: tmp.title,
         description: tmp.description,
-        selectedModule: tmp.module_id,
+        selectedModule: tmp.module_id+'',
         selectedCourse: course_id,
       });
     }
@@ -124,7 +125,7 @@ export default function Chapters() {
       description: ChapterForm.description,
     };
     axios.post(`${API_Server_Chapters}`, tmp).then(
-      (res: { data: { _id: string; module_name: string } }) => {
+      (res: { data: { _id: number; module_name: string } }) => {
         // console.log( res.data)
         setChapters([
           ...Chapters,
@@ -295,8 +296,8 @@ export default function Chapters() {
       {/* Loading spinner or table of modules */}
       <ShowData
         Loading={Loading}
-        Data={Chapters.map(({ module_id, id , module_name , title, description }: any) =>{
-          const data =  {_id : id , module_name , title, description}
+        Data={Chapters.map(({ module_id, _id , module_name , title, description }: any) =>{
+          const data =  {_id , module_name , title, description}
  return data}
           )}
         Cols={["ID", "Module name", "Chapter Title", "Description", "Action"]}

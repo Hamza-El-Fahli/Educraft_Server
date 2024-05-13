@@ -145,7 +145,7 @@ export default function QuizesScreen() {
       })
       .then((res) => {
         const Mchapter: IChapter = Chapters.filter(
-          (chap) => chap.id == quizForm.selectedChapter
+          (chap) => chap._id == quizForm.selectedChapter
         )[0];
         const Mmodule: IModule = Modules.filter(
           (modu) => modu._id == Mchapter.module_id
@@ -156,7 +156,7 @@ export default function QuizesScreen() {
           answers: quizForm.answers,
           group: quizForm.group,
           correct_answer: quizForm.correctAnswer,
-          chapter_id: Mchapter.id,
+          chapter_id: Mchapter._id,
           chapter_name: Mchapter.title,
           module_id: Mmodule._id,
           module_name: Mmodule.title,
@@ -286,7 +286,7 @@ export default function QuizesScreen() {
                 if (!quizForm.selectedModule && chapter.module_id != quizForm.selectedModule) return;
 
                 return (
-                  <option key={index} value={chapter.id}>
+                  <option key={index} value={chapter._id}>
                     {chapter.title}
                   </option>
                 );
