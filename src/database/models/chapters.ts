@@ -37,15 +37,15 @@ Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
         SELECT 
             chapters.*, 
             modules.title AS module_name,
-            CASE WHEN chapter_progression.chapter_id IS NOT NULL THEN TRUE ELSE FALSE END AS isDone
+            CASE WHEN progression.chapter_id IS NOT NULL THEN TRUE ELSE FALSE END AS isDone
         FROM 
             chapters 
         JOIN 
             modules ON chapters.module_id = modules._id
         LEFT JOIN 
-            chapter_progression ON chapters.id = chapter_progression.chapter_id
+            progression ON chapters._id = progression.chapter_id
         AND 
-            chapter_progression.user_id = '${data.user_id}'
+            progression.user_id = '${data.user_id}'
         WHERE
             chapters.module_id = '${data.module_id}'
       ;`

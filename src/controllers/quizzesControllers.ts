@@ -7,75 +7,78 @@ import Quizes from "@/database/models/quizes"
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types"
 import { NextRequest, NextResponse } from "next/server"
 
-async function DataMaps(){
+async function DataMaps() {
 
     const conn = await pool.getConnection();
-    const courses =  await conn.query(`SELECT * FROM courses `);
-    const modules =  await conn.query(`SELECT * FROM modules `);
-    const chapters =  await conn.query(`SELECT * FROM chapters `);
+    const courses = await conn.query(`SELECT * FROM courses `);
+    const modules = await conn.query(`SELECT * FROM modules `);
+    const chapters = await conn.query(`SELECT * FROM chapters `);
     conn.release();
-    
+
     const courseMap: any = {}
-    courses.forEach((course:ICourse) => {
+    courses.forEach((course: ICourse) => {
         courseMap[course._id] = course.course_name;
     });
     const moduleMap: any = {}
-    modules.forEach((module:IModule) => {
+    modules.forEach((module: IModule) => {
         moduleMap[module._id] = module;
     });
     const chapterMap: any = {}
-    chapters.forEach((chapter:IChapter) => {
+    chapters.forEach((chapter: IChapter) => {
         chapterMap[chapter._id] = chapter;
     });
-return {chapterMap,moduleMap,courseMap}
+    return { chapterMap, moduleMap, courseMap }
 }
 
 export async function PostQuizController(request: NextRequest) {
-    const { chapter_id, question, correct_answer, answers,group }:
-        { chapter_id: string, question: string, correct_answer: string, answers: string[], group:number } = await request.json()
-   //  await connectDB()
+    const { chapter_id, question, correct_answer, answers, group }:
+        { chapter_id: string, question: string, correct_answer: string, answers: string[], group: number } = await request.json()
+    //  await connectDB()
 
 
-    const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group : group })
+    const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const chapter = await Chapters.findById(chapter_id)
-    if(chapter && chapter.quizGroupes <= group){
+    if (chapter && chapter.quizGroupes <= group) {
         console.log('update')
-        await Chapters.findByIdAndUpdate(chapter._id,{quizGroupes : group+1})}
-        return NextResponse.json({ message: 'Quiz Created successfully', _id: res._id })
+        await Chapters.findByIdAndUpdate(chapter._id, { quizGroupes: group + 1 })
+    }
+    return NextResponse.json({ message: 'Quiz Created successfully', _id: res._id })
 
 
 }
 
 
 export async function GetQuizzesWithChapterID(request: NextRequest) {
-   //  await connectDB();
+    //  await connectDB();
     const chapter_id = request.nextUrl.searchParams.get('chapter_id');
     let filter: any = {};
-        filter["chapter_id"] = chapter_id;
-        filter["quiz_group"] = request.nextUrl.searchParams.get('quiz_group');;
-    
+    filter["chapter_id"] = chapter_id;
+    filter["quiz_group"] = request.nextUrl.searchParams.get('quiz_group');;
+
 
     const quizes = await Quizes.find(filter);
-    const {chapterMap,moduleMap,courseMap} = await DataMaps()
+    const { chapterMap, moduleMap, courseMap } = await DataMaps()
 
-    const res = quizes.map((quiz:IQuizz) => {
+    const res = quizes.map((quiz: IQuizz) => {
 
         // Limit options to only 4 options including the correct one
         const NUMBER_OF_OPTIONS_PER_QUIZ = 4
         let safetyCounter = 0 // to avoid infinit loop in case oprions are less than 4
-            const optionsList =new Set()
-            optionsList.add(quiz.correct_answer) // add the correct option
-            while(optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ){
-                const testOption = JSON.parse(quiz.answers)[Math.floor(Math.random()*quiz.answers.length)]
-                if(!(optionsList.has(testOption)))    
-                        optionsList.add(testOption)
-                safetyCounter++
-                    }
-    
+        const optionsList = new Set()
+        optionsList.add(quiz.correct_answer) // add the correct option
+        while (optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
+            let options = JSON.parse(quiz.answers)
+            const testOptions = options.sort(()=>(Math.random() - 0.5))
+            const testOption = testOptions[0]
+            if (!(optionsList.has(testOption)))
+                optionsList.add(testOption)
+            safetyCounter++
+        }
+
         return {
             _id: quiz._id,
             question: quiz.question,
-            group : quiz.group,
+            group: quiz.group,
             answers: Array.from(optionsList),
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
@@ -96,16 +99,16 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
 
 
 export async function GetAllQuizzes() {
-   //  await connectDB();
+    //  await connectDB();
 
     const quizes = await Quizes.find();
-    const {chapterMap,moduleMap,courseMap} = await DataMaps()
+    const { chapterMap, moduleMap, courseMap } = await DataMaps()
 
-    const res = quizes.map((quiz:IQuizz) => {
+    const res = quizes.map((quiz: IQuizz) => {
         return {
             _id: quiz._id,
             question: quiz.question,
-            group : quiz.group,
+            group: quiz.group,
             answers: JSON.parse(quiz.answers),
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
@@ -129,7 +132,7 @@ export async function GetAllQuizzes() {
 
 
 export async function GetQuizzesWithModuleID(id: string) {
-   //  await connectDB();
+    //  await connectDB();
     // const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`); // Update this line when write Chapters controllers
     // const chapters = await ajax.json();
     // const data: any = []
@@ -144,7 +147,7 @@ export async function GetQuizzesWithModuleID(id: string) {
     // const Results: any = data.filter((result: any) => result !== null);
 
 
-            const Results = await Quizes.find({ module_id: id });
+    const Results = await Quizes.find({ module_id: id });
 
     return NextResponse.json({ quizzes: Results });
 }
@@ -153,15 +156,15 @@ export async function GetQuizzesWithModuleID(id: string) {
 
 export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 
-   //  await connectDB()
-    
-    const { question, chapter_id, correct_answer, answers , group } = await request.json() // get the modufied data 
-    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers , group}) // update the data
+    //  await connectDB()
+
+    const { question, chapter_id, correct_answer, answers, group } = await request.json() // get the modufied data 
+    const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers, group }) // update the data
     // res hes the old register data , befor updating
     let data: any = {}
 
     if (chapter_id != res?.chapter_id) { // if Chapter id chenged , the means the front-end should update chapter module and class of the quiz
-        const {chapterMap,moduleMap,courseMap} = await DataMaps()
+        const { chapterMap, moduleMap, courseMap } = await DataMaps()
 
         data = {
             _id: QuizID,
@@ -180,22 +183,30 @@ export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 export const getQuizGroupCounts = async () => {
     try {
         const result = await Quizes.aggregate([
-            { $group: {
-                _id: { chapter_id: '$chapter_id', group: '$group' },
-                count: { $sum: 1 }
-            }},
-            { $group: {
-                _id: '$_id.chapter_id',
-                groups: { $push: { k: '$_id.group', v: '$count' } }
-            }},
-            { $addFields: {
-                groups: { $arrayToObject: '$groups' }
-            }},
-            { $project: {
-                chapter: '$_id',
-                groups: 1,
-                _id: 0
-            }}
+            {
+                $group: {
+                    _id: { chapter_id: '$chapter_id', group: '$group' },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $group: {
+                    _id: '$_id.chapter_id',
+                    groups: { $push: { k: '$_id.group', v: '$count' } }
+                }
+            },
+            {
+                $addFields: {
+                    groups: { $arrayToObject: '$groups' }
+                }
+            },
+            {
+                $project: {
+                    chapter: '$_id',
+                    groups: 1,
+                    _id: 0
+                }
+            }
         ]);
 
         return result;
@@ -204,3 +215,45 @@ export const getQuizGroupCounts = async () => {
         return null;
     }
 };
+
+
+type Answer = {
+    answers: { quiz_id: number, answer: string }[],
+    user_id: number,
+    module_id: number,
+    quizGroup: number,
+    chapter_id: number,
+}
+export async function CheckAnswers({
+    answers,
+    user_id,
+    module_id,
+    quizGroup,
+    chapter_id,
+}: Answer) {
+
+    let rows : {_id:number,question:string,correct_answer:string}[];
+
+    try {
+        const conn = await pool.getConnection();
+        const quizIds = answers.map(item => item.quiz_id).join(', '); // Get quiz IDs for IN clause
+        const sqlQuery = `SELECT _id,question, correct_answer FROM quiz WHERE _id IN (${quizIds})`;
+        rows  = await conn.query(sqlQuery);
+        conn.release();
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+
+    // Check if provided answers match correct answers
+    const results = answers.map(answer => {
+        const correctAnswer = rows.find(item => (item._id == answer.quiz_id ));
+        return {
+            quiz_id: answer.quiz_id,
+            quiz_question :correctAnswer?.question ,
+            isCorrect: correctAnswer ? correctAnswer.correct_answer === answer.answer ? true : false : false
+        }
+    })
+ return results
+
+}
