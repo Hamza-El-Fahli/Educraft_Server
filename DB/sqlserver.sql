@@ -205,7 +205,7 @@ BEGIN
     )
     WHERE c._id = NEW.chapter_id;
 END;
-//
+// 
 
 CREATE TRIGGER update_quizGroupes_after_quiz_delete
 AFTER DELETE ON quiz
@@ -222,3 +222,25 @@ END;
 //
 
 DELIMITER ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE lessons (
+    _id INT(11) PRIMARY KEY AUTO_INCREMENT,
+    chapter_id INT(11) NOT NULL,
+    content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    type TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+    createdAt DATE NOT NULL DEFAULT current_timestamp()
+);

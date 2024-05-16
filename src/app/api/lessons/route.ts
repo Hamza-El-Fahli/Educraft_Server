@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
         body: formData
     }).then(res => res.json());
 
-    console.log(API_Storage_Server + '/' + path);
 
     try {
         // Create a new Lesson document
@@ -25,10 +24,10 @@ if(exists == null){
         });
         return NextResponse.json({ message: 'created' });
 
-    }
+    } 
     else{
         await ALimetation.findByIdAndUpdate(exists._id,{
-            chapter_id,
+            // chapter_id,
             content: API_Storage_Server + '/' + path,
             type: 'pdf'
         })
