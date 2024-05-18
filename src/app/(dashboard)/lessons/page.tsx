@@ -24,7 +24,7 @@ export default function Lessons() {
     setTextAreaValue(event.target.value);
   };
 
-  const handleMediaUpload = (event: any) => {
+  const handleMediaUpload = (event: Event) => {
     const file = event.target.files[0];
     // Convert the uploaded file to a URL
     const url: any = URL.createObjectURL(file);
