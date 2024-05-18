@@ -79,7 +79,4 @@ Lessons.findByIdAndUpdate =async (id:number , {content , type}:{content:string,t
 
 
 
-
-
-
 export default Lessons

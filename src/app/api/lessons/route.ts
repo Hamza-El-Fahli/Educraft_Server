@@ -40,3 +40,18 @@ if(exists == null){
         return NextResponse.json({ error: 'Failed to create lesson' }, { status: 500 });
     }
 }
+
+
+export async function GET(request:NextRequest){
+    const chapter_id = request.nextUrl.searchParams.get('chapter_id')
+    if(!!chapter_id){
+        const {imageUrls,error} = await fetch(`${API_Storage_Server}/view/${chapter_id}`).then(res=>res.json()).catch((err)=>{console.log('storage server error')})
+        if(error){
+            return NextResponse.json(error,{status:500})
+        }
+        return NextResponse.json(imageUrls)
+    }
+    else{
+        return NextResponse.json({error : "No chapter_id"},{status:500})
+    }
+}
