@@ -244,3 +244,36 @@ CREATE TABLE lessons (
     type TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
     createdAt DATE NOT NULL DEFAULT current_timestamp()
 );
+
+
+
+
+
+ALTER TABLE modules ADD COLUMN chapter_count INT DEFAULT 0;
+
+
+DELIMITER //
+CREATE TRIGGER update_chapter_count AFTER INSERT ON chapters
+    FOR EACH ROW
+    BEGIN
+        UPDATE modules
+        SET chapter_count = chapter_count + 1
+        WHERE _id = NEW.module_id;
+    END;
+//
+
+DELIMITER ;
+
+
+
+DELIMITER //
+CREATE TRIGGER decrease_chapter_count AFTER DELETE ON chapters
+    FOR EACH ROW
+    BEGIN
+        UPDATE modules
+        SET chapter_count = chapter_count - 1
+        WHERE _id = OLD.module_id;
+    END;
+//
+
+DELIMITER ;
