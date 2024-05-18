@@ -68,7 +68,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         optionsList.add(quiz.correct_answer) // add the correct option
         while (optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
             let options = JSON.parse(quiz.answers)
-            const testOptions = options.sort(()=>(Math.random() - 0.5))
+            const testOptions = options.sort(() => (Math.random() - 0.5))
             const testOption = testOptions[0]
             if (!(optionsList.has(testOption)))
                 optionsList.add(testOption)
@@ -232,28 +232,37 @@ export async function CheckAnswers({
     chapter_id,
 }: Answer) {
 
-    let rows : {_id:number,question:string,correct_answer:string}[];
+    let rows: { _id: number, question: string, correct_answer: string }[];
 
     try {
         const conn = await pool.getConnection();
         const quizIds = answers.map(item => item.quiz_id).join(', '); // Get quiz IDs for IN clause
         const sqlQuery = `SELECT _id,question, correct_answer FROM quiz WHERE _id IN (${quizIds})`;
-        rows  = await conn.query(sqlQuery);
+        rows = await conn.query(sqlQuery);
+
+        // Check if provided answers match correct answers
+        const results = answers.map(answer => {
+            const correctAnswer = rows.find(item => (item._id == answer.quiz_id));
+            return {
+                quiz_id: answer.quiz_id,
+                quiz_question: correctAnswer?.question,
+                isCorrect: correctAnswer ? correctAnswer.correct_answer === answer.answer ? true : false : false
+            }
+        })
+        if (results.every(item => item.isCorrect)) {
+            const sqlQuery2 = `INSERT INTO progression (_id, user_id, chapter_id, Completed_quizGroup) VALUES (NULL, '${user_id}', '${chapter_id}', '${quizGroup}');`;
+            conn.query(sqlQuery2);
+
+        }
+
         conn.release();
+
+        return results
     } catch (error) {
         console.error('Error:', error);
         return null
     }
 
-    // Check if provided answers match correct answers
-    const results = answers.map(answer => {
-        const correctAnswer = rows.find(item => (item._id == answer.quiz_id ));
-        return {
-            quiz_id: answer.quiz_id,
-            quiz_question :correctAnswer?.question ,
-            isCorrect: correctAnswer ? correctAnswer.correct_answer === answer.answer ? true : false : false
-        }
-    })
- return results
+
 
 }

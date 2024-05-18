@@ -10,7 +10,7 @@ import { getModuleProgression } from "./progressionController";
 
 export async function PostModule(request: NextRequest) {
     try {
-       //  await connectDB();
+        //  await connectDB();
         const { course_id, title, description, order } = await request.json();
         const res = await _Modules.create({ course_id, title, description, order });
         return NextResponse.json({ message: "Module created successfully", _id: res._id }, { status: 201 });
@@ -23,7 +23,7 @@ export async function PostModule(request: NextRequest) {
 
 export async function GetAllModules() {
     try {
-       //  await connectDB();
+        //  await connectDB();
         const modules = await _Modules.find()
         const courses = await Courses.find()
         const courseMap: any = {}
@@ -52,7 +52,7 @@ export async function GetAllModules() {
 
 export async function GetModulesWithCourseID(courseId: string | null, user_id: string | null) {
     try {
-       //  await connectDB();
+        //  await connectDB();
         // let filter: any = {};
         // if (courseId) {
         //     filter["course_id"] = courseId;
@@ -81,7 +81,7 @@ export async function GetModulesWithCourseID(courseId: string | null, user_id: s
         //     };
         // }))
 
-        const res = await _Modules.find({course_id : courseId})
+        const res = await _Modules.find({ course_id: courseId })
 
         if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
@@ -96,7 +96,7 @@ export async function GetModulesWithCourseID(courseId: string | null, user_id: s
 
 export async function UpdateModuleByID(request: NextRequest, module_id: string) {
     try {
-       //  await connectDB();
+        //  await connectDB();
         const { course_id, title, description, order } = await request.json();
         await _Modules.findByIdAndUpdate(module_id, { course_id, title, description, order });
         return NextResponse.json({ message: "Module updated successfully" });
@@ -109,7 +109,7 @@ export async function UpdateModuleByID(request: NextRequest, module_id: string) 
 
 export async function DeleteModuleById(module_id: string) {
     try {
-       //  await connectDB();
+        //  await connectDB();
         await _Modules.findByIdAndDelete(module_id);
         return NextResponse.json({ message: "Module deleted successfully" });
     } catch (error) {
