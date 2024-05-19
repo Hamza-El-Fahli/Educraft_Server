@@ -50,10 +50,13 @@ Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
             chapters.module_id = '${data.module_id}'
       ;`
 
-
-
-         rows = await conn.query(query);
-        conn.release();
+      
+      rows = await conn.query(query);
+      conn.release();
+      ///////////// temporary fix 
+                rows = removeRepeated(rows)  
+      
+      //////////////////////////
         return rows
     } catch (error) {
         console.error('Error:', error);
@@ -143,3 +146,19 @@ Chapters.findByIdAndDelete =async (id:string)=>{
 
 
 export default Chapters
+
+
+
+
+function removeRepeated(arr){
+    const hash = new Set()
+    const res = []
+    arr.map((item)=>{
+        if(hash.has(item._id)){
+        }else{
+            res.push(item)
+            hash.add(item._id)
+        }
+    })
+    return res
+}
