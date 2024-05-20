@@ -31,31 +31,43 @@
 
 import pool from "./../lib/mariadb";
 
-const Users :any = {};
+const Users: any = {};
 
-Users.findOne = async(data:{name?:string , email?:string})=>{
-    let nameOrEmail = data.name ? data.name : data.email ;
-    
+Users.findOne = async (data: { name?: string, email?: string }) => {
+    let nameOrEmail = data.name ? data.name : data.email;
+
     const query = `SELECT * FROM users WHERE name = '${nameOrEmail}' OR email = '${nameOrEmail}' LIMIT 1`;
 
-    let conn ;
+    let conn;
     try {
         conn = await pool.getConnection();
         const rows = await conn.query(query);
         conn.release();
+
+        let lastActivityQuery = ` SELECT *
+                                    FROM progression
+                                    WHERE user_id = '${rows[0]._id}'
+                                    ORDER BY createdAt DESC
+                                    LIMIT 1;
+                                    `
+        const lastActivity = await conn.query(lastActivityQuery);
+        if(lastActivity.length != 0)
+            rows[0].lastActivity = lastActivity[0].createdAt
+        else
+        rows[0].lastActivity = rows[0].createdAt
         return rows[0]
     } catch (error) {
         console.error('Error:', error);
         return null
     }
-    }
-Users.find =async (data:null|any)=>{
-    let conn ;
+}
+Users.find = async (data: null | any) => {
+    let conn;
     try {
         conn = await pool.getConnection();
         let rows;
-        if(data==null)
-         rows = await conn.query('SELECT * FROM users');
+        if (data == null)
+            rows = await conn.query('SELECT * FROM users');
         conn.release();
         return rows
     } catch (error) {
@@ -64,25 +76,25 @@ Users.find =async (data:null|any)=>{
     }
 }
 
-Users.create = async({name , email , password , annee , filiere , profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string })=>{
+Users.create = async ({ name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string }) => {
     let conn
     const query = `INSERT INTO users (name, email, password, annee, filiere, profile)
     VALUES ('${name}', '${email}', '${password}', '${annee}', '${filiere}', '${profile}');
     `
-    
+
     try {
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
         conn.release();
-        return {_id : parseInt(rows.insertId)}
+        return { _id: parseInt(rows.insertId) }
     } catch (error) {
         console.error('Error:', error);
         return null
     }
 }
-Users.findByIdAndUpdate = async (id:string, {name , email , password , annee , filiere , profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string })=>{
-    let conn ;
+Users.findByIdAndUpdate = async (id: string, { name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string }) => {
+    let conn;
     const query = `UPDATE users
     SET name = '${name}',
         email = '${email}',
@@ -97,18 +109,18 @@ Users.findByIdAndUpdate = async (id:string, {name , email , password , annee , f
         let rows;
         rows = await conn.query(query);
         conn.release();
-        if(rows.affectedRows>0)
-        return rows
-    else
-    return null
+        if (rows.affectedRows > 0)
+            return rows
+        else
+            return null
     } catch (error) {
         console.error('Error:', error);
         return null
     }
 }
 
-Users.findByIdAndDelete =async (id:string)=>{
-    let conn ;
+Users.findByIdAndDelete = async (id: string) => {
+    let conn;
     const query = `DELETE FROM users    WHERE _id = ${id};
     `;
 
@@ -117,10 +129,10 @@ Users.findByIdAndDelete =async (id:string)=>{
         let rows;
         rows = await conn.query(query);
         conn.release();
-        if(rows.affectedRows>0)
-        return rows
-    else
-    return null
+        if (rows.affectedRows > 0)
+            return rows
+        else
+            return null
     } catch (error) {
         console.error('Error:', error);
         return null

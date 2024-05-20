@@ -83,6 +83,7 @@ export async function POST(request: NextRequest) {
       annee: user.annee,
       email: user.email,
       password: user.password,
+      lastActivity : user.lastActivity,
       accessToken: accessToken
     }
     console.log(resUser)

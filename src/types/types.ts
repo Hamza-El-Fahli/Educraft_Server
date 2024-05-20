@@ -7,6 +7,7 @@ export interface IUser {
   email: string;
   password: string;
   accessToken?:any;
+  lastActivity?:string;
 }
 
 export interface ICourse {
