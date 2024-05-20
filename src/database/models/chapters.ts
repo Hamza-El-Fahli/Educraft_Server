@@ -82,6 +82,7 @@ Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
       //////////////////////////
         return rows
     } catch (error) {
+        
         console.error('Error:', error);
         return null
     }

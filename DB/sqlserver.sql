@@ -277,3 +277,7 @@ CREATE TRIGGER decrease_chapter_count AFTER DELETE ON chapters
 //
 
 DELIMITER ;
+
+
+ALTER TABLE progression
+ADD CONSTRAINT unique_progression_entry UNIQUE (chapter_id, Completed_quizGroup, user_id);

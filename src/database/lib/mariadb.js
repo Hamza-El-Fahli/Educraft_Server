@@ -5,7 +5,7 @@ const pool = mariadb.createPool({
   user: 'root',
   password: '',
   database: 'educraft',
-  connectionLimit: 5
+  connectionLimit: 10
 });
 
 
