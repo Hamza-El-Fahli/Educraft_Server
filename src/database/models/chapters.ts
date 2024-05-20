@@ -32,29 +32,52 @@ Chapters.find =async (data:null|{module_id:string , user_id:string})=>{
     try {
         conn = await pool.getConnection();
         let rows;
-        if(data?.module_id && data?.user_id) 
-            query = `
-        SELECT 
-            chapters.*, 
-            modules.title AS module_name,
-            CASE WHEN progression.chapter_id IS NOT NULL THEN TRUE ELSE FALSE END AS isDone
-        FROM 
-            chapters 
-        JOIN 
-            modules ON chapters.module_id = modules._id
-        LEFT JOIN 
-            progression ON chapters._id = progression.chapter_id
-        AND 
-            progression.user_id = '${data.user_id}'
-        WHERE
-            chapters.module_id = '${data.module_id}'
-      ;`
-
-      
+        if(data?.module_id && data?.user_id) {
+    //         query = `
+    //     SELECT 
+    //         chapters.*, 
+    //         modules.title AS module_name,
+    //         CASE WHEN progression.chapter_id IS NOT NULL THEN TRUE ELSE FALSE END AS isDone
+    //     FROM 
+    //         chapters 
+    //     JOIN 
+    //         modules ON chapters.module_id = modules._id
+    //     LEFT JOIN 
+    //         progression ON chapters._id = progression.chapter_id
+    //     AND 
+    //         progression.user_id = '${data.user_id}'
+    //     WHERE
+    //         chapters.module_id = '${data.module_id}'
+    //   ;`
+    query = `
+    SELECT 
+    *    
+    FROM 
+        chapters
+    WHERE
+        module_id = ${data.module_id}
+`;
       rows = await conn.query(query);
+
+            for(let i=0; i < rows.length ;i++){
+                const chapter = rows[i]
+      const queryQuizzes = `
+      SELECT 
+      COUNT(*) AS progress    
+      FROM 
+          progression
+      WHERE
+          chapter_id = ${chapter._id} AND user_id = ${data.user_id}
+   
+  `;
+
+  const Progression = await conn.query(queryQuizzes);
+                rows[i].isDone = parseInt(Progression[0].progress)
+}
+    }
       conn.release();
       ///////////// temporary fix 
-                rows = removeRepeated(rows)  
+                // rows = removeRepeated(rows)  
       
       //////////////////////////
         return rows
@@ -150,15 +173,16 @@ export default Chapters
 
 
 
-function removeRepeated(arr){
-    const hash = new Set()
-    const res = []
-    arr.map((item)=>{
-        if(hash.has(item._id)){
-        }else{
-            res.push(item)
-            hash.add(item._id)
-        }
-    })
-    return res
-}
+// function removeRepeated(arr){
+//     const hash = new Set()
+//     const res = []
+//     arr.map((item)=>{
+//         item.isDone = parseInt(item.isDone)
+//         if(hash.has(item._id)){
+//         }else{
+//             res.push(item)
+//             hash.add(item._id)
+//         }
+//     })
+//     return res
+// }

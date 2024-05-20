@@ -252,11 +252,9 @@ export async function CheckAnswers({
         if (results.every(item => item.isCorrect)) {
             const sqlQuery2 = `INSERT INTO progression (_id, user_id, chapter_id, Completed_quizGroup) VALUES (NULL, '${user_id}', '${chapter_id}', '${quizGroup}');`;
             conn.query(sqlQuery2);
-
         }
 
         conn.release();
-
         return results
     } catch (error) {
         console.error('Error:', error);
