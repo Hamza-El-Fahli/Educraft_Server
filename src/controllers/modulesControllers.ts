@@ -81,7 +81,7 @@ export async function GetModulesWithCourseID(courseId: string | null, user_id: s
         //     };
         // }))
 
-        const res = await _Modules.find({ course_id: courseId })
+        const res = await _Modules.find({ course_id: courseId , user_id : user_id })
 
         if (res.length === 0 && courseId) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });

@@ -32,38 +32,36 @@ Modules.find = async (data: null | any) => {
     let query = 'SELECT * FROM modules';
     try {
         conn = await pool.getConnection();
-        let rows;
+        let modules;
         if (data?.course_id) {
             query = `SELECT * FROM modules WHERE course_id = ${data.course_id} ;`
-            //         if(true){
-            //             // query = `SELECT * FROM chapters WHERE module_id IN ${moduleIDS.join(',')} ;`
-            //             const chps = await conn.query(`
-            //             WITH ProgressionCounts AS (
-            //                 SELECT chapter_id, user_id, COUNT(*) AS progression_count
-            //                 FROM progression
-            //                 GROUP BY chapter_id, user_id
-            //             )
-            //             SELECT 
-            //                 m.*,
-            //                 COUNT(c._id) AS total_chapters,
-            //                 SUM(CASE WHEN p.progression_count = c.quizGroupes THEN 1 ELSE 0 END) AS completed_chapters,
-            //                 (SUM(CASE WHEN p.progression_count = c.quizGroupes THEN 1 ELSE 0 END) * 100.0 / COUNT(c._id)) AS completion_percentage
-            //             FROM 
-            //                 modules m
-            //             JOIN 
-            //                 chapters c ON m._id = c.module_id
-            //             LEFT JOIN 
-            //                 ProgressionCounts p ON c._id = p.chapter_id AND p.user_id = 5
-            //             GROUP BY 
-            //                 m._id, m.title;`);
-            //             console.log(chps)
-            //         }
+            if (data?.user_id) {
+                modules = await conn.query(query);
 
+                for (let i = 0; i < modules.length; i++) {
+                    const Mymodule = modules[i]
+                    modules[i].done = 0
+                    let query2 = `SELECT * FROM chapters WHERE module_id = ${Mymodule._id} ;`
+                    const chapters = await conn.query(query2);
+                    for (let chapter of chapters) {
+                        query2 = `SELECT COUNT(*) AS progress FROM progression WHERE chapter_id = ${chapter._id} AND user_id = ${10} ;`
+                        const quizzes = await conn.query(query2);
+                        const FinishedQuizGroupes = parseInt(quizzes[0].progress)
+                        if (FinishedQuizGroupes >= chapter.quizGroupes && chapter.quizGroupes != 0) {
+                            modules[i].done++
+                        }
+                    }
+                    modules[i].progress =modules[i].done ? modules[i].done*100 / modules[i].chapter_count : 0
+                }
+            }else{
+                modules = await conn.query(query);
+
+            }
+        } else {
+            modules = await conn.query(query);
         }
-        rows = await conn.query(query);
-
         conn.release();
-        return rows
+        return modules
     } catch (error) {
         console.error('Error:', error);
         return null
