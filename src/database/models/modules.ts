@@ -44,7 +44,7 @@ Modules.find = async (data: null | any) => {
                     let query2 = `SELECT * FROM chapters WHERE module_id = ${Mymodule._id} ;`
                     const chapters = await conn.query(query2);
                     for (let chapter of chapters) {
-                        query2 = `SELECT COUNT(*) AS progress FROM progression WHERE chapter_id = ${chapter._id} AND user_id = ${10} ;`
+                        query2 = `SELECT COUNT(*) AS progress FROM progression WHERE chapter_id = ${chapter._id} AND user_id = ${data.user_id} ;`
                         const quizzes = await conn.query(query2);
                         const FinishedQuizGroupes = parseInt(quizzes[0].progress)
                         if (FinishedQuizGroupes >= chapter.quizGroupes && chapter.quizGroupes != 0) {
