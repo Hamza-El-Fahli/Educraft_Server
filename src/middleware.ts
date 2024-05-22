@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { jwtVerify } from 'jose';
-import { secret } from "./services/secret";
+import {secret} from "./services/secret";
 const secretKey = new TextEncoder().encode(secret);
 export async function middleware(request: NextRequest) {
 

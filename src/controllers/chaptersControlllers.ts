@@ -41,10 +41,10 @@ export async function GetAllChapters() {
     //         description: chapter.description
     //     };
     // })
-    if (chapters.length === 0) {
-        return NextResponse.json({ error: "Module_id not found" }, { status: 404 });
+    if (chapters?.length && chapters.length >0 ) {
+        return NextResponse.json(chapters);
     }
-    return NextResponse.json(chapters);
+    return NextResponse.json({ error: "Chapters not found" }, { status: 404 });
 }
 
 
@@ -84,7 +84,7 @@ export async function GetChaptersWithModuleID(module_id: string,user_id:string|n
 
     const chapters = await Chapters.find({module_id , user_id });
 
-    if (chapters.length === 0) {
+    if (chapters?.length === 0) {
         return NextResponse.json({ error: "No Chapter found with the given Module ID" }, { status: 404 });
     }
     return NextResponse.json(chapters);
