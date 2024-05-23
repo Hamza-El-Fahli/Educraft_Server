@@ -29,7 +29,7 @@ export default function Users() {
   const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [SelectedRegister, setSelectedRegister] = useState<number | null>(null);
   const [moduleForm, setmoduleForm] = useState<IModule_Form>({
-    module_name: "",
+    title: "",
     description: "",
     selectedCourse_id: "",
     selectedCourse_name: "",
@@ -40,7 +40,7 @@ export default function Users() {
     if (SelectedRegister == -1)
       setmoduleForm({
         ...moduleForm,
-        module_name: "",
+        title: "",
         description: "",
         selectedCourse_id: Courses[0]._id,
         selectedCourse_name: Courses[0].course_name,
@@ -48,7 +48,7 @@ export default function Users() {
     else if (SelectedRegister != null) {
       const currentModules = _Modules[SelectedRegister];
       setmoduleForm({
-        module_name: currentModules.module_name,
+        title: currentModules.title,
         description: currentModules.description,
         selectedCourse_id: currentModules.course_id,
         selectedCourse_name: currentModules.course_name,
@@ -110,13 +110,13 @@ export default function Users() {
     const tmp: {
       course_id: string;
       course_name: string;
-      module_name: string;
+      title: string;
       description: string;
       order: number;
     } = {
       course_id: moduleForm.selectedCourse_id,
       course_name: moduleForm.selectedCourse_name,
-      module_name: moduleForm.module_name,
+      title: moduleForm.title,
       description: moduleForm.description,
       order: _Modules.length,
     };
@@ -138,13 +138,12 @@ export default function Users() {
     await axios
       .put(`${API_Server_Modules}/${_Modules[SelectedRegister]._id}`, {
         course_id: moduleForm.selectedCourse_id,
-        module_name: moduleForm.module_name,
-        title: moduleForm.module_name,
+        title: moduleForm.title,
         description: moduleForm.description,
       })
       .then(async () => {
         _Modules[SelectedRegister].course_name = moduleForm.selectedCourse_name;
-        _Modules[SelectedRegister].module_name = moduleForm.module_name;
+        _Modules[SelectedRegister].title = moduleForm.title;
         _Modules[SelectedRegister].description = moduleForm.description;
         closeModal();
       })
@@ -160,7 +159,7 @@ export default function Users() {
     const id = _Module._id;
     // console.log(_Modules[e])
     const decision: boolean = window.confirm(
-      `Are you sure to delete Module ${_Module.module_name} ?`
+      `Are you sure to delete Module ${_Module.title} ?`
     );
     const newState = _Modules.filter((model: any) => model._id != id);
     if (decision)
@@ -212,11 +211,11 @@ export default function Users() {
             required
             className="text-primary h-12 border p-3"
             type="text"
-            placeholder="module_name"
-            name="module_name"
-            value={moduleForm.module_name}
+            placeholder="title"
+            name="title"
+            value={moduleForm.title}
             onChange={(e) =>
-              setmoduleForm({ ...moduleForm, module_name: e.target.value })
+              setmoduleForm({ ...moduleForm, title: e.target.value })
             }
           />
           {/* Input field for description */}
@@ -265,14 +264,14 @@ export default function Users() {
       <ShowData
         Loading={Loading}
         Data={_Modules.map(
-          ({ _id, course_name, module_name, description }: any) => ({
+          ({ _id, course_name, title, description }: any) => ({
             _id,
             course_name,
-            module_name,
+            title,
             description,
           })
         )}
-        Cols={["ID", "Course", "Module Title", "Description", "Action"]}
+        Cols={["ID", "Course", "title", "Description", "Action"]}
         setAddORUpdate={setAddORMod}
         Modify={OpenAndSet}
         Remove={removeModule}

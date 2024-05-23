@@ -52,7 +52,7 @@ export interface IQuizz {
 }
 
 export interface IModule_Form {
-  module_name: string;
+  title: string;
   description: string;
   selectedCourse_id: string;
   selectedCourse_name: string;

@@ -30,7 +30,7 @@ export default function Login(): JSX.Element {
 
       }
     } catch (error: any) {
-      const responseError = error.response.data.error.toLowerCase();
+      const responseError = error.response?.data.error.toLowerCase();
       console.error("Error during login:", responseError.search("user"));
       setLoading(false);
 

@@ -4,6 +4,7 @@ import _Modules from "@/database/models/modules"
 import ModulesProgression from "@/database/models/modulesProgression";
 import { NextRequest, NextResponse } from "next/server"
 import { getModuleProgression } from "./progressionController";
+import { ICourse, IModule } from "@/types/types";
 
 
 
@@ -27,15 +28,15 @@ export async function GetAllModules() {
         const modules = await _Modules.find()
         const courses = await Courses.find()
         const courseMap: any = {}
-        courses.forEach(course => {
+        courses.forEach((course:ICourse) => {
             courseMap[course._id] = course.course_name;
         });
-        const res = modules.map(module => {
+        const res = modules.map((module:IModule) => {
             return {
                 _id: module._id,
                 course_id: module.course_id,
                 course_name: courseMap[module.course_id],
-                module_name: module.title,
+                title: module.title,
                 order: module.order,
                 description: module.description
             };
@@ -43,7 +44,7 @@ export async function GetAllModules() {
         if (res.length === 0) {
             return NextResponse.json({ error: "No modules found for the specified course ID" }, { status: 404 });
         }
-        return NextResponse.json(res.sort((a, b) => a.order - b.order));
+        return NextResponse.json(res.sort((a:any, b:any) => a.order - b.order));
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: "Failed to get modules" }, { status: 500 });
