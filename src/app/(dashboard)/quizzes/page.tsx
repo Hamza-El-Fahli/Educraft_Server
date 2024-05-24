@@ -99,9 +99,9 @@ export default function QuizesScreen() {
       setisOpen(true);
       if (Quizzes.length)
         setquizForm({
-          seletedCourse: Quizzes[0].course_id,
-          selectedModule: Quizzes[0].module_id,
-          selectedChapter: Quizzes[0].chapter_id,
+          seletedCourse: Quizzes[0].course_id+'',
+          selectedModule: Quizzes[0].module_id+'',
+          selectedChapter: Quizzes[0].chapter_id+'',
           quizNumber: Quizzes.length + "",
           question: "",
           correctAnswer: "",
@@ -112,9 +112,9 @@ export default function QuizesScreen() {
         setquizForm(initialForm);
     } else {
       setquizForm({
-        seletedCourse: Quizzes[SelectedRegister].course_id,
-        selectedModule: Quizzes[SelectedRegister].module_id,
-        selectedChapter: Quizzes[SelectedRegister].chapter_id,
+        seletedCourse: Quizzes[SelectedRegister].course_id+'',
+        selectedModule: Quizzes[SelectedRegister].module_id+'',
+        selectedChapter: Quizzes[SelectedRegister].chapter_id+'',
         question: Quizzes[SelectedRegister].question,
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,

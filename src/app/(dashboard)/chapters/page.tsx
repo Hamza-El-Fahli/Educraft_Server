@@ -128,7 +128,7 @@ export default function Chapters() {
         // console.log( res.data)
         setChapters([
           ...Chapters,
-          { _id: res.data._id, module_name: res.data.module_name, ...tmp },
+          { _id: res.data._id+'', module_name: res.data.module_name, ...tmp },
         ]);
         closeModal();
       },

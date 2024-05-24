@@ -5,7 +5,9 @@ const pool = mariadb.createPool({
   user: 'remote',
   password: '',
   database: 'educraft',
-  connectionLimit: 10
+  connectionLimit: 100,
+  connectTimeout: 20000, // Increase the connection timeout to 20 seconds
+  multipleStatements: true  // Enable multiple statements
 });
 
 

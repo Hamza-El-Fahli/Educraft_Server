@@ -1,4 +1,4 @@
-import { AddProgress } from "@/controllers/progressionController";
+// import { AddProgress } from "@/controllers/progressionController";
 import { CheckAnswers } from "@/controllers/quizzesControllers";
 import connectDB from "@/database/lib/mongodb";
 import Quizes from "@/database/models/quizes";

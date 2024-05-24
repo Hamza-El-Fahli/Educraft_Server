@@ -3,7 +3,7 @@ import Chapters from "@/database/models/chapters";
 import _Modules from "@/database/models/modules";
 import { NextRequest, NextResponse } from "next/server";
 import { getQuizGroupCounts } from "./quizzesControllers";
-import { getChapterProgression } from "./progressionController";
+// import { getChapterProgression } from "./progressionController";
 
 
 export async function PostChapter(request: NextRequest) {

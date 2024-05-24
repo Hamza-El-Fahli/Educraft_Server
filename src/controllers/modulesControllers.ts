@@ -3,7 +3,7 @@ import Courses from "@/database/models/courses"
 import _Modules from "@/database/models/modules"
 import ModulesProgression from "@/database/models/modulesProgression";
 import { NextRequest, NextResponse } from "next/server"
-import { getModuleProgression } from "./progressionController";
+// import { getModuleProgression } f rom "./progressionController";
 import { ICourse, IModule } from "@/types/types";
 
 

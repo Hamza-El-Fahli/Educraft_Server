@@ -29,7 +29,7 @@ export interface IModule {
 
 
 export interface IChapter {
-  _id: number;
+  _id: string;
   module_id: any;                      //////////
   title: string;
   module_name ? : string;                ///////////
@@ -39,7 +39,7 @@ export interface IChapter {
 export interface IQuizz {
   _id: string;
   question: string;
-  answers: string;
+  answers: string[];
   correct_answer: string;
   chapter_id: string;
   chapter_name: string;

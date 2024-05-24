@@ -67,7 +67,8 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         const optionsList = new Set()
         optionsList.add(quiz.correct_answer) // add the correct option
         while (optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
-            let options = JSON.parse(quiz.answers)
+            const JsonAnswers : any = quiz.answers
+            let options = JSON.parse(JsonAnswers)
             const testOptions = options.sort(() => (Math.random() - 0.5))
             const testOption = testOptions[0]
             if (!(optionsList.has(testOption)))
@@ -105,11 +106,13 @@ export async function GetAllQuizzes() {
     const { chapterMap, moduleMap, courseMap } = await DataMaps()
 
     const res = quizes.map((quiz: IQuizz) => {
+        const JsonAnswers : any = quiz.answers
+
         return {
             _id: quiz._id,
             question: quiz.question,
             group: quiz.group,
-            answers: JSON.parse(quiz.answers),
+            answers: JSON.parse(JsonAnswers),
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
             chapter_name: chapterMap[quiz.chapter_id].title,
