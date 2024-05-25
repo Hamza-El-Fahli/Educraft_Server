@@ -25,7 +25,7 @@ import { API_Server_Modules } from "@/configuration/API";
 export default function Users() {
   // State variables
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [Loading, setLoading] = useState<boolean>(true);
+  const [Loading, setLoading] = useState<boolean|number>(true);
   const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [SelectedRegister, setSelectedRegister] = useState<number | null>(null);
   const [moduleForm, setmoduleForm] = useState<IModule_Form>({
@@ -75,7 +75,8 @@ export default function Users() {
         setLoading(false);
       },
       (rej) => {
-        alert(rej);
+        setLoading(2);    
+        // console.log(rej.response.status);
       }
     );
   }, []);
@@ -84,10 +85,10 @@ export default function Users() {
     axios.get(`${API_Server_Courses}`).then(
       (res: { data: ICourse[] }) => {
         setCourses(res.data);
-        setLoading(false);
+        // setLoading(false);
       },
       (rej) => {
-        alert(rej);
+        // console.log(rej);
       }
     );
   }, []);
@@ -261,14 +262,15 @@ export default function Users() {
         Add Module
       </div>
       {/* Loading  table of modules */}
+      { Loading != 2 && 
       <ShowData
-        Loading={Loading}
-        Data={_Modules.map(
-          ({ _id, course_name, title, description }: any) => ({
-            _id,
-            course_name,
-            title,
-            description,
+      Loading={Loading}
+      Data={_Modules.map(
+        ({ _id, course_name, title, description }: any) => ({
+          _id,
+          course_name,
+          title,
+          description,
           })
         )}
         Cols={["ID", "Course", "title", "Description", "Action"]}
@@ -276,7 +278,8 @@ export default function Users() {
         Modify={OpenAndSet}
         Remove={removeModule}
         Subject={"Module"}
-      />
+        />
+      }
     </div>
   );
 }
