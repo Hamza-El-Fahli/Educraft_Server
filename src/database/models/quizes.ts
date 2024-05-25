@@ -59,7 +59,7 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
     try {
         conn = await pool.getConnection();
         let rows;
-        const {module_id} = (await conn.query(`SELECT module_id FROM chapters WHERE id='${1}' LIMIT 1 `))[0];
+        const {module_id} = (await conn.query(`SELECT module_id FROM chapters WHERE _id='${1}' LIMIT 1 `))[0];
         const query = `INSERT INTO quiz 
         ( chapter_id, question, answers, correct_answer, quiz_group, module_id) 
         VALUES ( '${chapter_id}', '${question}', '${answers}', '${correct_answer}', '${quiz_group}' , '${module_id}');
@@ -74,52 +74,55 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
 }
 
 
-// Quizzes.findByIdAndUpdate = async (id:string,  { module_id, title, description, quizGroupes }:any)=>{
-//     let conn ;
+Quizzes.findByIdAndUpdate = async (id:string, data:any)=>{
+    let conn ;
+    const  {  correct_answer , chapter_id ,question, answers, group } = data
+    const query = `
+    UPDATE quiz
+SET chapter_id = '${chapter_id}',
+    question = '${question}',
+    answers = '${answers}',
+    correct_answer = '${correct_answer}',
+    quiz_group = '${group}'
+WHERE _id = ${id};
 
-//     const query = `UPDATE chapters
-//     SET module_id = '${module_id}',
-//     title = '${title}',
-//     description = '${description}' ,
-//     quizGroupes = '${quizGroupes}'
-//     WHERE _id = '${id}' ;`;
-//     // , order_num = '${order}'
+    `;
     
-//     try {
-//         conn = await pool.getConnection();
-//         let rows;
-//         rows = await conn.query(query);
-//         const _id = parseInt(rows.insertId)
-//         conn.release();
-//         if(rows.affectedRows>0)
-//             return {_id , module_id, title, description ,quizGroupes  }
-//             else
-//     return null
-//     } catch (error) {
-//         console.error('Error:', error);
-//         return null
-//     }
-// }
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        rows = await conn.query(query);
+        const _id = parseInt(rows.insertId)
+        conn.release();
+        if(rows.affectedRows>0)
+            return {_id , correct_answer , chapter_id ,question, answers, group }
+            else
+    return null
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
 
-// Quizzes.findByIdAndDelete =async (id:string)=>{
-//     let conn ;
-//     const query = `DELETE FROM chapters  WHERE _id = '${id}';
-//     `;
+Quizzes.findByIdAndDelete =async (id:string)=>{
+    let conn ;
+    const query = `DELETE FROM quiz  WHERE _id = '${id}';
+    `;
 
-//     try {
-//         conn = await pool.getConnection();
-//         let rows;
-//         rows = await conn.query(query);
-//         conn.release();
-//         if(rows.affectedRows>0)
-//         return rows
-//     else
-//     return null
-//     } catch (error) {
-//         console.error('Error:', error);
-//         return null
-//     }
-// }
+    try {
+        conn = await pool.getConnection();
+        let rows;
+        rows = await conn.query(query);
+        conn.release();
+        if(rows.affectedRows>0)
+        return rows
+    else
+    return null
+    } catch (error) {
+        console.error('Error:', error);
+        return null
+    }
+}
 
 
 export default Quizzes

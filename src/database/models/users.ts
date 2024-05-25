@@ -32,7 +32,6 @@
 import pool from "./../lib/mariadb";
 
 const Users: any = {};
-
 Users.findOne = async (data: { name?: string, email?: string }) => {
     let nameOrEmail = data.name ? data.name : data.email;
 
@@ -42,25 +41,28 @@ Users.findOne = async (data: { name?: string, email?: string }) => {
     try {
         conn = await pool.getConnection();
         const rows = await conn.query(query);
-        conn.release();
 
-        let lastActivityQuery = ` SELECT *
+        let lastActivityQuery = `SELECT *
                                     FROM progression
                                     WHERE user_id = '${rows[0]._id}'
                                     ORDER BY createdAt DESC
-                                    LIMIT 1;
-                                    `
+                                    LIMIT 1`;
         const lastActivity = await conn.query(lastActivityQuery);
-        if(lastActivity.length != 0)
-            rows[0].lastActivity = lastActivity[0].createdAt
+        conn.release(); // Release the connection after executing all queries
+
+        if (lastActivity.length != 0)
+            rows[0].lastActivity = lastActivity[0].createdAt;
         else
-        rows[0].lastActivity = rows[0].createdAt
-        return rows[0]
+            rows[0].lastActivity = rows[0].createdAt;
+        
+        return rows[0];
     } catch (error) {
         console.error('Error:', error);
-        return null
+        if (conn) conn.release(); // Make sure to release the connection in case of an error
+        return null;
     }
 }
+
 Users.find = async (data: null | any) => {
     let conn;
     try {
