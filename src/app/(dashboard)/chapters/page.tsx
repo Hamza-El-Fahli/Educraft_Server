@@ -12,7 +12,7 @@ import { IChapter } from "@/types/types";
 export default function Chapters() {
   // State variables
   const [isOpen, setIsOpen] = useState(false);
-  const [Loading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState<boolean|number>(true);
   const [AddORMod, setAddORMod] = useState(true);
 
   const [ChapterForm, setChapterForm] = useState<{
@@ -90,7 +90,8 @@ export default function Chapters() {
         setLoading(false);
       },
       (rej) => {
-        alert(rej);
+
+        console.log("Data Cannot be retrieved");
       }
     );
   }, []);
@@ -102,7 +103,7 @@ export default function Chapters() {
       setLoading(false);
     },
     (rej) => {
-      alert(rej);
+      setLoading(2);
     }
   );
 }, []);
@@ -293,7 +294,7 @@ export default function Chapters() {
         Add Chapter
       </div>
       {/* Loading spinner or table of modules */}
-      <ShowData
+     { Loading != 2 && <ShowData
         Loading={Loading}
         Data={Chapters.map(({ module_id, _id , module_name , title, description }: any) =>{
           const data =  {_id , module_name , title, description}
@@ -304,7 +305,7 @@ export default function Chapters() {
         Modify={OpenAndSet}
         Remove={removeModule}
         Subject={"Chapter"}
-      />
+      /> } 
     </div>
   );
 }
