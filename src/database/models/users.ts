@@ -69,7 +69,10 @@ Users.find = async (data: null | any) => {
         conn = await pool.getConnection();
         let rows;
         if (data == null)
-            rows = await conn.query('SELECT * FROM users');
+            rows = await conn.query('SELECT * FROM users ;');
+        else    
+            rows = await conn.query('SELECT * FROM users WHERE _id != '+data+' ;');
+
         conn.release();
         return rows
     } catch (error) {

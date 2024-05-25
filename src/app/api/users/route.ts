@@ -42,7 +42,13 @@ export async function GET(request: NextRequest) {
 
   //   }
   // }
-  const user = await Users.find()
+  let currentUser_id : any= request.cookies.get('currentUser')?.value
+  if(currentUser_id){
+    currentUser_id = JSON.parse(currentUser_id)._id
+  }else{
+    currentUser_id = null
+  }
+  const user = await Users.find(currentUser_id)
   return NextResponse.json(user)
 }
 
