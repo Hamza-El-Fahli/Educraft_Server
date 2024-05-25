@@ -22,7 +22,7 @@ import { API_Server_Courses } from "@/configuration/API";
 export default function Courses() {
   // State variables
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [Loading, setLoading] = useState<boolean>(true);
+  const [Loading, setLoading] = useState<boolean|number>(true);
   const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [Courses, setCourses] = useState<ICourse[]>([]);
 const [SelectedRegister, setSelectedRegister] = useState<null|number>(null)
@@ -63,7 +63,8 @@ const [courseForm, setcourseForm] = useState({
         setLoading(false);
       },
       (rej) => {
-        alert(rej);
+        console.log(rej);
+        setLoading(2);
       }
     );
   }, []);
@@ -182,15 +183,17 @@ useEffect(()=>{
         Add Course
       </div>
       {/* Table to show courses */}
+      {Loading != 2 &&
       <ShowData
-        Cols={['ID','Course','Description','Instructor','Action']}
-        Subject={'Course'}
-        Loading={Loading}
-        Data={Courses}
-        Modify={setSelectedRegister}
-        Remove={removeCourse}
-        setAddORUpdate={setAddORMod}
+      Cols={['ID','Course','Description','Instructor','Action']}
+      Subject={'Course'}
+      Loading={Loading}
+      Data={Courses}
+      Modify={setSelectedRegister}
+      Remove={removeCourse}
+      setAddORUpdate={setAddORMod}
       />
+    }
     </div>
   );
 }

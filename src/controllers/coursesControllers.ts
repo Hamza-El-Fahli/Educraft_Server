@@ -18,7 +18,7 @@ export async function GetAllCourses(){
     
    //  await connectDB()
     const res = await Courses.find()
-    if(res.length == 0 ) return NextResponse.json({message : "No Courses are found"})
+    if(res.length == 0 ) return NextResponse.json({message : "No Courses are found"},{status:404})
     return NextResponse.json(res)
 }
 
