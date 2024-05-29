@@ -12,10 +12,10 @@ export async function PostChapter(request: NextRequest) {
     const { module_id, title, description } = await request.json()
     const res = await Chapters.create({ module_id, title, description })
     const modules = await _Modules.findById(module_id);
-    if (!modules)
+    if (modules == 0)
         return NextResponse.json({ message: "Chapter with given Module Id not found" }, { status: 404 })
     else
-        return NextResponse.json({ message: "Chapter created successfuly", _id: res._id, module_name: modules.title }, { status: 201 })
+        return NextResponse.json({ message: "Chapter created successfuly", _id: res._id, module_name: modules[0].title }, { status: 201 })
 
 }
 
