@@ -32,17 +32,17 @@ export default function ShowQuizes({
       {Quizzes.map((quiz: any, index: number) => {
         const isExpanded = expandedIndex === index;
         if ( //filter quizzes with chapter if filter is set
-          quiz.chapter_id !== Filters.selectedChapter &&
+          quiz.chapter_id != Filters.selectedChapter &&
           Filters.selectedChapter != "-1"
         )
           return;
         if ( //filter quizzes with module if filter is set
-          quiz.module_id !== Filters.selectedModule &&
+          quiz.module_id != Filters.selectedModule &&
           Filters.selectedModule != "-1"
         )
           return;
         if ( //filter quizzes with course if filter is set
-          quiz.course_id !== Filters.selectedCourse &&
+          quiz.course_id != Filters.selectedCourse &&
           Filters.selectedCourse != "-1"
         )
           return;
