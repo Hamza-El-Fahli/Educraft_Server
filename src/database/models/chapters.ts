@@ -124,16 +124,14 @@ Chapters.create = async ({ module_id, title, description, quizGroupes }: any) =>
         return null
     }
 }
-Chapters.findByIdAndUpdate = async (id: string, { module_id, title, description, quizGroupes }: any) => {
+Chapters.findByIdAndUpdate = async (id: string, { module_id, title, description }: any) => {
     let conn;
 
     const query = `UPDATE chapters
     SET module_id = '${module_id}',
     title = '${title}',
-    description = '${description}' ,
-    quizGroupes = '${quizGroupes}'
-    WHERE _id = '${id}' ;`;
-    // , order_num = '${order}'
+    description = '${description}' 
+    WHERE _id = ${id} ;`;
 
     try {
         conn = await pool.getConnection();
@@ -142,7 +140,7 @@ Chapters.findByIdAndUpdate = async (id: string, { module_id, title, description,
         const _id = parseInt(rows.insertId)
         conn.release();
         if (rows.affectedRows > 0)
-            return { _id, module_id, title, description, quizGroupes }
+            return { _id, module_id, title, description }
         else
             return null
     } catch (error) {
