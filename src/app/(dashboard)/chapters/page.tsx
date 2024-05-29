@@ -7,12 +7,13 @@ import { useEffect, useState } from "react";
 import { API_Server_RetrieveData } from "@/configuration/API";
 import { API_Server_Chapters } from "@/configuration/API";
 import { IChapter } from "@/types/types";
+import NoData from "@/components/naData";
 
 // Component function
 export default function Chapters() {
   // State variables
   const [isOpen, setIsOpen] = useState(false);
-  const [Loading, setLoading] = useState<boolean|number>(true);
+  const [Loading, setLoading] = useState<boolean | number>(true);
   const [AddORMod, setAddORMod] = useState(true);
 
   const [ChapterForm, setChapterForm] = useState<{
@@ -54,7 +55,7 @@ export default function Chapters() {
         ChapterForm.modules.find(
           (module) => module._id == Chapters[SelectedRegister].module_id
         )?.course_id || "";
-      
+
       const tmp = {
         title: Chapters[SelectedRegister].title,
         description: Chapters[SelectedRegister].description,
@@ -66,7 +67,7 @@ export default function Chapters() {
         ...ChapterForm,
         title: tmp.title,
         description: tmp.description,
-        selectedModule: tmp.module_id+'',
+        selectedModule: tmp.module_id + '',
         selectedCourse: course_id,
       });
     }
@@ -82,31 +83,31 @@ export default function Chapters() {
   useEffect(() => {
     axios.get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=0`).then(
       (res) => {
-
+        if (res.data.courses == 0) return
         setChapterForm({ ...ChapterForm, modules: res.data.modules, selectedCourse: res.data.courses[0]._id });
         setCourses(res.data.courses);
 
-
-        setLoading(false);
+        if (Loading != 2) {
+          setLoading(false)
+        }
       },
       (rej) => {
-
         console.log("Data Cannot be retrieved");
       }
     );
   }, []);
- // Fetching modules and courses from API
- useEffect(() => {
-  axios.get(`${API_Server_Chapters}`).then(
-    (res) => {
-      setChapters(res.data);
-      setLoading(false);
-    },
-    (rej) => {
-      setLoading(2);
-    }
-  );
-}, []);
+  // Fetching modules and courses from API
+  useEffect(() => {
+    axios.get(`${API_Server_Chapters}`).then(
+      (res) => {
+        setChapters(res.data);
+        setLoading(false);
+      },
+      (rej) => {
+        setLoading(2);
+      }
+    );
+  }, []);
 
 
   useEffect(() => {
@@ -129,8 +130,9 @@ export default function Chapters() {
         // console.log( res.data)
         setChapters([
           ...Chapters,
-          { _id: res.data._id+'', module_name: res.data.module_name, ...tmp },
+          { _id: res.data._id + '', module_name: res.data.module_name, ...tmp },
         ]);
+        console.log(res.data)
         closeModal();
       },
       (rej) => {
@@ -294,18 +296,19 @@ export default function Chapters() {
         Add Chapter
       </div>
       {/* Loading spinner or table of modules */}
-     { Loading != 2 && <ShowData
+      {Loading != 2 ? <ShowData
         Loading={Loading}
-        Data={Chapters.map(({ module_id, _id , module_name , title, description }: any) =>{
-          const data =  {_id , module_name , title, description}
- return data}
-          )}
+        Data={Chapters.map(({ module_id, _id, module_name, title, description }: any) => {
+          const data = { _id, module_name, title, description }
+          return data
+        }
+        )}
         Cols={["ID", "Module name", "Chapter Title", "Description", "Action"]}
         setAddORUpdate={setAddORMod}
         Modify={OpenAndSet}
         Remove={removeModule}
         Subject={"Chapter"}
-      /> } 
+      /> : <NoData />}
     </div>
   );
 }

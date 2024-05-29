@@ -20,12 +20,13 @@ import { ICourse, IModule_Form } from "@/types/types";
 import { IModule } from "@/types/types";
 import { API_Server_Courses } from "@/configuration/API";
 import { API_Server_Modules } from "@/configuration/API";
+import NoData from "@/components/naData";
 
 // Component function
 export default function Users() {
   // State variables
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [Loading, setLoading] = useState<boolean|number>(true);
+  const [Loading, setLoading] = useState<boolean | number>(true);
   const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [SelectedRegister, setSelectedRegister] = useState<number | null>(null);
   const [moduleForm, setmoduleForm] = useState<IModule_Form>({
@@ -75,7 +76,7 @@ export default function Users() {
         setLoading(false);
       },
       (rej) => {
-        setLoading(2);    
+        setLoading(2);
         // console.log(rej.response.status);
       }
     );
@@ -262,22 +263,22 @@ export default function Users() {
         Add Module
       </div>
       {/* Loading  table of modules */}
-      { Loading != 2 && 
-      <ShowData
-      Loading={Loading}
-      Data={_Modules.map(
-        ({ _id, course_name, title, description }: any) => ({
-          _id,
-          course_name,
-          title,
-          description,
-          })
-        )}
-        Cols={["ID", "Course", "title", "Description", "Action"]}
-        setAddORUpdate={setAddORMod}
-        Modify={OpenAndSet}
-        Remove={removeModule}
-        Subject={"Module"}
+      {Loading == 2 ? <NoData /> :
+        <ShowData
+          Loading={Loading}
+          Data={_Modules.map(
+            ({ _id, course_name, title, description }: any) => ({
+              _id,
+              course_name,
+              title,
+              description,
+            })
+          )}
+          Cols={["ID", "Course", "title", "Description", "Action"]}
+          setAddORUpdate={setAddORMod}
+          Modify={OpenAndSet}
+          Remove={removeModule}
+          Subject={"Module"}
         />
       }
     </div>

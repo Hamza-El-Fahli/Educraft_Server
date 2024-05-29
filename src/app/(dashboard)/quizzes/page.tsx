@@ -11,11 +11,12 @@ import {
   API_Server_RetrieveData,
 } from "@/configuration/API";
 import LodingIndicator from "@/components/LoadingIndicator";
+import NoData from "@/components/naData";
 
 export default function QuizesScreen() {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
-  const [Loading, setLoading] = useState(true);
+  const [Loading, setLoading] = useState<boolean | number>(true);
 
 
   const initialForm = {
@@ -33,13 +34,13 @@ export default function QuizesScreen() {
 
 
 
-  
+
   const [Courses, setCourses] = useState<ICourse[]>([]);
   const [Modules, setModules] = useState<IModule[]>([]);
   const [Chapters, setChapters] = useState<IChapter[]>([]);
   const [Quizzes, setQuizzes] = useState<IQuizz[]>([]);
   const [SearchedQuiz, setSearchedQuiz] = useState<number>(0);
-  
+
   const [dataFilters, setdataFilters] = useState({
     selectedCourse: "-1",
     selectedModule: "-1",
@@ -54,7 +55,6 @@ export default function QuizesScreen() {
           setCourses(res.data.courses);
           setModules(res.data.modules);
           setChapters(res.data.chapters);
-
           setLoading(false);
         },
         (rej) => {
@@ -72,8 +72,8 @@ export default function QuizesScreen() {
         setLoading(false);
       })
       .catch((error: any) => {
-        console.log(error);
-        setLoading(true);
+        // console.log(error);
+        setLoading(2);
       });
   }, []);
 
@@ -99,9 +99,9 @@ export default function QuizesScreen() {
       setisOpen(true);
       if (Quizzes.length)
         setquizForm({
-          seletedCourse: Quizzes[0].course_id+'',
-          selectedModule: Quizzes[0].module_id+'',
-          selectedChapter: Quizzes[0].chapter_id+'',
+          seletedCourse: Quizzes[0].course_id + '',
+          selectedModule: Quizzes[0].module_id + '',
+          selectedChapter: Quizzes[0].chapter_id + '',
           quizNumber: Quizzes.length + "",
           question: "",
           correctAnswer: "",
@@ -112,9 +112,9 @@ export default function QuizesScreen() {
         setquizForm(initialForm);
     } else {
       setquizForm({
-        seletedCourse: Quizzes[SelectedRegister].course_id+'',
-        selectedModule: Quizzes[SelectedRegister].module_id+'',
-        selectedChapter: Quizzes[SelectedRegister].chapter_id+'',
+        seletedCourse: Quizzes[SelectedRegister].course_id + '',
+        selectedModule: Quizzes[SelectedRegister].module_id + '',
+        selectedChapter: Quizzes[SelectedRegister].chapter_id + '',
         question: Quizzes[SelectedRegister].question,
         quizNumber: SelectedRegister,
         correctAnswer: Quizzes[SelectedRegister].correct_answer,
@@ -167,7 +167,7 @@ export default function QuizesScreen() {
         closeModal();
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -208,7 +208,9 @@ export default function QuizesScreen() {
         setQuizzes(newQuizz);
         closeModal();
       })
-      .catch((err) => console.log("error ", err));
+      .catch((err) => {
+        // console.log("error ", err)
+      });
   }
 
   function removeQuiz(index: number) {
@@ -223,7 +225,7 @@ export default function QuizesScreen() {
           setQuizzes(newQuiz);
           alert(res.data.message);
         })
-        .catch(() => {});
+        .catch(() => { });
     }
   }
 
@@ -264,9 +266,9 @@ export default function QuizesScreen() {
               }
             >
               {Modules.map((modulee, index) => {
-                if (modulee.course_id != quizForm.seletedCourse) return;
+                if (modulee.course_id != quizForm.seletedCourse && quizForm.seletedCourse != '1') return;
                 return (
-                  <option  key={index} value={modulee._id}>
+                  <option key={index} value={modulee._id}>
                     {modulee.title}
                   </option>
                 );
@@ -373,7 +375,8 @@ export default function QuizesScreen() {
         search={{ setSearchedQuiz, SearchedQuiz }}
         setFilters={setdataFilters}
       />
-      {Loading ? (
+
+      {Loading == 2 ? <NoData /> : Loading ? (
         <LodingIndicator />
       ) : (
         <ShowQuizes
