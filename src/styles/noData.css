@@ -1,0 +1,82 @@
+
+@font-face {
+  font-family: 'Vibur';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://fonts.gstatic.com/s/vibur/v23/DPEiYwmEzw0QRgTuJDs.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.noData_barStyle {
+  text-align: center;
+  width: 50%;
+  height: 250px;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  /* right: 0; */
+  transform: translateX(-50%);
+  bottom: 0;
+  user-select: none;
+}
+
+.noData_barStyle b {
+  font: 400 10vh "Vibur";
+  color: #fee;
+  text-shadow: 0 -40px 100px, 0 0 2px, 0 0 1em #ff4444, 0 0 0.5em #ff4444, 0 0 0.1em #ff4444, 0 10px 3px #000;
+}
+
+.noData_barStyle b span {
+  animation: blink linear infinite 2s;
+}
+
+.noData_barStyle b span:nth-of-type(2) {
+  animation: blink linear infinite 3s;
+}
+
+.noData_barStyle b span:nth-of-type(3) {
+  animation: blink linear infinite 1s;
+}
+
+.noData_barStyle b span:nth-of-type(1) {
+  animation: blink linear infinite 1.5s;
+}
+
+.noData_barStyle b span:nth-of-type(4) {
+  animation: blink linear infinite 4s;
+}
+
+@keyframes blink {
+  78% {
+    color: inherit;
+    text-shadow: inherit;
+  }
+  79% {
+    color: #333;
+  }
+  80% {
+    text-shadow: none;
+  }
+  81% {
+    color: inherit;
+    text-shadow: inherit;
+  }
+  82% {
+    color: #333;
+    text-shadow: none;
+  }
+  83% {
+    color: inherit;
+    text-shadow: inherit;
+  }
+  92% {
+    color: #333;
+    text-shadow: none;
+  }
+  92.5% {
+    color: inherit;
+    text-shadow: inherit;
+  }
+}
+
