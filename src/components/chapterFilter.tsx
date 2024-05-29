@@ -1,4 +1,4 @@
-import { API_Server_Chapters, API_Server_Courses, API_Server_Modules } from "@/configuration/API";
+import { API_Server_Chapters, API_Server_Courses, API_Server_Modules, API_Server_RetrieveData } from "@/configuration/API";
 import { IChapter, ICourse, IModule } from "@/types/types";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -12,40 +12,18 @@ const [Loading, setLoading] = useState(true)
 
   useEffect(() => {
     axios
-      .get(`${API_Server_Courses}`)
+      .get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`)
       .then((res) => {
-        setCourses(res.data);
+        setCourses(res.data.courses);
+        setModules(res.data.modules);
+        setChapters(res.data.chapters);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${API_Server_Modules}`)
-      .then((res) => {
-        setModules(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error(error);
-        setLoading(true);
-      });
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get(`${API_Server_Chapters}`)
-      .then((res) => {
-        setChapters(res.data);
-           })
-      .catch((error) => {
-        console.error(error);
-        setLoading(true);
-      });
-  }, []);
-
+ 
 
   const [dataFilters, setFilters] = useState({
     selectedCourse: "",
