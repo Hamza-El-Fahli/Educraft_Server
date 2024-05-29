@@ -77,11 +77,13 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
 Quizzes.findByIdAndUpdate = async (id:string, data:any)=>{
     let conn ;
     const  {  correct_answer , chapter_id ,question, answers, group } = data
+    const escapedAnswers = answers.map((answer:string) => answer.replace("'", "''")).join(',');
+
     const query = `
     UPDATE quiz
 SET chapter_id = '${chapter_id}',
     question = '${question}',
-    answers = '${answers}',
+    answers = '${escapedAnswers}',
     correct_answer = '${correct_answer}',
     quiz_group = '${group}'
 WHERE _id = ${id};
