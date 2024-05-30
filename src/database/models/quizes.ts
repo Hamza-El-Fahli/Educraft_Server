@@ -38,7 +38,7 @@ const Quizzes :any = {};
 Quizzes.find =async (data:null|any)=>{
     let query  ='SELECT *  FROM quiz ' ;
     if(data?.module_id) query = `SELECT * FROM quiz WHERE module_id ='${data.module_id}'  ;`
-    if(data?.chapter_id && data?.quiz_group) query =   `SELECT * FROM quiz WHERE chapter_id ='${data.chapter_id}' AND quiz_group = ${data.quiz_group}  ;`
+    if(data?.chapter_id && data?.quiz_group <= 0) query =   `SELECT * FROM quiz WHERE chapter_id ='${data.chapter_id}' AND quiz_group = ${data.quiz_group}  ;`
     try {
         let conn ;
         conn = await pool.getConnection();
@@ -77,13 +77,11 @@ Quizzes.create = async(data:{chapter_id:string , question:string,correct_answer:
 Quizzes.findByIdAndUpdate = async (id:string, data:any)=>{
     let conn ;
     const  {  correct_answer , chapter_id ,question, answers, group } = data
-    const escapedAnswers = answers.map((answer:string) => answer.replace("'", "''")).join(',');
-
     const query = `
     UPDATE quiz
 SET chapter_id = '${chapter_id}',
     question = '${question}',
-    answers = '${escapedAnswers}',
+    answers = '${answers}',
     correct_answer = '${correct_answer}',
     quiz_group = '${group}'
 WHERE _id = ${id};
