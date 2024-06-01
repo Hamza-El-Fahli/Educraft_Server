@@ -67,7 +67,7 @@ const [Loading, setLoading] = useState(true)
 
               return (
                 <option key={index} value={module._id}>
-                  {module.module_name}
+                  {module.title}
                 </option>
               );
             })}
