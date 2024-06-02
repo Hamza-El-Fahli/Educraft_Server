@@ -41,12 +41,16 @@ const [onError, setonError] = useState(false)
     if(selectedOption == 'pdf')
       body.append("PDFFile", PDFFile)
       body.append('Chapter_id',selectedChapter)
-
-    axios.post(`${API_Server_Lessons}`,
+      if(!selectedChapter || isNaN(parseInt(selectedChapter))){
+        alert('Chapter must be selected');
+        return 
+    }
+      axios.post(`${API_Server_Lessons}`,
       body
     )
     .then((res)=>{
       console.log(res.data)
+      alert("Lesson Added Successfuly")
     }).catch(err=>{
       if(err.response.status==500){
         // alert(`File server is down , try again later`);
