@@ -93,7 +93,7 @@ Chapters.find = async (data: null | { module_id: string, user_id: string }) => {
 
 Chapters.findById = async (id: string) => {
     let conn;
-    let query = `SELECT *  FROM chapters WHERE id=${id};`;
+    let query = `SELECT *  FROM chapters WHERE _id=${id};`;
     try {
         conn = await pool.getConnection();
         let rows;
