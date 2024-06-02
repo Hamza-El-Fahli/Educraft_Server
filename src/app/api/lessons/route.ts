@@ -7,11 +7,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const chapter_id = formData.get('Chapter_id');
-    const { path } = await fetch(`${API_Storage_Server}/upload`, {
+    const FileServerResponse = await fetch(`${API_Storage_Server}/upload`, {
         method: "POST",
         body: formData
     }).then(res => res.json());
-
+// console.log(FileServerResponse)
 
     try {
         // Create a new Lesson document
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 if(exists == null){
          await ALimetation.create({
             chapter_id,
-            content: API_Storage_Server + '/' + path,
+            content: API_Storage_Server + '/resources/' + chapter_id,
             type: 'pdf'
         });
         return NextResponse.json({ message: 'created' });
@@ -28,7 +28,7 @@ if(exists == null){
     else{
         await ALimetation.findByIdAndUpdate(exists._id,{
             // chapter_id,
-            content: API_Storage_Server + '/' + path,
+            content: API_Storage_Server + '/resources/' + chapter_id,
             type: 'pdf'
         })
         return NextResponse.json({ message: 'updated' });
