@@ -35,7 +35,6 @@ export async function PostQuizController(request: NextRequest) {
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group: number } = await request.json()
     //  await connectDB()
 
-
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const chapter = await Chapters.findById(chapter_id)
     if (chapter && chapter.quizGroupes <= group) {
