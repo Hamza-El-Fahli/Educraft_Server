@@ -215,7 +215,7 @@ export default function QuizesScreen() {
 
   function removeQuiz(index: number) {
     const decision = window.confirm(
-      `Are you sure to delete Quiz N ${index + 1}}`
+      `Are you sure to delete Quiz N ${index + 1}`
     );
     if (decision) {
       axios
