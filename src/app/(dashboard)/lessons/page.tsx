@@ -5,6 +5,7 @@ import PDFHandler from "./components/PDFHandler";
 import axios from "axios";
 import { API_Server_Lessons } from "@/configuration/API";
 import { ChapterFilter } from "@/components/chapterFilter";
+import ErrorModal from "@/components/ErrorModal";
 
 type Event = any;
 
@@ -14,7 +15,7 @@ export default function Lessons() {
   const [mediaUrl, setMediaUrl] = useState();
   const [PDFFile, setPDFFile] = useState('')
   const [selectedChapter, setselectedChapter] = useState('')
-
+const [onError, setonError] = useState(false)
 
   const handleOptionChange = (event: Event) => {
     setSelectedOption(event.target.value);
@@ -46,6 +47,11 @@ export default function Lessons() {
     )
     .then((res)=>{
       console.log(res.data)
+    }).catch(err=>{
+      if(err.response.status==500){
+        // alert(`File server is down , try again later`);
+        setonError(true)
+      }
     })
 
   };
@@ -99,6 +105,7 @@ export default function Lessons() {
 
         <button type="submit" className="lessonSubmitBtn">Submit</button>
       </form>
+      <ErrorModal modalOpened={onError} setonError={setonError} title={"File server error"} message={"Server is not responding"} />
     </div>
   );
 }
