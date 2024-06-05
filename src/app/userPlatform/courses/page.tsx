@@ -16,7 +16,7 @@ export default function User_courses() {
                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam recusandae voluptatem error repellendus ut aspernatur. Voluptatibus, modi? Doloribus, maiores minima facilis quidem distinctio ullam soluta, quasi illum, placeat vero eaque!</p>
                     </div>
                     <div>user courses:</div>
-                    <div className="grid grid-flow-row grid-cols-3 gap-4">
+                    <div className="grid grid-flow-row md:grid-cols-3 xl:grid-cols-6 gap-4">
                         
                         <CourseCard />
                         <CourseCard />
