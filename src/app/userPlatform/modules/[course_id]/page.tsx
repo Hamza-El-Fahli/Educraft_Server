@@ -2,7 +2,7 @@
 import { Header } from "../../components/Header";
 import ModuleCard from "../../components/ModuleCard";
 import { useParams } from 'next/navigation'
-import { API_Server_Chapters, API_Server_Modules } from "@/configuration/API";
+import {  API_Server_Modules } from "@/configuration/API";
 import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
@@ -14,7 +14,7 @@ export default function User_modules() {
     let cookies: string | undefined = getCookie("currentUser")
     const currentUser = JSON.parse(cookies ? cookies : '[]')
     const user_id = currentUser._id
-    const params = useParams<{ tag: string; item: string }>()
+    const params = useParams<{ tag: string; item: string; course_id: string }>()
     const course_id = params.course_id
     useEffect(() => {
 
@@ -38,9 +38,9 @@ export default function User_modules() {
                     <h1 className="font-bold text-2xl">Modules:</h1>
                     {Loading ? <LoadingSpinner /> :
                         <div className="flex gap-2 flex-col">
-                            {Modules.map((_module:IModule)=>{
+                            {Modules.map((_module: IModule) => {
 
-                           return <ModuleCard key={_module._id} _module={_module} user_id={user_id} />
+                                return <ModuleCard key={_module._id} _module={_module} user_id={user_id} />
                             })}
 
                         </div>
