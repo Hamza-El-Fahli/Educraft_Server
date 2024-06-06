@@ -3,7 +3,7 @@ import { Header } from "../components/Header";
 
 export default function User_courses() {
     return (
-        <div className=" h-svh w-full flex  flex-col " style={{ background: 'url(/networking-bg.png)' }} >
+        <div className=" h-svh w-full flex  flex-col" style={{ background: 'url(/networking-bg.png)' }} >
             <Header />
             <main className="w-full h-full">
                 <div className="w-full flex gap-10 text-white pt-10 pl-5 bg-secondary/50 " style={{ borderBottomWidth: 1 }}>
