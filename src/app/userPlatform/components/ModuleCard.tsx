@@ -5,13 +5,13 @@ import React, { useEffect, useRef, useState } from 'react'
 function ModuleCard({ _module, user_id }: { _module: IModule, user_id: string }) {
     const [IsChaptersOpened, setIsChaptersOpened] = useState(false)
     const [Chapters, setChapters] = useState([])
-    const chapters = useRef(null)
-const [Height, setHeight] = useState(0)
+    const chapters = useRef<any>(null)
+    const [Height, setHeight] = useState(0)
     useEffect(() => {
         fetch(`${API_Server_Chapters}?module_id=${_module._id}&user_id=${user_id}`)
             .then(async (res) => {
-                
-                if(res.ok){
+
+                if (res.ok) {
                     const data = await res.json()
                     setChapters(data)
                 }
@@ -20,25 +20,27 @@ const [Height, setHeight] = useState(0)
             })
     }, [])
 
-    function itemFocused(){
-        const originalHeight = chapters.current.scrollHeight
-    setHeight(originalHeight)
+    function itemFocused() {
+        if (chapters.current != null) {
+            const originalHeight = chapters.current.scrollHeight
+            setHeight(originalHeight)
+        }
 
     }
 
-    function itemNotFocused(){
+    function itemNotFocused() {
         setHeight(0)
 
     }
-    function HandleClick(){
-        if(IsChaptersOpened){
+    function HandleClick() {
+        if (IsChaptersOpened) {
             itemNotFocused()
-        }else{
+        } else {
             itemFocused()
         }
         setIsChaptersOpened(!IsChaptersOpened)
     }
- 
+
 
     return (
         <div className='border w-full rounded-t-2xl overflow-hidden '>
@@ -49,18 +51,18 @@ const [Height, setHeight] = useState(0)
                 </span>
                 <span className='self-center text-firstBlue'>
 
-                    <button className='line p-3 pb-4 text-firstBlue rotate-180 origin-center  duration-500 text-2xl hover:rotate-0' onClick={()=>HandleClick()}>&#10699;</button>
+                    <button className='line p-3 pb-4 text-firstBlue rotate-180 origin-center  duration-500 text-2xl hover:rotate-0' onClick={() => HandleClick()}>&#10699;</button>
                 </span>
 
             </div>
-            <div ref={chapters} className=' w-full overflow-hidden duration-500' style={{height:Height}}>
-                
+            <div ref={chapters} className=' w-full overflow-hidden duration-500' style={{ height: Height }}>
+
                 {Chapters.length > 0 ?
                     Chapters.map((chapter: IChapter, index: number) => {
                         return (
                             <div key={index} className='px-3 border-b flex justify-between  bg-gray-900/80  '>
                                 <h1 className=' text-[#C3C1C1] font-semibold'>Chapter {index + 1} : {chapter.title}</h1>
-                                <a href="#" className='text-firstBlue w-44 text-right'>View chapter</a>
+                                <a target='_blank' href={`${API_Storage_Server}/resources/${chapter._id}`} className='text-firstBlue w-44 text-right'>View chapter</a>
                             </div>
                         )
                     }) :
