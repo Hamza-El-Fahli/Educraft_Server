@@ -34,7 +34,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-secret.ts
+#secret.ts
 
 sqlInjection.js
 Unfolding.scss
