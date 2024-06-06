@@ -7,6 +7,7 @@ import { getCookie } from "cookies-next";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { IModule } from "@/types/types";
+import Footer from "../../components/Footer";
 
 export default function User_modules() {
     const [Modules, setModules] = useState([])
@@ -22,14 +23,13 @@ export default function User_modules() {
             .then(async res => {
                 const data = await res.json()
                 setModules(data)
-                console.log(data)
                 setLoading(false)
             })
     }, [])
     return (
-        <div className=" h-svh w-full flex  flex-col" style={{ background: 'url(/networking-bg.png)' }} >
+        <div className=" h-screen w-full flex overflow-x-hidden overflow-y-scroll  flex-col"  >
             <Header />
-            <main className="w-full h-full">
+            <main className="w-full">
 
                 <div className="h-full flex flex-col space-y-8 px-10 pt-10  bg-secondary/50 text-white">
                     <div>
@@ -48,11 +48,9 @@ export default function User_modules() {
                 </div>
 
             </main>
-            <footer className="h-32">
-                This is footer
-            </footer>
-
-
+            {!Loading &&
+            <Footer />
+            }
 
 
 

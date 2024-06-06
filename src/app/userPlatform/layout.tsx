@@ -12,7 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode; 
 }) {
   return (
-    <div>
+    <div style={{ background: 'url(/networking-bg.png)' , backgroundRepeat: 'repeat'}}>
       {children}
     </div>
   );
