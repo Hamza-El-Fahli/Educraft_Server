@@ -65,7 +65,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         let safetyCounter = 0 // to avoid infinit loop in case oprions are less than 4
         const optionsList = new Set()
         optionsList.add(quiz.correct_answer) // add the correct option
-        while (optionsList.size < NUMBER_OF_OPTIONS_PER_QUIZ && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
+        while (optionsList.size != NUMBER_OF_OPTIONS_PER_QUIZ+1 && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
             const JsonAnswers : any = quiz.answers
             let options
             try {
