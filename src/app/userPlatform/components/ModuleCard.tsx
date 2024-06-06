@@ -1,10 +1,11 @@
 import { API_Server_Chapters } from '@/configuration/API'
 import { IChapter, IModule } from '@/types/types'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 function ModuleCard({ _module, user_id }: { _module: IModule, user_id: string }) {
     const [Chapters, setChapters] = useState([])
-
+    const chapters = useRef(null)
+const [Height, setHeight] = useState(10)
     useEffect(() => {
         fetch(`${API_Server_Chapters}?module_id=${_module._id}&user_id=${user_id}`)
             .then(async (res) => {
@@ -18,11 +19,18 @@ function ModuleCard({ _module, user_id }: { _module: IModule, user_id: string })
             })
     }, [])
 
-    function itemFocused(e){
-        console.log("first")
+    function itemFocused(){
+        const originalHeight = chapters.current.scrollHeight
+    setHeight(originalHeight)
+
     }
 
+    function itemNotFocused(){
+        setHeight(1)
 
+    }
+
+ 
 
     return (
         <div className='border w-full rounded-t-2xl overflow-hidden '>
@@ -37,7 +45,7 @@ function ModuleCard({ _module, user_id }: { _module: IModule, user_id: string })
                 </span>
 
             </div>
-            <div className=' w-full overflow-hidden duration-500 h-1 ' onFocus={(e)=>{itemFocused(e)}}>
+            <div ref={chapters} className=' w-full overflow-hidden duration-500' style={{height:Height}} onMouseEnter={()=>itemFocused()} onMouseLeave={()=>{itemNotFocused()}}>
                 
                 {Chapters.length > 0 &&
                     Chapters.map((chapter: IChapter, index: number) => {
