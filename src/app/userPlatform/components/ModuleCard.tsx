@@ -1,3 +1,4 @@
+"use client"
 import { API_Server_Chapters, API_Storage_Server } from '@/configuration/API'
 import { IChapter, IModule } from '@/types/types'
 import React, { useEffect, useRef, useState } from 'react'

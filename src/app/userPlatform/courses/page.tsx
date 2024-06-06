@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { ICourse } from "@/types/types";
+import LodingIndicator from "@/components/LoadingIndicator";
 
 export default function User_courses() {
     const [Courses, setCourses] = useState([])
@@ -33,7 +34,7 @@ export default function User_courses() {
                     </div>
                     <h1 className="font-bold text-2xl">user courses:</h1>
                     
-                    {Loading && <LoadingSpinner/>}
+                    {Loading && <LodingIndicator/>}
                     <div className="grid grid-flow-row md:grid-cols-3 xl:grid-cols-6 gap-4">
                         { !Loading && Courses.map((course:ICourse)=>{
                             return  <CourseCard key={course._id} course={course} />

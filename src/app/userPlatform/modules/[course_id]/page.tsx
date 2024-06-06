@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { IModule } from "@/types/types";
 import Footer from "../../components/Footer";
+import LodingIndicator from "@/components/LoadingIndicator";
 
 export default function User_modules() {
     const [Modules, setModules] = useState([])
@@ -36,7 +37,7 @@ export default function User_modules() {
                         <h1 className="font-bold text-2xl">CCNA 1: <span className="text-xl">Description of ccna 1</span></h1>
                     </div>
                     <h1 className="font-bold text-2xl">Modules:</h1>
-                    {Loading ? <LoadingSpinner /> :
+                    {Loading ? <LodingIndicator /> :
                         <div className="flex gap-2 flex-col">
                             {Modules.map((_module: IModule) => {
 
