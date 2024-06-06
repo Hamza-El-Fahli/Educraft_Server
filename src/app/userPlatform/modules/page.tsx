@@ -1,6 +1,5 @@
 import CourseCard from "../components/CourseCard";
 import { Header } from "../components/Header";
-import ModuleCard from "../components/ModuleCard";
 
 export default function User_modules() {
     return (
@@ -14,11 +13,7 @@ export default function User_modules() {
                     </div>
                     <h1 className="font-bold text-2xl">Modules:</h1>
                     <div className="flex gap-2 flex-col">
-
-                    <ModuleCard />
-                    <ModuleCard />
-                    <ModuleCard />
-
+                        Wrong Page
                     </div>
                 </div>
 

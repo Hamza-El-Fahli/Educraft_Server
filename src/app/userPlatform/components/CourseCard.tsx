@@ -9,7 +9,11 @@ function CourseCard({course}:{course:ICourse}) {
       date = new Date(course.createdAt);
 
 // Define options for formatting the date
-const options:{day:string,month:string,year:string} = { day: "2-digit", month: "short", year: "numeric" };
+const options:{
+  day: "2-digit",
+  month: "short",
+  year: "numeric"
+}= { day: "2-digit", month: "short", year: "numeric" };
 
 // Format the date using the specified options
 const formattedDate = date.toLocaleDateString("fr-FR", options);
