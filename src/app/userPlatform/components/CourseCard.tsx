@@ -1,4 +1,5 @@
 import { ICourse } from '@/types/types';
+import { useRouter  } from 'next/navigation';
 import React from 'react'
 
 function CourseCard({course}:{course:ICourse}) {
@@ -12,6 +13,7 @@ const options:{day:string,month:string,year:string} = { day: "2-digit", month: "
 
 // Format the date using the specified options
 const formattedDate = date.toLocaleDateString("fr-FR", options);
+const router = useRouter();
 
   return (
     
@@ -21,7 +23,9 @@ const formattedDate = date.toLocaleDateString("fr-FR", options);
     <span className='text-xs text-[#c1c1c1]/50' >{formattedDate}</span>
     </h2>
     <p className='pl-2'>{course.description}</p>
-    <button className="bg-firstBlue p-1 rounded-xl font-bold ">ENROLL</button>
+    <button onClick={()=>{
+      router.push('/userPlatform/modules/'+course._id)      
+      }} className="bg-firstBlue p-1 rounded-xl font-bold ">ENROLL</button>
 </div>
   )
 }

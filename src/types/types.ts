@@ -25,6 +25,7 @@ export interface IModule {
   title: string;
   description: string;
   order: number
+  order_num?: number
 }
 
 
