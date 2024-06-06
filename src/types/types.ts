@@ -15,6 +15,7 @@ export interface ICourse {
   course_name: string;
   description: string;
   instructor: number;
+  createdAt? : string;
 }
 
 export interface IModule {

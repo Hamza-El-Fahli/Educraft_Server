@@ -1,7 +1,23 @@
+"use client"
+import { API_Server_Courses } from "@/configuration/API";
 import CourseCard from "../components/CourseCard";
 import { Header } from "../components/Header";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { ICourse } from "@/types/types";
 
 export default function User_courses() {
+    const [Courses, setCourses] = useState([])
+    const [Loading, setLoading] = useState(true)
+    useEffect(()=>{
+        fetch(`${API_Server_Courses}`).then(async res=>{
+            const data = await res.json()
+            setCourses(data)
+            setLoading(false)
+        })
+        
+    },[])
+
     return (
         <div className=" h-svh w-full flex  flex-col" style={{ background: 'url(/networking-bg.png)' }} >
             <Header />
@@ -16,14 +32,14 @@ export default function User_courses() {
                         <p className="font-semibold">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam recusandae voluptatem error repellendus ut aspernatur. Voluptatibus, modi? Doloribus, maiores minima facilis quidem distinctio ullam soluta, quasi illum, placeat vero eaque!</p>
                     </div>
                     <h1 className="font-bold text-2xl">user courses:</h1>
+                    
+                    {Loading && <LoadingSpinner/>}
                     <div className="grid grid-flow-row md:grid-cols-3 xl:grid-cols-6 gap-4">
-
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-                        <CourseCard />
-
+                        { !Loading && Courses.map((course:ICourse)=>{
+                            return  <CourseCard key={course._id} course={course} />
+                        })}
                     </div>
+                    
                 </div>
 
             </main>
