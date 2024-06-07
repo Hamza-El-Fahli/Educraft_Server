@@ -3,6 +3,7 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useLogout } from "@/hooks/useLogout";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import SearchComponent from "./SearchComponent";
 
 export default function HeaderNav({ activeView }: { activeView: string }) {
   const router = useRouter();
@@ -27,7 +28,7 @@ export default function HeaderNav({ activeView }: { activeView: string }) {
         </span>
         <span>▼</span>
       </div>
-      <div className="headerNav_search">Search</div>
+      <div className="headerNav_search"><SearchComponent /></div>
       <div className="headerNav_notification">n</div>
     </nav>
   );
