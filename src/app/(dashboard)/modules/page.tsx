@@ -263,7 +263,9 @@ export default function Users() {
         Add Module
       </div>
       {/* Loading  table of modules */}
-      {Loading == 2 ? <NoData /> :
+      {Loading == 2 ? (
+        <NoData />
+      ) : (
         <ShowData
           Loading={Loading}
           Data={_Modules.map(
@@ -275,12 +277,11 @@ export default function Users() {
             })
           )}
           Cols={["ID", "Course", "title", "Description", "Action"]}
-          setAddORUpdate={setAddORMod}
           Modify={OpenAndSet}
           Remove={removeModule}
           Subject={"Module"}
         />
-      }
+      )}
     </div>
   );
 }

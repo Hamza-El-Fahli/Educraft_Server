@@ -1,10 +1,18 @@
-export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,Modify,Remove}:any){
-    return (
-                <div className={` m-5   relative`}
-                style={{minHeight : Loading ? '60vh' : 'auto'}}
-                >
-          {Loading ? (
-            <>
+export default function ShowData({
+  Loading,
+  Cols,
+  Data,
+  Subject,
+  Modify,
+  Remove,
+}: any) {
+  return (
+    <div
+      className={` m-5   relative`}
+      style={{ minHeight: Loading ? "60vh" : "auto" }}
+    >
+      {Loading ? (
+        <>
           <div id="loading">
             <div id="load">
               <div>G</div>
@@ -12,7 +20,7 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               <div>I</div>
               <div>D</div>
               <div>A</div>
-              <div>O</div> 
+              <div>O</div>
               <div>L</div>
             </div>
           </div>
@@ -20,7 +28,9 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
             <table className="w-full ">
               <thead className="theader">
                 <tr className="hidden">
-                  {Cols.map((col:any,index:any)=> <td key={col}>{col}</td>)}
+                  {Cols.map((col: any, index: any) => (
+                    <td key={col}>{col}</td>
+                  ))}
                 </tr>
               </thead>
               <tbody>
@@ -31,47 +41,61 @@ export default function ShowData({Loading , Cols ,Data ,Subject, setAddORUpdate,
               </tbody>
             </table>
           </div>
-          </>
-
+        </>
       ) : (
-          <table className="w-full ">
-            <thead className="theader">
-              <tr>
-              {Cols.map((col:any,index:any)=> <td key={col}>{col}</td>)}
-              </tr>
-            </thead>
-            <tbody  >
-              {/* Mapping over modules to display them in the table */}
-              {Data.map((oneData:any,index:number) => (
-                <tr  key={'t'+index}  id={`tr-${index}`}>
-                  {Object.keys(oneData).map((key:any,innerIndex)=>{
-                    if(innerIndex >= Cols.length -1  ) return
-                    // if(typeof oneData) == 'object') 
-                    if(key == '_id') return <td key={innerIndex+'5'}>{oneData[key].length>5 ? oneData[key].slice(-5) : oneData[key]}</td>
-                    if(key != '_id') return <td key={innerIndex+'5'}>{ key == 'password' ? '******':  oneData[key] }</td>
-                  })}
-                  
-                  {/* Buttons to modify or delete the module */}
-                  <td className="p-1 flex justify-around items-center" style={{ height: '100%' }}>
-                    <button
-                      onClick={(e) => { setAddORUpdate(false); Modify(index) }}
-                      className="modifyBTN"
-                    >
-                      Modify {Subject}
-                    </button>
-                    <button
-                      onClick={(e) => Remove(index)}
-                      className="removeBTN "
-                    >
-                      Delete {Subject}
-                    </button>
-                  </td>
-                </tr>
+        <table className="w-full ">
+          <thead className="theader">
+            <tr>
+              {Cols.map((col: any, index: any) => (
+                <td key={col}>{col}</td>
               ))}
-            </tbody>
-          </table>
+            </tr>
+          </thead>
+          <tbody>
+            {/* Mapping over modules to display them in the table */}
+            {Data.map((oneData: any, index: number) => (
+              <tr key={"t" + index} id={`tr-${index}`}>
+                {Object.keys(oneData).map((key: any, innerIndex) => {
+                  if (innerIndex >= Cols.length - 1) return;
+                  // if(typeof oneData) == 'object')
+                  if (key == "_id")
+                    return (
+                      <td key={innerIndex + "5"}>
+                        {oneData[key].length > 5
+                          ? oneData[key].slice(-5)
+                          : oneData[key]}
+                      </td>
+                    );
+                  if (key != "_id")
+                    return (
+                      <td key={innerIndex + "5"}>
+                        {key == "password" ? "******" : oneData[key]}
+                      </td>
+                    );
+                })}
+
+                {/* Buttons to modify or delete the module */}
+                <td
+                  className="p-1 flex justify-around items-center"
+                  style={{ height: "100%" }}
+                >
+                  <button
+                    onClick={(e) => {
+                      Modify(index);
+                    }}
+                    className="modifyBTN"
+                  >
+                    Modify {Subject}
+                  </button>
+                  <button onClick={(e) => Remove(index)} className="removeBTN ">
+                    Delete {Subject}
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
-      </div>
-      
-      )
+    </div>
+  );
 }
