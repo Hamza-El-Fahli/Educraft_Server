@@ -35,19 +35,15 @@ const Users: any = {};
 Users.findOne = async (data: { name?: string, email?: string }) => {
     let nameOrEmail = data.name ? data.name : data.email;
 
-    const query = `SELECT * FROM users WHERE name = '${nameOrEmail}' OR email = '${nameOrEmail}' LIMIT 1`;
+    const query = `SELECT * FROM users WHERE name = ? OR email = ? LIMIT 1`;
+    const lastActivityQuery = `SELECT * FROM progression WHERE user_id = ? ORDER BY createdAt DESC LIMIT 1`;
 
     let conn;
     try {
         conn = await pool.getConnection();
-        const rows = await conn.query(query);
+        const rows = await conn.query(query, [nameOrEmail, nameOrEmail]);
 
-        let lastActivityQuery = `SELECT *
-                                    FROM progression
-                                    WHERE user_id = '${rows[0]._id}'
-                                    ORDER BY createdAt DESC
-                                    LIMIT 1`;
-        const lastActivity = await conn.query(lastActivityQuery);
+        const lastActivity = await conn.query(lastActivityQuery,[rows[0]._id]);
         conn.release(); // Release the connection after executing all queries
 
         if (lastActivity.length != 0)
@@ -71,7 +67,7 @@ Users.find = async (data: null | any) => {
         if (data == null)
             rows = await conn.query('SELECT * FROM users ;');
         else    
-            rows = await conn.query('SELECT * FROM users WHERE _id != '+data+' ;');
+            rows = await conn.query('SELECT * FROM users WHERE _id != ?;',[data]);
 
         conn.release();
         return rows
@@ -83,14 +79,11 @@ Users.find = async (data: null | any) => {
 
 Users.create = async ({ name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string }) => {
     let conn
-    const query = `INSERT INTO users (name, email, password, annee, filiere, profile)
-    VALUES ('${name}', '${email}', '${password}', '${annee}', '${filiere}', '${profile}');
-    `
-
+    const query = `INSERT INTO users (name, email, password, annee, filiere, profile) VALUES (?, ?, ?, ?, ?, ?);`;
     try {
         conn = await pool.getConnection();
         let rows;
-        rows = await conn.query(query);
+        rows = await conn.query(query,[name, email, password, annee, filiere, profile]);
         conn.release();
         return { _id: parseInt(rows.insertId) }
     } catch (error) {
@@ -101,19 +94,12 @@ Users.create = async ({ name, email, password, annee, filiere, profile }: { name
 Users.findByIdAndUpdate = async (id: string, { name, email, password, annee, filiere, profile }: { name: string, email: string, password: string, annee: number, filiere: string, profile: string }) => {
     let conn;
     const query = `UPDATE users
-    SET name = '${name}',
-        email = '${email}',
-        password = '${password}',
-        annee = '${annee}',
-        filiere = '${filiere}',
-        profile = '${profile}'
-    WHERE _id = ${id};`;
+    SET name = ?, email = ?, password = ?, annee = ?, filiere = ?, profile = ?
+    WHERE _id = ?;`;
 
     try {
         conn = await pool.getConnection();
-        let rows;
-        rows = await conn.query(query);
-        conn.release();
+        const rows = await conn.query(query, [name, email, password, annee, filiere, profile, id]);        conn.release();
         if (rows.affectedRows > 0)
             return rows
         else
@@ -126,13 +112,12 @@ Users.findByIdAndUpdate = async (id: string, { name, email, password, annee, fil
 
 Users.findByIdAndDelete = async (id: string) => {
     let conn;
-    const query = `DELETE FROM users    WHERE _id = ${id};
-    `;
+    const query = `DELETE FROM users    WHERE _id = ?;`;
 
     try {
         conn = await pool.getConnection();
         let rows;
-        rows = await conn.query(query);
+        rows = await conn.query(query,[id]);
         conn.release();
         if (rows.affectedRows > 0)
             return rows
