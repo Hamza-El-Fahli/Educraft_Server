@@ -1,6 +1,6 @@
 import _Modules from "@/database/models/modules";
-import Courses from "@/database/models/courses";
-import connectDB from "@/database/lib/mongodb";
+// import Courses from "@/database/models/courses";
+// import connectDB from "@/database/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { GetAllModules, GetModulesWithCourseID, PostModule } from "@/controllers/modulesControllers";
 
@@ -11,15 +11,15 @@ export async function POST(request: NextRequest) {
         return PostModule(request)
     } catch (error) {
         return NextResponse.json({ error: "No Modules created", contexst: error })
-    }
+        }
 
-}
-
-
-// GET      select modules with specific course_id
-// note : if no course_id, select all
-
-export async function GET(request: NextRequest) {
+        }
+        
+        
+        // GET      select modules with specific course_id
+        // note : if no course_id, select all
+        
+        export async function GET(request: NextRequest) {
     try {
         const params = request.nextUrl.searchParams
         //     const currentUser = request.cookies.get('currentUser')?.value

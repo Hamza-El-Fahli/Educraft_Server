@@ -36,12 +36,6 @@ function redirectToLogin(request: NextRequest) {
 
 }
 
-function testPayload(decode: any, currentUser: any) {
-    return (decode.payload._id == JSON.parse(currentUser)._id && // id didn't change
-        decode.payload.name == JSON.parse(currentUser).name && // username didn't change
-        decode.payload.profile == JSON.parse(currentUser).profile && // user profile/privilages didn't change
-        (decode.payload.profile.toLowerCase() == 'prof' || decode.payload.profile.toLowerCase() == 'admin')) // admins and profs are allowed , app users not allowed into this server side
-}
 
 async function testuserCredentials(request: NextRequest, currentUser: any) { // some test to check intergrity
     try {
@@ -55,4 +49,10 @@ async function testuserCredentials(request: NextRequest, currentUser: any) { // 
         console.error('Error while verifying token:', error);
         return redirectToLogin(request) // while checking error , redirect to login page
     }
+}
+function testPayload(decode: any, currentUser: any) {
+    return (decode.payload._id == JSON.parse(currentUser)._id && // id didn't change
+        decode.payload.name == JSON.parse(currentUser).name && // username didn't change
+        decode.payload.profile == JSON.parse(currentUser).profile && // user profile/privilages didn't change
+        (decode.payload.profile.toLowerCase() == 'prof' || decode.payload.profile.toLowerCase() == 'admin')) // admins and profs are allowed , app users not allowed into this server side
 }

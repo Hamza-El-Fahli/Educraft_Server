@@ -1,6 +1,6 @@
 // import mongoose, { Document, Model, Schema } from "mongoose";
 
-import pool from "../lib/mariadb"
+import pool from "../lib/mariadb";
 
 // enum ALimetationType {
 //     Text = 'text',
@@ -26,57 +26,45 @@ import pool from "../lib/mariadb"
 
 // export default ALimetation;
 
+const Lessons: any = {};
 
+Lessons.create = async ({
+  chapter_id,
+  content,
+  type,
+}: {
+  chapter_id: number;
+  content: string;
+  type: string;
+}) => {
+  const query = `INSERT INTO lessons (_id, chapter_id, content, type) VALUES (NULL, ?,?,?);`;
+  try {
+    const conn = await pool.getConnection();
+    const row = await conn.query(query, [chapter_id, content, type]);
 
-const Lessons : any = {}
+    conn.release();
+    return { _id: parseInt(row.insertId) };
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
 
+Lessons.findByIdAndUpdate = async (
+  id: number,
+  { content, type }: { content: string; type: string }
+) => {
+  const query = `UPDATE lessons SET content = ?, type = ? WHERE _id = ?;`;
+  try {
+    const conn = await pool.getConnection();
+    const row = await conn.query(query, [content, type, id]);
+    conn.release();
 
-Lessons.findOne =async ({chapter_id}:{chapter_id:number})=>{
-    const query = 'SELECT * from lessons WHERE chapter_id = '+chapter_id+' ;'
-    try{
-        const conn = await pool.getConnection()
-        const row = await conn.query(query);
-        conn.release();
-        return row.length ? {_id :  row[0]._id} : null
-    } catch (error) {
-        console.error('Error:', error);
-        return null
-    }
-}
+    return { _id: parseInt(row.insertId) };
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
 
-
-
-Lessons.create =async ({chapter_id , content , type}:{chapter_id:number , content:string , type:string})=>{
-    const query = `INSERT INTO lessons (_id, chapter_id, content, type) VALUES (NULL, '${chapter_id}', '${content}', '${type}');`;
-    try{
-        const conn = await pool.getConnection()
-        const row = await conn.query(query);
-
-        conn.release();
-        return {_id : parseInt(row.insertId)}
-    } catch (error) {
-        console.error('Error:', error);
-        return null
-    }
-}
-
-
-
-Lessons.findByIdAndUpdate =async (id:number , {content , type}:{content:string,type:string})=>{
-    const query = `UPDATE lessons SET content = '${content}', type = '${type}' WHERE _id = ${id};`;
-    try{
-        const conn = await pool.getConnection()
-        const row = await conn.query(query);
-        conn.release();
-
-        return {_id : parseInt(row.insertId)}
-    } catch (error) {
-        console.error('Error:', error);
-        return null
-    }
-}
-
-
-
-
-export default Lessons
+export default Lessons;
