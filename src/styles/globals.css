@@ -42,6 +42,11 @@ td {
 .SideNav{
   @apply  h-full w-full  row-span-8 p-3 
 }
+@media  only screen and  (max-width: 768px) {
+  .SideNav {
+    @apply  sm:fixed sm:top-10 sm:w-10 sm:h-10 sm:z-10 sm:overflow-hidden sm:hover:h-auto sm:hover:w-dvw
+  }
+}
 .SideNav ul {
   @apply w-full p-5 flex gap-3 flex-col bg-secondary rounded-md
 }
