@@ -242,3 +242,46 @@ width: 500px;
 
   
 }
+
+
+
+
+.profile-pic {
+  width: autor;
+  height: 100%;
+  display: inline-block;
+}
+
+.file-upload {
+  display: none;
+}
+.circle {
+  @apply rounded-full border-4 border-gray-200;
+  width: 128px;
+  height: 128px;
+  position: absolute;
+}
+img {
+  max-width: 100%;
+}
+.p-image {
+position: absolute;
+bottom: 0;
+right: 0;
+color: #666666;
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.p-image img{
+  height: 30px;
+}
+.p-image:hover {
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+}
+.upload-button {
+font-size: 1.2em;
+}
+
+.upload-button:hover {
+transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
+color: #999;
+}
