@@ -2,14 +2,12 @@ import React, { ChangeEvent, useState } from 'react';
 import './../styles/searchBar.css'; // Make sure to create and import the corresponding CSS file for styling
 
 const suggestions = [
-    "Channel", "CodingLab", "CodingNepal", "YouTube", "YouTuber", "YouTube Channel",
-    "Blogger", "Bollywood", "Vlogger", "Vehicles", "Facebook", "Freelancer", 
-    "Facebook Page", "Designer", "Developer", "Web Designer", "Web Developer",
-    "Login Form in HTML & CSS", "How to learn HTML & CSS", "How to learn JavaScript",
-    "How to become Freelancer", "How to become Web Designer", "How to start Gaming Channel",
-    "How to start YouTube Channel", "What does HTML stand for?", "What does CSS stand for?"
-  ];
-  
+  "Modules management", "Users Management", "Courses management", "Chapters Management", "Quizzes Management",
+  "Add new Module", "Add new User", "Add new course", "Add new chapter", "Add new Quiz",
+  "Update Module", "Update User", "Update course", "Update chapter", "Update Quiz",
+  "Remove Module", "Remove User", "Remove course", "Remove chapter", "Remove Quiz"
+];
+
   const SearchComponent: React.FC = () => {
     const [searchText, setSearchText] = useState<string>('');
     const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
@@ -35,7 +33,7 @@ const suggestions = [
   
     return (
       <div className="container relative h-10">
-        <div className={`searchInput m-1  ${filteredSuggestions.length > 0 ? 'active' : ''}`}>
+        <div className={`searchInput m-1 z-10 ${filteredSuggestions.length > 0 ? 'active' : ''}`}>
           <input 
             type="text" 
             placeholder="Saisir une adresse.." 
