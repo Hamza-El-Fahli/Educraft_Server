@@ -37,12 +37,12 @@ export default function Chapters() {
     selectedModule: "",
   });
   const [Courses, setCourses] = useState<any>([]);
-  const [SelectedRegister, setSelectedRegister] = useState<any>(null);
+  const [SelectedRegister, setSelectedRegister] = useState<any>(-1);
   const [Chapters, setChapters] = useState<IChapter[]>([]);
 
   // Function to open modal
-  const openModal = () => {
-    if (SelectedRegister == -1) {
+  const openModal = (index:number|null) => {
+    if (index == null) {
       setChapterForm({
         ...ChapterForm,
         title: "",
@@ -50,18 +50,18 @@ export default function Chapters() {
         selectedModule: "",
         selectedCourse: Courses[0]?._id,
       });
-    } else if (SelectedRegister != null) {
+    } else {
       const course_id =
         ChapterForm.modules.find(
-          (module) => module._id == Chapters[SelectedRegister].module_id
+          (module) => module._id == Chapters[index].module_id
         )?.course_id || "";
 
       const tmp = {
-        title: Chapters[SelectedRegister].title,
-        description: Chapters[SelectedRegister].description,
-        module_id: Chapters[SelectedRegister].module_id,
+        title: Chapters[index].title,
+        description: Chapters[index].description,
+        module_id: Chapters[index].module_id,
         course_id,
-        _id: Chapters[SelectedRegister]._id,
+        _id: Chapters[index]._id,
       };
       setChapterForm({
         ...ChapterForm,
@@ -116,16 +116,14 @@ export default function Chapters() {
   }, []);
 
   useEffect(() => {
-    if (SelectedRegister !== null) {
-      openModal();
+    if (SelectedRegister != -1) {
+      openModal(SelectedRegister);
     }
   }, [SelectedRegister]);
 
   // Function to add a module
-  const AddChapter = (e: any) => {
-    e.preventDefault();
+  const AddChapter = () => {
     const tmp = {
-      // course_id: ChapterForm.selectedCourse,
       module_id: ChapterForm.selectedModule || ChapterForm.modules[0]?._id,
       title: ChapterForm.title,
       description: ChapterForm.description,
@@ -146,12 +144,12 @@ export default function Chapters() {
     );
   };
   // open model and set data
-  async function OpenAndSet(index?: number) {
-    if (index == undefined) setSelectedRegister(-1);
-    else if (index == SelectedRegister) openModal();
-    else setSelectedRegister(index);
-
-    // console.log(index)
+  async function OpenAndSet(index: number|null) {
+    if (index == undefined || index == null) {setSelectedRegister(-1);openModal(null);}
+    else {
+      setSelectedRegister(index);
+      openModal(index);
+}
   }
   // Function to modify a module
   async function modifyModule() {
@@ -274,7 +272,8 @@ export default function Chapters() {
           <button
             className="text-primary h-12 border p-3"
             onClick={(e: any) => {
-              AddORMod ? AddChapter(e) : modifyModule();
+              e.preventDefault();
+              SelectedRegister < 0 ? AddChapter() : modifyModule();
             }}
           >
             Save
@@ -284,9 +283,8 @@ export default function Chapters() {
       {/* Button to open the modal for adding users */}
       <div
         onClick={(e) => {
-          openModal();
-          setAddORMod(true);
-          OpenAndSet(-1);
+          openModal(null);
+          OpenAndSet(null);
         }}
         className="dashboardCards_add"
       >
