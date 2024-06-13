@@ -28,7 +28,7 @@ const router = useRouter();
     </h2>
     <p className='pl-2'>{course.description}</p>
     <button onClick={()=>{
-      router.push('/userPlatform/modules/'+course._id)      
+      router.push('/userplatform/modules/'+course._id)      
       }} className="bg-firstBlue p-1 rounded-xl font-bold ">ENROLL</button>
 </div>
   )
