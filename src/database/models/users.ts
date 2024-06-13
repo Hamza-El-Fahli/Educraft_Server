@@ -169,4 +169,21 @@ Users.findByIdAndDelete = async (id: string) => {
   }
 };
 
+
+Users.LastAccess = async ({_id}:{_id:string})=>{
+  console.log('last access of '+_id)
+  let conn;
+  const query = `UPDATE users
+  SET last_login = CURRENT_TIMESTAMP
+  WHERE _id = ?;`;
+
+  try {
+    conn = await pool.getConnection();
+    const rows = await conn.query(query, [_id]);
+    conn.release();
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 export default Users;

@@ -1,4 +1,3 @@
-import connectDB from "@/database/lib/mongodb";
 import Users from "@/database/models/users";
 import { IUser } from "@/types/types";
 import { NextRequest, NextResponse } from "next/server";
@@ -79,7 +78,7 @@ export async function POST(request: NextRequest) {
     if (!isPasswordCorrect) {
       return NextResponse.json({ error: "Incorrect password" }, { status: 404 });
     }
-
+    await Users.LastAccess({_id : user._id})
     const accessToken = await JWT({ _id: user._id, name: user.name, profile: user.profile })
     const resUser: IUser = {
       _id: user._id,
