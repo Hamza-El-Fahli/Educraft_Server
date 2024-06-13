@@ -92,13 +92,13 @@ Courses.findByIdAndUpdate = async (
 
 Courses.findByIdAndDelete = async (id: string) => {
   let conn;
-  const query = `DELETE FROM courses    WHERE _id = ?;
+  const query = `DELETE FROM courses WHERE _id = ?;
     `;
 
   try {
     conn = await pool.getConnection();
     let rows;
-    (rows = await conn.query(query)), [id];
+    rows = await conn.query(query, [id]);
     conn.release();
     if (rows.affectedRows > 0) return rows;
     else return null;
