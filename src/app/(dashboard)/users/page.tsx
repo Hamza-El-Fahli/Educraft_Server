@@ -14,9 +14,8 @@ import { useCurrentUser } from "@/hooks/useCurrentUser";
 export default function Users() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [loading, setloading] = useState<boolean>(true);
-  const [AddORMod, setAddORMod] = useState<boolean>(true);
   const [Users, setUsers] = useState<IUser[]>([]);
-  const [selectedRegister, setselectedRegister] = useState<number | null>(null);
+  const [selectedRegister, setselectedRegister] = useState<number>(-1);
   const [UserForm, setUserForm] = useState<IUser_Form>({
     name: "",
     filiere: "",
@@ -29,8 +28,8 @@ export default function Users() {
   const JWTUser = useCurrentUser();
 
   // Function to open modal
-  const openModal = (): void => {
-    if (selectedRegister == -1) {
+  const openModal = (index:number|null): void => {
+    if (index == null || index == undefined) {
       setUserForm({
         name: "",
         filiere: "",
@@ -41,8 +40,8 @@ export default function Users() {
       });
       setIsOpen(true);
     }
-    if (selectedRegister != null) {
-      setUserForm(Users[selectedRegister]);
+    else {
+      setUserForm(Users[index]);
       setIsOpen(true);
     }
   };
@@ -67,8 +66,8 @@ export default function Users() {
   }, []);
 
   useEffect(() => {
-    if (selectedRegister !== null) {
-      openModal();
+    if (selectedRegister != -1) {
+      openModal(selectedRegister);
     }
   }, [selectedRegister]);
 
@@ -87,24 +86,17 @@ export default function Users() {
       });
   };
 
-  async function OpenAndSet(index: any) {
-    if (index == null) {
-      OpenAndSet(-1);
-      setAddORMod(true);
-      setUserForm({
-        name: "",
-        filiere: "",
-        annee: 0,
-        profile: "",
-        email: "",
-        password: "",
-      });
-    }
-    if (index == undefined) setselectedRegister(-1);
-    else if (index == selectedRegister) openModal();
-    else setselectedRegister(index);
+   function OpenAndSet(index: any) {
 
-    // console.log(index)
+    if (index == undefined || index == null) {
+      setselectedRegister(-1);
+      openModal(null)
+    }
+    else{
+      openModal(index);
+      setselectedRegister(index);}
+
+    // // console.log(index)
   }
 
   // Function to modify a user
@@ -153,7 +145,7 @@ export default function Users() {
         <UsersFormComponent
           UserForm={UserForm}
           setUserForm={setUserForm}
-          AddORMod={AddORMod}
+          AddORMod={selectedRegister<0}
           AddUser={AddUser}
           modifyUser={modifyUser}
         />
