@@ -118,7 +118,7 @@ Modules.findByIdAndUpdate = async (
   try {
     conn = await pool.getConnection();
     let rows;
-    (rows = await conn.query(query)), [course_id, title, description, id];
+    rows = await conn.query(query,[course_id, title, description, id]);
     const _id = parseInt(rows.insertId);
     conn.release();
     if (rows.affectedRows > 0) return { _id, course_id, title, description };
