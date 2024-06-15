@@ -270,6 +270,7 @@ export default function Chapters() {
           />
           {/* Button to save the form */}
           <button
+          id="send"
             className="text-primary h-12 border p-3"
             onClick={(e: any) => {
               e.preventDefault();
