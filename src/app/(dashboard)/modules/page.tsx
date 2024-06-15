@@ -153,7 +153,7 @@ export default function Users() {
         alert("Error updating user");
         closeModal();
       });
-  }
+  } 
 
   // Function to remove a module
   async function removeModule(e: number) {
@@ -234,6 +234,7 @@ export default function Users() {
           />
           {/* Button to save the form */}
           <button
+          id="send"
             className="text-primary h-12 border p-3"
             onClick={() => {
               SelectedRegister != null && SelectedRegister < 0
