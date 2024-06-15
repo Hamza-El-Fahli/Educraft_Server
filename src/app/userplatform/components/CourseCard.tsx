@@ -29,7 +29,7 @@ const router = useRouter();
     <p className='pl-2'>{course.description}</p>
     <button onClick={()=>{
       router.push('/userplatform/modules/'+course._id)      
-      }} className="bg-firstBlue p-1 rounded-xl font-bold ">ENROLL</button>
+      }} className="bg-firstBlue p-1 rounded-xl font-bold ">CONTINUE</button>
 </div>
   )
 }
