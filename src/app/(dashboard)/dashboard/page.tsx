@@ -1,3 +1,4 @@
+"use client"
 import SideNav from "@/components/sidenav";
 import HeaderNav from "@/components/HeaderNav";
 import Copyright from "@/components/CopyRight";

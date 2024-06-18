@@ -1,4 +1,9 @@
+import LoginChart from "@/app/(dashboard)/dashboard/charts/LoginChart";
+import PieChart from "@/app/(dashboard)/dashboard/charts/PieChart"; 
+import NewStudentsChart from "@/app/(dashboard)/dashboard/charts/NewStudentsChart"
+import CourseList from "@/app/(dashboard)/dashboard/charts/CourseListChart";
 export default function Charts() {
+
   return (
     <>
       <main className="dashboardCards">
@@ -10,18 +15,27 @@ export default function Charts() {
 
            ADD
         </div>
-        <div className="col-span-2 h-full w-full bg-secondary">
-          Platform users
-        </div>
-        <div className="col-span-2 h-full w-full bg-secondary">
-          Active users
-        </div>
-        <div className="col-span-2 h-full w-full bg-secondary">
-          Most tanked Student
-        </div>
-        <div className="col-span-2 h-full w-full bg-secondary">
-          Recent added Courses
-        </div>
+         
+    <div className="col-span-2 h-full w-full bg-secondary">
+    <LoginChart />
+    </div>
+
+    <div className="col-span-2 h-full w-full bg-secondary">
+    <PieChart />
+    </div>
+        
+
+    <div className="col-span-2 h-full w-full bg-secondary">
+    <NewStudentsChart />
+    </div>
+        
+
+    <div className="col-span-2 h-full w-full bg-secondary">
+    <CourseList />
+    </div>
+        
+
+        
       </main>
     </>
   );

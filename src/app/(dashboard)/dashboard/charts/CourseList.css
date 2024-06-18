@@ -1,0 +1,50 @@
+.course-list-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 10px;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    /* background-color: #f9f9f9; */
+  }
+  
+  .course-list {
+    width: 100%;
+  }
+  
+  .course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  
+  .course-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .course-item:last-child {
+    border-bottom: none;
+  }
+  
+  .course-title {
+    flex: 2;
+    font-weight: bold;
+  }
+  
+  .course-category {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .course-added {
+    flex: 1;
+    text-align: right;
+    color: #888;
+  }
+  
