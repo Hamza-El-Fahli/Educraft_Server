@@ -18,7 +18,7 @@ export default function QuizesScreen() {
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
   const [Loading, setLoading] = useState<boolean | number>(true);
 
-
+ 
   const initialForm = {
     seletedCourse: "1",
     selectedModule: "1",
@@ -242,7 +242,7 @@ export default function QuizesScreen() {
             <label htmlFor="course">Select Course</label>
             <select
               name="course"
-              id=""
+              id="course"
               className="text-primary h-12 border p-3"
               value={quizForm.seletedCourse}
               onChange={(e) =>
@@ -258,7 +258,7 @@ export default function QuizesScreen() {
             <label htmlFor="module">Select Module</label>
             <select
               name="module"
-              id=""
+              id="module"
               className="text-primary h-12 border p-3"
               value={quizForm.selectedModule}
               onChange={(e) =>
@@ -277,7 +277,7 @@ export default function QuizesScreen() {
             <label htmlFor="chapter">Select Chapter</label>
             <select
               name="chapter"
-              id=""
+              id="chapter"
               className="text-primary h-12 border p-3"
               value={quizForm.selectedChapter}
               onChange={(e) =>
@@ -328,6 +328,7 @@ export default function QuizesScreen() {
           <label htmlFor="correct answer">Answer</label>
           <input
             type="text"
+            name="correct answer"
             className="text-primary h-12 border p-3"
             value={quizForm.correctAnswer}
             onChange={(e) =>
@@ -336,12 +337,14 @@ export default function QuizesScreen() {
           />
           <div className="flex justify-between">
             <button
+            name="addOption"
               className="text-2xl font-bold text-black"
               onClick={() => AddAnswer()}
             >
               +
             </button>
             <button
+                        name="delOption"
               className="text-2xl font-bold  text-black"
               onClick={() => RemoveAnswer()}
             >
@@ -353,6 +356,7 @@ export default function QuizesScreen() {
             {quizForm.answers.map((answer, index) => (
               <input
                 key={index}
+                name={`option-${index+1}`}
                 type="text"
                 className="text-primary w-full border p-3"
                 value={answer}
@@ -361,6 +365,7 @@ export default function QuizesScreen() {
             ))}
           </div>
           <button
+          id="send"
             className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
             onClick={() => (SelectedRegister == -1 ? AddQuiz() : modifyQuiz())}
           >

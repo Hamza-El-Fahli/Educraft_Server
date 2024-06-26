@@ -59,13 +59,14 @@ export default function ShowQuizes({
               <div className="flex gap-2">
 
                 <button
-                  className="text-firstBlue font-bold opacity-20 hover:opacity-100 duration-100"
+
+                  className="text-firstBlue font-bold opacity-20 hover:opacity-100 duration-100 quiz-modify"
                   onClick={() => setSelectedRegister(index)}
                 >
                   modify
                 </button>
                 <button
-                  className="text-red-500 font-bold opacity-20 hover:opacity-100 duration-100"
+                  className="text-red-500 font-bold opacity-20 hover:opacity-100 duration-100 quiz-remove"
                   onClick={() => removeQuiz(index)}
                 >
                   Delete
@@ -74,7 +75,7 @@ export default function ShowQuizes({
             </div>
             <>
               <div
-                className={` bg-secondary   p-2 m-0 flex items-center px-5 border-b-4 border-b-orange-50 `}
+                className={` bg-secondary   p-2 m-0 flex items-center px-5 border-b-4 border-b-orange-50 quiz-question `}
               >
                 {quiz.question}
               </div>
