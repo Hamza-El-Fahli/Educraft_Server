@@ -1,5 +1,4 @@
 import { UpdateChapterByID } from "@/controllers/chaptersControlllers";
-import connectDB from "@/database/lib/mongodb";
 import Chapters from "@/database/models/chapters";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -26,7 +25,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     const { id } = params
     try {
-       //  await connectDB()
         await Chapters.findByIdAndDelete(id)
         return NextResponse.json({ message: "Chapter Deleted successfuly" })
     } catch (error) {

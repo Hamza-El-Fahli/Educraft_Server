@@ -10,15 +10,15 @@ const LoginChart = () => {
 
   // Define the data structure for the chart
   const chartData = {
-    labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
     datasets: [
       {
-        label: 'Number of Users Logged In',
+        label: 'Nombre d\'Apprenants connectés',
         data: data,
         backgroundColor: 'rgba(75, 192, 192, 0.2)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
-        fill: true, // Fill the area under the line
+        // fill: true, // Fill the area under the line
 
       },
     ],
@@ -44,7 +44,7 @@ const LoginChart = () => {
       },
       title: {
         display: true,
-        text: 'User Logins This Week',
+        text: 'Connexions des Apprenants cette semaine',
         font: {
           size: 16, // Set font size for title
         },

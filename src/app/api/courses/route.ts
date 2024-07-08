@@ -1,6 +1,4 @@
 import { GetAllCourses, PostCourse } from "@/controllers/coursesControllers";
-import connectDB from "@/database/lib/mongodb";
-import Courses from "@/database/models/courses"
 import { NextRequest, NextResponse } from "next/server";
 
 

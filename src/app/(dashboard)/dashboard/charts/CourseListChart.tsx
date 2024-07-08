@@ -9,10 +9,10 @@ const CourseList = () => {
   useEffect(() => {
     // Simulate fetching course data
     const fetchedCourses:LastCourse[] = [
-      { title: 'History on Networking', category: 'CCNA1', added: '3 days ago' },
-      { title: 'Security IOT', category: 'CCNA4', added: '5 days ago' },
-      { title: 'Open Source System', category: 'CCNA3', added: '5 days ago' },
-      { title: 'Python in AI', category: 'Programming', added: '1 week ago' },
+      { title: 'Histoire de resaux', category: 'CCNA1', added: '3 jours' },
+      { title: 'Securite IOT', category: 'CCNA4', added: '5 jours' },
+      { title: 'Open Source System', category: 'CCNA3', added: '5 jours' },
+      { title: 'programmation événementielle en Python', category: 'Programming', added: '1 semaine' },
     ];
     setCourses(fetchedCourses);
   }, []);

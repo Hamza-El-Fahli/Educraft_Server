@@ -1,6 +1,5 @@
 import Courses from "@/database/models/courses";
 import { NextRequest, NextResponse } from "next/server";
-import connectDB from "@/database/lib/mongodb";
 import { DeleteCourseById, UpdateCourseById } from "@/controllers/coursesControllers";
 
 

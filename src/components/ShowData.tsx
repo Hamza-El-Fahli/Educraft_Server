@@ -85,10 +85,10 @@ export default function ShowData({
                     }}
                     className="modifyBTN"
                   >
-                    Modify {Subject}
+                    Modifier {Subject}
                   </button>
                   <button onClick={(e) => Remove(index)} className="removeBTN ">
-                    Delete {Subject}
+                    Supprimer {Subject}
                   </button>
                 </td>
               </tr>

@@ -13,14 +13,13 @@ export default function Signup() {
   async function handlesubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const res = await fetch(`http://localhost:3000/api/users`, {
+    const res = await fetch(`/api/users`, {
       method: "PUT",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ name, email, password }),
     });
-    // console.log(res);
   }
 
   return (

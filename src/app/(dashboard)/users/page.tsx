@@ -160,7 +160,7 @@ export default function Users() {
             strokeWidth="2"
           />
         </svg>
-        Add Users
+        Ajouter
       </div>
       {/* loading spinner or table of users */}
 
@@ -172,14 +172,14 @@ export default function Users() {
           "UserName",
           "Email",
           "Password",
-          "Profile",
           "Annee",
           "filiere",
+          "Profile",
           "Action",
         ]}
         Modify={OpenAndSet}
         Remove={removeUser}
-        Subject={"User"}
+        Subject={"Utilisateur"}
       />
 
       {/* Main View */}

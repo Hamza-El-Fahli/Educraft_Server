@@ -198,7 +198,7 @@ export default function Courses() {
             strokeWidth="2"
           />
         </svg>
-        Add Course
+        Ajouter
       </div>
       {/* Table to show courses */}
       {Loading == 2 ? (

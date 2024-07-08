@@ -35,6 +35,8 @@ const suggestions = [
       <div className="container relative h-10">
         <div className={`searchInput m-1 z-10 ${filteredSuggestions.length > 0 ? 'active' : ''}`}>
           <input 
+            id="srch"
+            name="srch"
             type="text" 
             placeholder="Saisir une adresse.." 
             value={searchText} 

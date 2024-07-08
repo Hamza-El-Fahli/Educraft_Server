@@ -8,7 +8,7 @@ ChartJS.register(CategoryScale, LinearScale, ArcElement, Title, Tooltip, Legend)
 const UserRolePieChart = () => {
   // Define the data structure for the chart
   const chartData = {
-    labels: ['Admin', 'Teacher', 'Student'],
+    labels: ['Admin', 'Professeur', 'Apprenant'],
     datasets: [
       {
         label: 'User Roles',
@@ -38,7 +38,7 @@ const UserRolePieChart = () => {
       },
       title: {
         display: true,
-        text: 'User Roles Distribution',
+        text: 'ditribution des Roles',
       },
     },
   }} />;

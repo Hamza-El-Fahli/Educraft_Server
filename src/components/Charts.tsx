@@ -13,24 +13,24 @@ export default function Charts() {
 </svg>
 
 
-           ADD
+           Ajouter
         </div>
          
-    <div className="col-span-2 h-full w-full bg-secondary">
+    <div className="col-span-2 h-full max-h-80 w-full bg-secondary">
     <LoginChart />
     </div>
 
-    <div className="col-span-2 h-full w-full bg-secondary">
+    <div className="col-span-2 h-full w-full max-h-80 bg-secondary flex justify-center items-center">
     <PieChart />
     </div>
         
 
-    <div className="col-span-2 h-full w-full bg-secondary">
+    <div className="col-span-2 h-full w-full max-h-80 bg-secondary">
     <NewStudentsChart />
     </div>
         
 
-    <div className="col-span-2 h-full w-full bg-secondary">
+    <div className="col-span-2 h-full w-full max-h-80 bg-secondary">
     <CourseList />
     </div>
         

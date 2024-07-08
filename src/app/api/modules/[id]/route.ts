@@ -1,5 +1,4 @@
 import { DeleteModuleById, UpdateModuleByID } from "@/controllers/modulesControllers";
-import connectDB from "@/database/lib/mongodb";
 import _Modules from "@/database/models/modules";
 import { NextRequest, NextResponse } from "next/server";
 

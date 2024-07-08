@@ -1,6 +1,4 @@
 import _Modules from "@/database/models/modules";
-// import Courses from "@/database/models/courses";
-// import connectDB from "@/database/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { GetAllModules, GetModulesWithCourseID, PostModule } from "@/controllers/modulesControllers";
 

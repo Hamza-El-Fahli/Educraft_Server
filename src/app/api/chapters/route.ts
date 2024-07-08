@@ -1,5 +1,4 @@
 import Chapters from "@/database/models/chapters";
-import connectDB from "@/database/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import _Modules from "@/database/models/modules";
 import { GetAllChapters, GetChaptersWithModuleID, PostChapter } from "@/controllers/chaptersControlllers";

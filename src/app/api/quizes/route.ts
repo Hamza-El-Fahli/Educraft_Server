@@ -1,9 +1,5 @@
 import { GetAllQuizzes, GetQuizzesWithChapterID, GetQuizzesWithModuleID, PostQuizController } from "@/controllers/quizzesControllers";
-import connectDB from "@/database/lib/mongodb";
-import Chapters from "@/database/models/chapters";
-import Courses from "@/database/models/courses";
 import _Modules from "@/database/models/modules";
-import Quizes from "@/database/models/quizes";
 import { NextRequest, NextResponse } from "next/server";
 
 

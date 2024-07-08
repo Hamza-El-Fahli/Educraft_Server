@@ -26,7 +26,7 @@ export function Filters({dataFilters, setSelectedRegister , Data , setFilters , 
             strokeWidth="2"
           />
         </svg>
-        Add Quiz
+        Ajouter
       </div>
       </div>
 

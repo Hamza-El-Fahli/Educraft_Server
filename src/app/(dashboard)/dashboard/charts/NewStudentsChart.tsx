@@ -8,24 +8,24 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 const StackedBarChart = () => {
   // Define the data structure for the chart
   const chartData = {
-    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], // Example weeks
+    labels: ['semaines 1', 'semaines 2', 'semaines 3', 'semaines 4'], // Example weeks
     datasets: [
       {
-        label: 'TGI Students',
+        label: 'Etudiants TGI',
         data: [2, 4, 6, 3], // Number of TGI students each week
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
       },
       {
-        label: 'TSRI Students',
+        label: 'Etudiants TSRI',
         data: [8, 7, 3, 5], // Number of TSRI students each week
         backgroundColor: 'rgba(54, 162, 235, 0.6)',
         borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 1,
       },
       {
-        label: 'FC Students',
+        label: 'Etudiants FC',
         data: [2, 3, 4, 2], // Number of FC students each week
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
@@ -49,7 +49,7 @@ style={{
       },
       title: {
         display: true,
-        text: 'New Students Enrollment per Week',
+        text: 'Nouvelles inscriptions d\'étudiantes',
         font:{
             size : 16
         }

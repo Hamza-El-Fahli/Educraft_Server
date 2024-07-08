@@ -232,14 +232,14 @@ export default function QuizesScreen() {
   return (
     <div className="col-span-4 ">
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Quiz</h2>
-        <p className="mb-4 text-blue-400">Fill the form</p>
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Ajouter</h2>
+        <p className="mb-4 text-blue-400"></p>
         <form
           onSubmit={(e) => e.preventDefault()}
           className="flex flex-col gap-3 w-80 "
         >
           <div className="flex flex-col">
-            <label htmlFor="course">Select Course</label>
+            <label htmlFor="course">Selectioner Course</label>
             <select
               name="course"
               id="course"
@@ -255,7 +255,7 @@ export default function QuizesScreen() {
                 </option>
               ))}
             </select>
-            <label htmlFor="module">Select Module</label>
+            <label htmlFor="module">Selectioner Module</label>
             <select
               name="module"
               id="module"
@@ -274,7 +274,7 @@ export default function QuizesScreen() {
                 );
               })}
             </select>
-            <label htmlFor="chapter">Select Chapter</label>
+            <label htmlFor="chapter">Selectioner Chapter</label>
             <select
               name="chapter"
               id="chapter"
@@ -325,7 +325,7 @@ export default function QuizesScreen() {
               setquizForm({ ...quizForm, question: e.target.value })
             }
           />
-          <label htmlFor="correct answer">Answer</label>
+          <label htmlFor="correct answer">Reponse</label>
           <input
             type="text"
             name="correct answer"
@@ -369,7 +369,7 @@ export default function QuizesScreen() {
             className="border-third border text-third p-2 rounded-full duration-300 hover:text-white hover:bg-third "
             onClick={() => (SelectedRegister == -1 ? AddQuiz() : modifyQuiz())}
           >
-            Save
+            Envoyer
           </button>
         </form>
       </Modal>

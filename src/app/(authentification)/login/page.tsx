@@ -58,7 +58,7 @@ export default function Login(): JSX.Element {
             className="block text-gray-400 text-sm font-bold mb-2"
             htmlFor="username"
           >
-            Username
+            Identifiant 
           </label>
           <input
             className="bg-opacity-20 backdrop-filter  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -69,7 +69,7 @@ export default function Login(): JSX.Element {
             required
           />
           <label id="usernameError" className="hidden text-red-800">
-            Email/Username incorrect
+            Identifiant n'est pas correct 
           </label>
         </div>
         <div className="mb-6">
@@ -77,7 +77,7 @@ export default function Login(): JSX.Element {
             className="block text-gray-400 text-sm font-bold mb-2"
             htmlFor="password"
           >
-            Password
+            Mot de passe
           </label>
           <input
             className="bg-opacity-20 backdrop-filter  shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
@@ -88,22 +88,22 @@ export default function Login(): JSX.Element {
             required
           />
           <label id="passwordError" className="hidden text-red-800">
-            Password incorrect
+            Mot de passe n'est pas correct
           </label>
         </div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Sign In
+          Connecter
         </button>
         <p className="mt-4 text-center text-gray-500  cursor-default">
-          Don't have an account?{" "}
+          {" "}
           <Link
             href="/signup"
             className="text-third font-bold hover:underline cursor-pointer"
           >
-            Sign up
+            cree un compte
           </Link>
         </p>
       </form>

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import API_Documentation from "./content";
+type ItemType = any;
 
 function Documentation() {
   return (
@@ -57,25 +58,7 @@ const SideNav = ({ items }: { items: ItemType[] }) => {
 };
 
 function Body() {
-  return (
-    <div className="border flex ">
-      <SideNav  items={navItems} />
-      <main className=" border w-full">
-        <API_Documentation /> 
-      </main>
-    </div>
-  );
-}
-
-function Footer() {
-  return <footer className="self-end absolute bottom-0">footer</footer>;
-}
-
-export default Documentation;
-
-type ItemType = any;
-// src/data.js
-export const navItems = [
+const navItems = [
   {
     title: "API Documentation",
     children: [
@@ -128,3 +111,20 @@ export const navItems = [
           ],
   },
 ];
+
+  return (
+    <div className="border flex ">
+      <SideNav  items={navItems} />
+      <main className=" border w-full">
+        <API_Documentation /> 
+      </main>
+    </div>
+  );
+}
+
+function Footer() {
+  return <footer className="self-end absolute bottom-0">footer</footer>;
+}
+
+export default Documentation;
+

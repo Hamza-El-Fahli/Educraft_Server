@@ -197,7 +197,7 @@ export default function Chapters() {
     <div className="col-span-4 row-span-11 ">
       {/* Modal for adding or modifying users */}
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Chapter</h2>
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Ajouter un Chapter</h2>
         <p className="mb-4 text-blue-400">Fill the form</p>
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -277,7 +277,7 @@ export default function Chapters() {
               SelectedRegister < 0 ? AddChapter() : modifyModule();
             }}
           >
-            Save
+            Envoyer
           </button>
         </form>
       </Modal>
@@ -297,7 +297,7 @@ export default function Chapters() {
             strokeWidth="2"
           />
         </svg>
-        Add Chapter
+        Ajouter
       </div>
       {/* Loading spinner or table of modules */}
       {Loading != 2 ? (

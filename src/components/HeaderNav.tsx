@@ -29,7 +29,9 @@ export default function HeaderNav({ activeView }: { activeView: string }) {
         <span>▼</span>
       </div>
       <div className="headerNav_search"><SearchComponent /></div>
-      <div className="headerNav_notification">n</div>
+      <div className="headerNav_notification">
+        <img style={{height:"80%"}} src="./notification-bell-svgrepo-com.png" alt="" />
+      </div>
     </nav>
   );
 }

@@ -181,8 +181,8 @@ export default function Users() {
     <div className="col-span-4 row-span-11 ">
       {/* Modal for adding or modifying users */}
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <h2 className="text-lg font-bold mb-2 text-blue-800">Add Module</h2>
-        <p className="mb-4 text-blue-400">Fill the form</p>
+        <h2 className="text-lg font-bold mb-2 text-blue-800">Ajouter un Module</h2>
+        <p className="mb-4 text-blue-400"></p>
         <form
           onSubmit={(e) => e.preventDefault()}
           className="flex flex-col gap-3 w-80 "
@@ -242,7 +242,7 @@ export default function Users() {
                 : modifyModule();
             }}
           >
-            Save
+            Envoyer
           </button>
         </form>
       </Modal>
@@ -261,7 +261,7 @@ export default function Users() {
             strokeWidth="2"
           />
         </svg>
-        Add Module
+        Ajouter
       </div>
       {/* Loading  table of modules */}
       {Loading == 2 ? (

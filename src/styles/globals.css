@@ -33,7 +33,11 @@ td {
   @apply col-span-3;
 }
 .headerNav_notification {
-  @apply col-span-1 overflow-hidden;
+  @apply col-span-1 overflow-hidden ;
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  padding-right: 10px;
 }
 
 .CRContainer {

@@ -1,7 +1,5 @@
 import pool from "@/database/lib/mariadb"
-import connectDB from "@/database/lib/mongodb"
 import Chapters from "@/database/models/chapters"
-import Courses from "@/database/models/courses"
 import _Modules from "@/database/models/modules"
 import Quizes from "@/database/models/quizes"
 import { IChapter, ICourse, IModule, IQuizz } from "@/types/types"
@@ -33,7 +31,6 @@ async function DataMaps() {
 export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers, group }:
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group: number } = await request.json()
-    //  await connectDB()
 
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const chapter = await Chapters.findById(chapter_id)
@@ -47,7 +44,6 @@ export async function PostQuizController(request: NextRequest) {
 
 
 export async function GetQuizzesWithChapterID(request: NextRequest) {
-    //  await connectDB();
     const chapter_id = request.nextUrl.searchParams.get('chapter_id');
     let filter: any = {};
     filter["chapter_id"] = chapter_id;
@@ -103,7 +99,6 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
 
 
 export async function GetAllQuizzes() {
-    //  await connectDB();
 
     const quizes = await Quizes.find();
     const { chapterMap, moduleMap, courseMap } = await DataMaps()
@@ -138,20 +133,7 @@ export async function GetAllQuizzes() {
 
 
 export async function GetQuizzesWithModuleID(id: string) {
-    //  await connectDB();
-    // const ajax = await fetch(`http://localhost:3000/api/chapters?module_id=${id}`); // Update this line when write Chapters controllers
-    // const chapters = await ajax.json();
-    // const data: any = []
-    // await Promise.all(chapters.map(async (chapter: any) => {
-    //     const quiz = await Quizes.find({ "chapter_id": chapter._id });
-    //     if (quiz.length > 0) {
-    //         data.push({ chapter_name: chapter.title, chapter_id: chapter._id,group:0, ...quiz });
-    //     }
-    //     return null;
-    // }));
-
-    // const Results: any = data.filter((result: any) => result !== null);
-
+   
 
     const Results = await Quizes.find({ module_id: id });
 
@@ -162,7 +144,6 @@ export async function GetQuizzesWithModuleID(id: string) {
 
 export async function UpdateQuizByID(request: NextRequest, QuizID: string) {
 
-    //  await connectDB()
 
     const { question, chapter_id, correct_answer, answers, group } = await request.json() // get the modufied data 
     const res = await Quizes.findByIdAndUpdate(QuizID, { question, chapter_id, correct_answer, answers, group }) // update the data

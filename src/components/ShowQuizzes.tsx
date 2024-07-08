@@ -63,13 +63,13 @@ export default function ShowQuizes({
                   className="text-firstBlue font-bold opacity-20 hover:opacity-100 duration-100 quiz-modify"
                   onClick={() => setSelectedRegister(index)}
                 >
-                  modify
+                  Modifier
                 </button>
                 <button
                   className="text-red-500 font-bold opacity-20 hover:opacity-100 duration-100 quiz-remove"
                   onClick={() => removeQuiz(index)}
                 >
-                  Delete
+                  Supprimer
                 </button>
               </div>
             </div>
