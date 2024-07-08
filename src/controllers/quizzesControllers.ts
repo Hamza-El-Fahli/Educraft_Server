@@ -31,7 +31,7 @@ async function DataMaps() {
 export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers, group }:
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group: number } = await request.json()
-
+console.log({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const chapter = await Chapters.findById(chapter_id)
     if (chapter && chapter.quizGroupes <= group) {
@@ -60,7 +60,7 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
         let safetyCounter = 0 // to avoid infinit loop in case oprions are less than 4
         const optionsList = new Set()
         optionsList.add(quiz.correct_answer) // add the correct option
-        while (optionsList.size != NUMBER_OF_OPTIONS_PER_QUIZ+1 && safetyCounter < NUMBER_OF_OPTIONS_PER_QUIZ) {
+        while (optionsList.size != NUMBER_OF_OPTIONS_PER_QUIZ ) {
             const JsonAnswers : any = quiz.answers
             let options
             try {
