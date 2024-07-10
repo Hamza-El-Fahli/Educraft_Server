@@ -31,7 +31,6 @@ async function DataMaps() {
 export async function PostQuizController(request: NextRequest) {
     const { chapter_id, question, correct_answer, answers, group }:
         { chapter_id: string, question: string, correct_answer: string, answers: string[], group: number } = await request.json()
-console.log({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const res = await Quizes.create({ chapter_id, question, correct_answer, answers, quiz_group: group })
     const chapter = await Chapters.findById(chapter_id)
     if (chapter && chapter.quizGroupes <= group) {
@@ -74,12 +73,14 @@ export async function GetQuizzesWithChapterID(request: NextRequest) {
                 optionsList.add(testOption)
             safetyCounter++
         }
+        const arrOptions = Array.from(optionsList)
+        const shuffledOprions = shuffleArray(arrOptions)
 
         return {
             _id: quiz._id,
             question: quiz.question,
             group: quiz.group,
-            answers: Array.from(optionsList) ,
+            answers: shuffledOprions ,
             correct_answer: quiz.correct_answer,
             chapter_id: quiz.chapter_id,
             chapter_name: chapterMap[quiz.chapter_id].title,
@@ -251,3 +252,13 @@ export async function CheckAnswers({
 
 
 }
+
+
+
+function shuffleArray(array:string|any) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Generate random index
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  }
