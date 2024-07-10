@@ -54,7 +54,7 @@ export default function ShowData({
           <tbody>
             {/* Mapping over modules to display them in the table */}
             {Data.map((oneData: any, index: number) => (
-              <tr key={"t" + index} id={`tr-${index}`}>
+              <tr key={"t" + index} id={`tr-${index}`} >
                 {Object.keys(oneData).map((key: any, innerIndex) => {
                   if (innerIndex >= Cols.length - 1) return;
                   // if(typeof oneData) == 'object')
@@ -76,7 +76,8 @@ export default function ShowData({
 
                 {/* Buttons to modify or delete the module */}
                 <td
-                  className="p-1 flex justify-around items-center"
+                  className="p-1 flex justify-around items-center border-0"
+
                   style={{ height: "100%" }}
                 >
                   <button
