@@ -69,44 +69,46 @@ Chapters.findById = async (id: string) => {
 }
 
 Chapters.create = async ({ module_id, title, description, quizGroupes }: any) => {
-    let conn
+    let conn;
     const query = `INSERT INTO chapters (module_id, title, description, quizGroupes)
-    VALUES ('${module_id}', '${title}', '${description}' , 0);
-    `
-
+                   VALUES (?, ?, ?, 0)`;
+    const values = [module_id, title, description];
+    
     try {
         conn = await pool.getConnection();
         let rows;
-        rows = await conn.query(query);
+        rows = await conn.query(query, values);
         conn.release();
-        return { _id: parseInt(rows.insertId) }
+        return { _id: parseInt(rows.insertId) };
     } catch (error) {
         console.error('Error:', error);
-        return null
+        return null;
     }
-}
+}    
 Chapters.findByIdAndUpdate = async (id: string, { module_id, title, description }: any) => {
     let conn;
 
     const query = `UPDATE chapters
-    SET module_id = '${module_id}',
-    title = '${title}',
-    description = '${description}' 
-    WHERE _id = ${id} ;`;
-
+                   SET module_id = ?,
+                       title = ?,
+                       description = ?
+                   WHERE _id = ?`;
+    
+    const values = [module_id, title, description, id];
+    
     try {
         conn = await pool.getConnection();
-        let rows;
-        rows = await conn.query(query);
-        const _id = parseInt(rows.insertId)
+        const [rows] = await conn.query(query, values);
         conn.release();
-        if (rows.affectedRows > 0)
-            return { _id, module_id, title, description }
-        else
-            return null
+        
+        if (rows.affectedRows > 0) {
+            return { _id: id, module_id, title, description };
+        } else {
+            return null;
+        }
     } catch (error) {
         console.error('Error:', error);
-        return null
+        return null;
     }
 }
 
