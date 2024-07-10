@@ -62,8 +62,8 @@ function ModuleCard({ _module, user_id }: { _module: IModule, user_id: string })
                     Chapters.map((chapter: IChapter, index: number) => {
                         return (
                             <div key={index} className='px-3 border-b flex justify-between  bg-gray-900/80  '>
-                                <h1 className=' text-[#C3C1C1] font-semibold'>Chapter {index + 1} : {chapter.title}</h1>
-                                <a target='_blank' href={`${API_Storage_Server}/resources/${chapter._id}`} className='text-firstBlue w-44 text-right'>View chapter</a>
+                                <h1 className=' text-[#C3C1C1] font-semibold cursor-default'>Chapter {index + 1} : {chapter.title}</h1>
+                                <a target='_blank' href={`${API_Storage_Server}/resources/${chapter._id}`} className='text-firstBlue text-right font-bold'><span className="px-5 text-green-700 hover:text-green-500">Pass quiz</span> <span className="hover:text-blue-400">View chapter</span></a>
                             </div>
                         )
                     }) :
