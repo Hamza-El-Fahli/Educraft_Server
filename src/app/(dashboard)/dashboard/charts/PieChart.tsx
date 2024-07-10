@@ -12,7 +12,7 @@ const UserRolePieChart = () => {
     datasets: [
       {
         label: 'User Roles',
-        data: [1, 20, 120], // Admin: 1, Teacher: 20, Student: 120
+        data: [1, 5, 12], // Admin: 1, Teacher: 20, Student: 120
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
