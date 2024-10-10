@@ -67,6 +67,14 @@ export default function ShowData({
                       </td>
                     );
                   if (key != "_id")
+                    if(key == "title" && Subject == "Chapter")
+                      return (
+                        <td key={innerIndex + "5"}>
+                          <a href={`/quizzes?${Subject}=${oneData['_id']}`}>
+                          {oneData[key]}
+                          </a>
+                        </td>
+                      );
                     return (
                       <td key={innerIndex + "5"}>
                         {key == "password" ? "******" : oneData[key]}

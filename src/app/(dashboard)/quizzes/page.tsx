@@ -13,11 +13,11 @@ import {
 import LodingIndicator from "@/components/LoadingIndicator";
 import NoData from "@/components/naData";
 
-export default function QuizesScreen() {
+export default function QuizesScreen(request:{searchParams:{Chapter:string|number}} | null) {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
   const [Loading, setLoading] = useState<boolean | number>(true);
-
+ 
  
   const initialForm = {
     seletedCourse: "1",
@@ -47,7 +47,16 @@ export default function QuizesScreen() {
     selectedChapter: "-1",
   });
 
+  
   useEffect(() => {
+    if (request?.searchParams.Chapter) {
+      const c_id = request?.searchParams.Chapter
+      setdataFilters({
+        selectedCourse: "-1",
+        selectedModule: "-1",
+        selectedChapter: ""+c_id,
+      })
+    }
     axios
       .get(`${API_Server_RetrieveData}/?courses=1&modules=1&chapters=1`)
       .then(
