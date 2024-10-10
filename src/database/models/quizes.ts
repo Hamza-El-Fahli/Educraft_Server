@@ -1,6 +1,7 @@
 
 
 import pool from "./../lib/mariadb";
+import { updateQuizGroup } from "./updateData";
 
 const Quizzes: any = {};
 
@@ -58,6 +59,9 @@ Quizzes.create = async (data: {
       quiz_group,
       module_id,
     ]);
+
+    updateQuizGroup()
+
     return { _id: parseInt(rows.insertId) };
   } catch (error) {
     console.error("Error:", error);
@@ -105,15 +109,36 @@ Quizzes.findByIdAndUpdate = async (id: string, data: any) => {
   }
 };
 
-Quizzes.findByIdAndDelete = async (id: string) => {
+Quizzes.findById = async (id: string) => {
   let conn;
-  const query = `DELETE FROM quiz  WHERE _id = ?;
+  const query = `SELECT * FROM quiz  WHERE _id = ?;
     `;
-
   try {
     conn = await pool.getConnection();
     let rows;
     rows = await conn.query(query, [id]);
+    conn.release();
+    if (rows.affectedRows > 0) return rows;
+    else return null;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
+
+
+
+
+Quizzes.findByIdAndDelete = async (id: string) => {
+  let conn;
+  const query = `DELETE FROM quiz  WHERE _id = ?;
+    `;
+  try {
+    conn = await pool.getConnection();
+    let rows;
+    rows = await conn.query(query, [id]);
+    updateQuizGroup()
+
     conn.release();
     if (rows.affectedRows > 0) return rows;
     else return null;

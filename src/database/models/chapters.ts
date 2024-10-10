@@ -2,6 +2,7 @@
 
 
 import pool from "./../lib/mariadb";
+import { updateChapterCount } from "./updateData";
 
 const Chapters: any = {};
 
@@ -78,6 +79,7 @@ Chapters.create = async ({ module_id, title, description, quizGroupes }: any) =>
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query, values);
+        updateChapterCount();
         conn.release();
         return { _id: parseInt(rows.insertId) };
     } catch (error) {
@@ -121,6 +123,8 @@ Chapters.findByIdAndDelete = async (id: string) => {
         conn = await pool.getConnection();
         let rows;
         rows = await conn.query(query);
+        updateChapterCount();
+
         conn.release();
         if (rows.affectedRows > 0)
             return rows

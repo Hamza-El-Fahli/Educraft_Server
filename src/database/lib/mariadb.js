@@ -1,10 +1,10 @@
 import mariadb from "mariadb";
 
 const pool = mariadb.createPool({
-  host: "172.18.0.2", // db.educraft.com
+  host: "localhost", // db.educraft.com
   user: "root",
   // port:11529,
-  password: "gggg0000",
+  password: "",
   database: "educraft",
   connectionLimit: 1,
   connectTimeout: 20000, // Increase the connection timeout to 20 seconds

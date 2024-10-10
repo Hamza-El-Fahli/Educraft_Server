@@ -49,4 +49,4 @@ export class AuthService {
 
 
 
-export const authService = new AuthService('http://10.42.0.1:3000')
+export const authService = new AuthService('http://localhost:3000')
