@@ -1,3 +1,4 @@
+import { Auth_Server } from '@/configuration/API';
 import axios, { AxiosInstance } from 'axios'
 
 
@@ -49,4 +50,4 @@ export class AuthService {
 
 
 
-export const authService = new AuthService('http://localhost:3000')
+export const authService = new AuthService(Auth_Server)
