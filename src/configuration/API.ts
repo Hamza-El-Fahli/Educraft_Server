@@ -12,4 +12,4 @@ export const API_Server_RetrieveData = `${API_Server}/retrieveData`;
 
 
 export const API_Storage_Server = `http://localhost:7676`;
-export const Auth_Server = 'http://localhost:3000'
+export const Auth_Server = 'http://educraft.space'
