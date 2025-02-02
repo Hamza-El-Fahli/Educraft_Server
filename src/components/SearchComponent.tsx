@@ -1,6 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import './../styles/searchBar.css'; // Make sure to create and import the corresponding CSS file for styling
 
+
+// Stop search temporarily
+
 const suggestions = [
   "Modules management", "Users Management", "Courses management", "Chapters Management", "Quizzes Management",
   "Add new Module", "Add new User", "Add new course", "Add new chapter", "Add new Quiz",
@@ -31,7 +34,8 @@ const suggestions = [
       setFilteredSuggestions([]);
     };
   
-    return (
+    return <></> ;
+    (
       <div className="container relative h-10">
         <div className={`searchInput m-1 z-10 ${filteredSuggestions.length > 0 ? 'active' : ''}`}>
           <input 
