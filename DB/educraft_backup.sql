@@ -28,7 +28,7 @@ CREATE TABLE `chapters` (
   `title` text DEFAULT NULL,
   `description` text DEFAULT NULL,
   `quizGroupes` int(11) DEFAULT NULL,
-  `createdAt` date DEFAULT current_timestamp(),
+  createdAt TIMESTAMP DEFAULT current_timestamp(),
   PRIMARY KEY (`_id`),
   KEY `fk_module_id` (`module_id`),
   CONSTRAINT `fk_module_id` FOREIGN KEY (`module_id`) REFERENCES `modules` (`_id`)
@@ -95,7 +95,7 @@ CREATE TABLE `courses` (
   `course_name` text DEFAULT NULL,
   `description` text DEFAULT NULL,
   `instructor` text DEFAULT NULL,
-  `createdAt` date DEFAULT current_timestamp(),
+  createdAt TIMESTAMP DEFAULT current_timestamp(),
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -122,7 +122,7 @@ CREATE TABLE `lessons` (
   `chapter_id` int(11) NOT NULL,
   `content` text NOT NULL,
   `type` text NOT NULL,
-  `createdAt` date NOT NULL DEFAULT current_timestamp(),
+  `createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`_id`),
   KEY `fk_lessons_chapters` (`chapter_id`),
   CONSTRAINT `fk_lessons_chapters` FOREIGN KEY (`chapter_id`) REFERENCES `chapters` (`_id`)
@@ -152,7 +152,7 @@ CREATE TABLE `modules` (
   `description` text DEFAULT NULL,
   `title` text DEFAULT NULL,
   `order_num` int(11) DEFAULT NULL,
-  `createdAt` date DEFAULT current_timestamp(),
+  createdAt TIMESTAMP DEFAULT current_timestamp(),
   `chapter_count` int(11) DEFAULT 0,
   PRIMARY KEY (`_id`),
   KEY `fk_course_id` (`course_id`),
@@ -181,7 +181,7 @@ CREATE TABLE `progression` (
   `_id` int(11) NOT NULL AUTO_INCREMENT,
   `chapter_id` int(11) NOT NULL,
   `Completed_quizGroup` int(11) NOT NULL,
-  `createdAt` date NOT NULL DEFAULT current_timestamp(),
+  `createdAt` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
   `user_id` int(11) NOT NULL,
   PRIMARY KEY (`_id`),
   UNIQUE KEY `unique_progression_entry` (`chapter_id`,`Completed_quizGroup`,`user_id`)
@@ -213,7 +213,7 @@ CREATE TABLE `quiz` (
   `correct_answer` text DEFAULT NULL,
   `quiz_group` int(11) DEFAULT NULL,
   `module_id` int(11) DEFAULT NULL,
-  `createdAt` date DEFAULT current_timestamp(),
+  createdAt TIMESTAMP DEFAULT current_timestamp(),
   PRIMARY KEY (`_id`),
   KEY `fk_chapter_id` (`chapter_id`),
   KEY `fk_module_quiz_id` (`module_id`),
@@ -316,7 +316,7 @@ CREATE TABLE `users` (
   `annee` int(11) DEFAULT NULL,
   `filiere` text DEFAULT NULL,
   `profile` text DEFAULT NULL,
-  `createdAt` date DEFAULT current_timestamp(),
+  createdAt TIMESTAMP DEFAULT current_timestamp(),
   `last_login` datetime DEFAULT NULL,
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
