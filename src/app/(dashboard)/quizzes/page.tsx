@@ -13,7 +13,7 @@ import {
 import LodingIndicator from "@/components/LoadingIndicator";
 import NoData from "@/components/naData";
 
-export default function QuizesScreen(request:{searchParams:{Chapter:string|number}} | null) {
+export default function QuizesScreen(request:{searchParams:{Chapter:string|number}}) {
   const [isOpen, setisOpen] = useState(false);
   const [SelectedRegister, setSelectedRegister] = useState<any>(null);
   const [Loading, setLoading] = useState<boolean | number>(true);
