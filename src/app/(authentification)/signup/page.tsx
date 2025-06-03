@@ -45,6 +45,8 @@ export default function Signup() {
             id="username"
             type="text"
             placeholder="Username"
+            autoComplete="username"
+
           />
         </div>
         <div className="mb-4">
@@ -77,6 +79,7 @@ export default function Signup() {
             id="password"
             type="password"
             placeholder="Password"
+            autoComplete="current-password"
           />
         </div>
 

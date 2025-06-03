@@ -67,6 +67,7 @@ export default function Login(): JSX.Element {
             type="text"
             placeholder="Username"
             required
+            autoComplete="username"
           />
           <label id="usernameError" className="hidden text-red-800">
             Identifiant n'est pas correct 
@@ -86,6 +87,7 @@ export default function Login(): JSX.Element {
             type="password"
             placeholder="Password"
             required
+            autoComplete="current-password"
           />
           <label id="passwordError" className="hidden text-red-800">
             Mot de passe n'est pas correct

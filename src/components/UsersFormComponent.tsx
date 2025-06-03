@@ -11,6 +11,7 @@ export default function UsersFormComponent({UserForm,setUserForm,AddORMod,AddUse
     type="text"
     placeholder="userName"
     name="userName"
+    autoComplete="username"
     value={UserForm?.name}
     onChange={(e) => setUserForm({ ...UserForm, name: e.target.value })}
   />
@@ -29,6 +30,7 @@ export default function UsersFormComponent({UserForm,setUserForm,AddORMod,AddUse
     type="password"
     name="password"
     placeholder="password"
+    autoComplete="current-password"
     value={UserForm?.password}
     onChange={(e) => setUserForm({ ...UserForm, password: e.target.value })}
   />
