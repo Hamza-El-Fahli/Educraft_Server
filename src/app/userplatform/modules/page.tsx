@@ -19,7 +19,7 @@ export default function User_modules() {
 
             </main>
             <footer className="h-32">
-                This is footer
+                {/*This is footer*/}
             </footer>
 
 

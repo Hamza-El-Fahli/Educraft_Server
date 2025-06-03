@@ -45,7 +45,7 @@ export default function User_courses() {
 
             </main>
             <footer className="h-32">
-                This is footer
+                {/*This is footer*/}
             </footer>
 
 
